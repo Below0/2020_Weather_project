@@ -275,11 +275,15 @@ public class Tab1_PopupFragment extends DialogFragment {
             rain = cursor.getInt(cursor.getColumnIndexOrThrow(HomeContract.homeEntry.COLUMN_RAIN));
             dust = cursor.getInt(cursor.getColumnIndexOrThrow(HomeContract.homeEntry.COLUMN_DUST));
         }
+        Log.d("temp-11", "initDB: "+temp +", "+rain+", "+dust);
 
         //db 데이터 모두 삭제
+        //임시 주석
+
         SQLiteDatabase sqlDB = HomedbHelper.getWritableDatabase();
-        HomedbHelper.onUpgrade(sqlDB, 1, 2);
-        sqlDB.close();
+        HomedbHelper.onUpgrade(sqlDB, 2, 3);
+
+        //sqlDB.close();
 
 
         Log.d("~!~!---1", "devidepopupValue: " + temp);
@@ -313,6 +317,7 @@ public class Tab1_PopupFragment extends DialogFragment {
             seekBar2.setProgress(rain);
             seekBar3.setProgress(dust);
 
+            Log.d("temp", "initDB: "+temp +", "+rain+", "+dust);
             textView1_score.setText(Integer.toString(temp));
             textView2_score.setText(Integer.toString(rain));
             textView3_score.setText(Integer.toString(dust));

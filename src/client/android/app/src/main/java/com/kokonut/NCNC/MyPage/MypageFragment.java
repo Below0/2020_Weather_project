@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.kokonut.NCNC.R;
@@ -23,7 +24,8 @@ import com.kokonut.NCNC.R;
 public class MypageFragment extends Fragment {
     ImageView login_but;
     ViewGroup viewGroup;
-    TextView setalarm;
+    LinearLayout setalarm;
+    LinearLayout setasktosecha;
 
     @Nullable
     @Override
@@ -31,6 +33,7 @@ public class MypageFragment extends Fragment {
         viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_mypage,container,false);
         login_but = viewGroup.findViewById(R.id.login_but);
         setalarm = viewGroup.findViewById(R.id.setalarm);
+        setasktosecha = viewGroup.findViewById(R.id.setasktosecha);
 
         setalarm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -38,6 +41,16 @@ public class MypageFragment extends Fragment {
                 Log.d("111111", "onClick: ");
 
                 Intent intent = new Intent(getActivity(), AlarmActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        setasktosecha.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("111111", "onClick: ");
+
+                Intent intent = new Intent(getActivity(), AsktoSechaSecha.class);
                 startActivity(intent);
             }
         });
