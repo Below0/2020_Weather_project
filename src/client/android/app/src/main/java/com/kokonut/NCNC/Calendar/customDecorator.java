@@ -19,9 +19,12 @@ import java.util.logging.Handler;
 
 public class customDecorator implements DayViewDecorator {
 
+    //private CalendarDay date;
     private CalendarDay date;
+
     private String date_string;
     private Drawable drawable;
+
     int checkedList;
     private Activity activity;
     private MaterialCalendarView materialCalendarView;
@@ -42,13 +45,14 @@ public class customDecorator implements DayViewDecorator {
         this.checkedList = checkedList;
         this.CalendardbHelper = CalendardbHelper;
 
+        Log.d("\n\n\n알았다", "customDecorator: -" + date);
+
         decideCircle();
     }
 
     private void decideCircle(){
         /*동그라미를 치기 위한 for문*/
         Log.d("wow", "customDecorator: is null 1177");
-        drawable = activity.getResources().getDrawable(R.drawable.circle_light_purple);
 
         //초기화 안하면 에러뜸
 
@@ -56,12 +60,20 @@ public class customDecorator implements DayViewDecorator {
 
         if(checkedList == 1){ //내부세차
             cleancar_color = 1;
+            drawable = activity.getResources().getDrawable(R.drawable.circle_light_purple);
         }
         else if(checkedList == 2) { //외부세차
             cleancar_color = 1;
+            drawable = activity.getResources().getDrawable(R.drawable.circle_light_purple);
         }
         else if(checkedList == 3) { //전체 세차
             cleancar_color = 2;
+            drawable = activity.getResources().getDrawable(R.drawable.circle_light_purple);
+        }
+        else if(checkedList == 5) { //세차추천일
+            cleancar_color = 5;
+            drawable = activity.getResources().getDrawable(R.drawable.calendar_fullcircle);
+
         }
 
 
@@ -75,45 +87,18 @@ public class customDecorator implements DayViewDecorator {
         return cleancar_color;
     }
 
-    /**
-    public void calendarDB(String date, int part, int color, String objectCalendar){
-        CalendardbHelper.insertRecord(date, part, color, objectCalendar);
-        //printTable();
-    }**/
-
-    /*
-    private void printTable() {
-
-        Cursor cursor = CalendardbHelper.readRecordOrderByAge();
-        String result = "";
-g
-        result += "row 개수 : " + cursor.getCount() + "\n";
-        while (cursor.moveToNext()) {
-            int itemId = cursor.getInt(cursor.getColumnIndexOrThrow(CalendarContract.CalendarEntry._ID));
-            String one = cursor.getString(cursor.getColumnIndexOrThrow(CalendarContract.CalendarEntry.COLUMN_DATE));
-            int two = cursor.getInt(cursor.getColumnIndexOrThrow(CalendarContract.CalendarEntry.COLUMN_PART));
-
-            result += itemId + " " + one + " " + Integer.toString(two) + "\n";
-            Log.d("*******", "printTable: "+one);
-
-        }
-
-        //Log.d("*******", "printTable: "+result);
-        cursor.close();
-    }
-
-     */
-
     @Override
     public boolean shouldDecorate(CalendarDay day) {
+        Log.d("1. 꾸미는 날짜", "shouldDecorate: " +day);
+        Log.d("2/ 꾸미는 날짜", "shouldDecorate: " +date.toString());
         return date != null && day.equals(date);
-
     }
 
     @Override
     public void decorate(DayViewFacade view) {
         view.setBackgroundDrawable(drawable);
         view.addSpan(new customSelectedDate(activity, checkedList));
+        Log.d("데코", "decorate: ");
     }
 
 
@@ -141,6 +126,10 @@ class customSelectedDate implements LineBackgroundSpan{
             //전체세차
             this.flag_text = "전체";
         }
+        else if(cleancar_part == 5){
+            //전체세차
+            this.flag_text = "";
+        }
 
     }
 
@@ -148,7 +137,7 @@ class customSelectedDate implements LineBackgroundSpan{
     public void drawBackground(Canvas canvas, Paint paint, int left, int right, int top,
                                int baseline, int bottom, CharSequence text, int start, int end, int lnum) {
 
-        Log.d("customSelectedDate", "override: ");
+        Log.d("드로 백그라운드 ", "override: ");
 
         paint.setColor(color_light_purple);
         paint.setTextSize(36);

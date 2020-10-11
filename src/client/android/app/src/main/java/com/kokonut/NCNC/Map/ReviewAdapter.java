@@ -4,11 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
+import android.media.Rating;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.kokonut.NCNC.R;
@@ -21,10 +23,8 @@ import java.util.List;
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.CustomViewHolder> {
 
     private List<ReviewContents.Content> mList = null;
-    //private Activity context = null;
 
     public ReviewAdapter(List<ReviewContents.Content> list) {
-        //this.context = context;
         this.mList = list;
     }
 
@@ -32,12 +32,14 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.CustomView
         protected TextView tvUserId;
         protected TextView tvDate;
         protected TextView tvReviewText;
+        protected RatingBar rbRatingBar;
 
         public CustomViewHolder(View view) {
             super(view);
             this.tvUserId = (TextView) view.findViewById(R.id.review_user_id);
             this.tvDate = (TextView) view.findViewById(R.id.review_date);
             this.tvReviewText = (TextView) view.findViewById(R.id.review_text_view);
+            this.rbRatingBar = (RatingBar) view.findViewById(R.id.review_rating_bar);
         }
     }
 
@@ -57,16 +59,13 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.CustomView
     @Override
     public void onBindViewHolder(@NonNull CustomViewHolder viewholder, int position) {
 
-//        viewholder.tvUserId.setTextSize(TypedValue.COMPLEX_UNIT_SP, 25);
-//        viewholder.tvDate.setTextSize(TypedValue.COMPLEX_UNIT_SP, 25);
-//        viewholder.tvReviewText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 25);
-//
-//        viewholder.tvUserId.setGravity(Gravity.CENTER);
-//        viewholder.tvDate.setGravity(Gravity.CENTER);
-//        viewholder.tvReviewText.setGravity(Gravity.CENTER);
-
         viewholder.tvUserId.setText(mList.get(position).getUser_name());
+        String reviewDate = mList.get(position).getDate();
+        String reviewDateList[] = reviewDate.split("T");
+
         viewholder.tvDate.setText(mList.get(position).getDate());
+        viewholder.tvDate.setText(reviewDateList[0]);
+        viewholder.rbRatingBar.setRating(mList.get(position).getScore());
         viewholder.tvReviewText.setText(mList.get(position).getContent());
     }
 
@@ -75,17 +74,9 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.CustomView
         return (null != mList ? mList.size() : 0);
     }
 
-//    public Activity getContext() {
-//        return context;
-//    }
-
     public List<ReviewContents.Content> getmList() {
         return mList;
     }
-
-//    public void setContext(Activity context) {
-//        this.context = context;
-//    }
 
     public void setmList(List<ReviewContents.Content> mList) {
         this.mList = mList;

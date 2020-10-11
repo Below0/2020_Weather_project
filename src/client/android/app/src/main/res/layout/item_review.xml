@@ -1,101 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_gravity="center_horizontal"
-    android:background="@drawable/car_wash_review_box_no_pic">
+    android:layout_gravity="center_horizontal">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="125dp"
+        android:background="@drawable/shadow_box_review_list"/>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/review_user_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:textColor="#000000"
-            android:fontFamily="@font/ns_bold"/>
+        android:orientation="vertical"
+        android:background="@drawable/car_wash_review_box_no_pic">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:orientation="horizontal">
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/review_date"
+                android:id="@+id/review_user_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="8sp"
+                android:textSize="13sp"
                 android:textColor="#000000"
-                android:fontFamily="@font/ns_regular"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="1dp"
-                android:textSize="9sp"
-                android:textColor="#000000"
-                android:gravity="center_horizontal"
-                android:fontFamily="@font/ns_regular"
-                android:text="ㅣ"/>
+                android:fontFamily="@font/ns_bold"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="1dp"
-                android:layout_gravity="center_vertical"
+                android:layout_marginTop="6dp"
                 android:orientation="horizontal">
 
-                <ImageView
+                <TextView
+                    android:id="@+id/review_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/star_yellow"/>
+                    android:textSize="11sp"
+                    android:textColor="#000000"
+                    android:fontFamily="@font/ns_regular"/>
 
-                <ImageView
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="2dp"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/star_yellow"/>
+                    android:textSize="11sp"
+                    android:textColor="#000000"
+                    android:fontFamily="@font/ns_regular"
+                    android:text=" 작성"/>
 
-                <ImageView
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="2dp"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/star_yellow"/>
+                    android:layout_marginLeft="1dp"
+                    android:fontFamily="@font/ns_regular"
+                    android:gravity="center_horizontal"
+                    android:text="ㅣ"
+                    android:textColor="#000000"
+                    android:textSize="12sp" />
 
-                <ImageView
+                <RatingBar
+                    android:id="@+id/review_rating_bar"
+                    android:layout_marginLeft="1dp"
+                    style="@style/Widget.AppCompat.RatingBar.Small"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="2dp"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/star_yellow"/>
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="2dp"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/star_blank"/>
+                    android:layout_marginTop="-1dp"
+                    android:numStars="5"
+                    android:stepSize="0.5"
+                    android:theme="@style/RatingBar"/>
 
             </LinearLayout>
-        </LinearLayout>
 
-        <TextView
-            android:id="@+id/review_text_view"
-            android:layout_width="290dp"
-            android:layout_height="43dp"
-            android:layout_marginTop="11dp"
-            android:textSize="10sp"
-            android:textColor="#000000"
-            android:lineHeight="15sp"
-            android:fontFamily="@font/ns_regular"/>
+            <TextView
+                android:id="@+id/review_text_view"
+                android:layout_width="290dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textSize="10sp"
+                android:textColor="#000000"
+                android:lineHeight="15sp"
+                android:fontFamily="@font/ns_regular"/>
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+</FrameLayout>

@@ -3,6 +3,7 @@ package com.kokonut.NCNC;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,6 +23,7 @@ import com.google.android.material.tabs.TabLayout;
 
 import com.kokonut.NCNC.Calendar.CalendarFragment;
 import com.kokonut.NCNC.Calendar.Calendar_PopupFragment;
+import com.kokonut.NCNC.Home.HomeDBHelper;
 import com.kokonut.NCNC.Home.HomeFragment;
 
 import com.kokonut.NCNC.Home.Tab1.Tab1Fragment;
@@ -73,13 +75,17 @@ public class MainActivity extends AppCompatActivity implements Tab1_PopupFragmen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        kakaoAdapter = KakaoAdapter.getInstance(getApplicationContext());
-        //kakaoAdapter.kakaoLogin();
+
+        kakaoAdapter = KakaoAdapter.getInstance(MainActivity.this);
+        kakaoAdapter.kakaoLogin();
         viewPager2 = findViewById(R.id.home_viewpager2);
         tabLayout = findViewById(R.id.home_tablayout);
+
+        //SQLiteDatabase sqlDB = HomeDBHelper.getInstance(getApplicationContext()).getWritableDatabase();
+
         bottomNavigationBar = findViewById(R.id.bottom_navigation_bar);
         BottomNavigationMenuView menuView = (BottomNavigationMenuView) bottomNavigationBar.getChildAt(0);
-        Log.d("hash_key", getKeyHash(getApplicationContext()));
+        Log.d("hash_key", getKeyHash(MainActivity.this));
 
         for (int i = 0; i < menuView.getChildCount(); i++) {
             final View iconView = menuView.getChildAt(i).findViewById(R.id.icon);
@@ -104,7 +110,6 @@ public class MainActivity extends AppCompatActivity implements Tab1_PopupFragmen
                     scoreList= new String[8]; //초기화
                     for(int i=0; i<7; i++){
                         scoreList[i] = makeScoreList(mlist.get(i).getRnLv(), mlist.get(i).getTaLv());
-                        //Log.d("scoreList", scoreList[i]);
                         if(maxScore<Integer.parseInt(scoreList[i])){
                             maxScore = Integer.parseInt(scoreList[i]);
                             maxScoreDay = i;

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -37,8 +38,9 @@ import static com.kokonut.NCNC.KakaoAdapter.getInstance;
 
 public class CarWashReviewActivity extends AppCompatActivity {
     ImageView ivBack, ivWriteReview;
+    TextView tvCarWashName;
 
-    //List<ReviewContents.Content> reviewContents; // 리뷰 콘텐츠가 저장되는 리스트
+    ReviewContents reviewContents; // 리뷰 콘텐츠가 저장되는 리스트
     List<ReviewContents.Content> reviewList;
     private ReviewAdapter mAdapter;
     private LinearLayoutManager mLinearLayoutManager;
@@ -53,46 +55,46 @@ public class CarWashReviewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Intent 수신
+        Intent intent = getIntent();
+
+        String id = intent.getExtras().getString("id");
+        String name = intent.getExtras().getString("name");
+        String latitude = intent.getExtras().getString("latitude");
+        String longitude = intent.getExtras().getString("longitude");
+        String address = intent.getExtras().getString("address");
+        String phone = intent.getExtras().getString("phone");
+        String city = intent.getExtras().getString("city");
+        String type = intent.getExtras().getString("type");
+        String open_week = intent.getExtras().getString("open_week");
+        String open_sat = intent.getExtras().getString("open_sat");
+        String open_sun = intent.getExtras().getString("open_sun");
+
         setContentView(R.layout.activity_car_wash_review);
         initView();
-        //fetchReview("1");
+        tvCarWashName.setText(name);
+
         // 이 안에 washer의 id를 넣으면 해당 세차장의 리뷰들을 가져옵니다.
-
-        Intent intent = getIntent();
-        String wash_id = intent.getExtras().getString("id");
-        System.out.println("세차장 id :   " + wash_id);
-
-        retrofit = new Retrofit.Builder()
-                .baseUrl(baseUrl)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        RetrofitAPI retrofitAPI = retrofit.create(RetrofitAPI.class);
-        Call<ReviewContents> call = retrofitAPI.fetchReview(wash_id);
-        call.enqueue(new Callback<ReviewContents>() {
-            @Override
-            public void onResponse(Call<ReviewContents> call, Response<ReviewContents> response) {
-
-                ReviewContents reviewContents = response.body();
-                reviewList = reviewContents.getReviews();
-
-                mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view_review);
-                mLinearLayoutManager = new LinearLayoutManager(getApplicationContext());
-                mRecyclerView.setLayoutManager(mLinearLayoutManager);
-                mAdapter = new ReviewAdapter(reviewList);
-                mRecyclerView.setAdapter(mAdapter);
-
-            }
-
-            @Override
-            public void onFailure(Call<ReviewContents> call, Throwable t) {
-
-            }
-        });
+        fetchReview(id);
+        System.out.println("세차장 id :   " + id);
 
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), CarWashInfoActivity.class);
+                intent.putExtra("id", id);
+                intent.putExtra("name", name);
+                intent.putExtra("latitude", latitude);
+                intent.putExtra("longitude", longitude);
+                intent.putExtra("address", address);
+                intent.putExtra("phone",phone);
+                intent.putExtra("city", city);
+                intent.putExtra("type", type);
+                intent.putExtra("open_week", open_week);
+                intent.putExtra("open_sat", open_sat);
+                intent.putExtra("open_sun", open_sun);
+
                 startActivityForResult(intent, sub);
             }
         });
@@ -104,42 +106,95 @@ public class CarWashReviewActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "로그인이 필요합니다.", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
                 Intent intent = new Intent(getApplicationContext(), WriteReviewActivity.class);
+                intent.putExtra("id", id);
+                intent.putExtra("name", name);
+                intent.putExtra("latitude", latitude);
+                intent.putExtra("longitude", longitude);
+                intent.putExtra("address", address);
+                intent.putExtra("phone",phone);
+                intent.putExtra("city", city);
+                intent.putExtra("type", type);
+                intent.putExtra("open_week", open_week);
+                intent.putExtra("open_sat", open_sat);
+                intent.putExtra("open_sun", open_sun);
                 startActivityForResult(intent, sub);
             }
         });
 
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d("state", "----------CarWashReviewActivity OnStart--------");
+    }
+
+    @Override
+    public void onStop() {
+        Log.d("state", "----------CarWashReviewActivity OnStop--------");
+        super.onStop();
+    }
+
+
+
     protected void onPause() {
+        Log.d("state", "----------CarWashReviewActivity OnPause--------");
         super.onPause();
         finish();
+    }
+
+    @Override
+    public void onResume() {
+        Log.d("state", "----------CarWashReviewActivity OnResume--------");
+        super.onResume();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.d("state", "----------CarWashReviewActivity OnDestroy--------");
+        super.onDestroy();
     }
 
 
     void initView() {
         ivBack = findViewById(R.id.car_wash_review_back_arrow);
         ivWriteReview = findViewById(R.id.car_wash_review_write_button);
+        mRecyclerView = findViewById(R.id.recycler_view_review);
+        tvCarWashName = findViewById(R.id.car_wash_review_name);
     }
 
-    public void fetchReview(String washerId) {
-        RetrofitAPI retrofitAPI = RetrofitClient.getInstance().getClient1().create(RetrofitAPI.class);
-//    public void fetchReview(String washerId){
-//        RetrofitAPI retrofitAPI = RetrofitClient.getClient().create(RetrofitAPI.class);
-//
-//        retrofitAPI.fetchReview(washerId).enqueue(new Callback<ReviewContents>() {
-//            @Override
-//            public void onResponse(Call<ReviewContents> call, Response<ReviewContents> response) {
-//                Log.d("fetch_review", "Success: "+new Gson().toJson(response.body().getReviews().get(0).getContent()));
-//                reviewContents = response.body().getReviews();
-//            }
-//
-//            @Override
-//            public void onFailure(Call<ReviewContents> call, Throwable t) {
-//                Log.e("fetch_review", "failure: "+t.toString());
-//            }
-//        });
-//    }
 
+    public void fetchReview(String washerId){
+        RetrofitAPI retrofitAPI = RetrofitClient.getInstance().getClient1().create(RetrofitAPI.class);
+
+        retrofitAPI.fetchReview(washerId).enqueue(new Callback<ReviewContents>() {
+            @Override
+            public void onResponse(Call<ReviewContents> call, Response<ReviewContents> response) {
+                Log.d("fetch_review", "Success: "+new Gson().toJson(response.body()));
+                reviewContents = response.body();
+                reviewList = reviewContents.getReviews();
+
+                mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view_review);
+                mLinearLayoutManager = new LinearLayoutManager(getApplicationContext());
+                mRecyclerView.setLayoutManager(mLinearLayoutManager);
+                mAdapter = new ReviewAdapter(reviewList);
+                mRecyclerView.setAdapter(mAdapter);
+                ReviewRecyclerDecoration reviewRecyclerDecoration = new ReviewRecyclerDecoration(10);
+                mRecyclerView.addItemDecoration(reviewRecyclerDecoration);
+
+            }
+
+            @Override
+            public void onFailure(Call<ReviewContents> call, Throwable t) {
+                Log.e("fetch_review", "failure: "+t.toString());
+            }
+        });
     }
 }
