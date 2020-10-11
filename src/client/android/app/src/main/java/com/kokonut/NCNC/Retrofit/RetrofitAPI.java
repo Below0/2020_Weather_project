@@ -59,9 +59,36 @@ public interface RetrofitAPI {
             .build();
 
     @GET("car_wash/list/?")
-    Call<List<CarWashContents>> SearchCarWash(@Query("city") String si, @Query("district") String gu,
+    Call<List<CarWashContents>> SearchCarWash_week_kind(
                                               @Query("dong") String dong, @Query("open_week") String week,
-                                              @Query("open_sat") String sat, @Query("open_sun") String sun,
                                               @Query("wash") List<String> wash);
+
+    @GET("car_wash/list/?")
+    Call<List<CarWashContents>> SearchCarWash_sat_kind(@Query("dong") String dong, @Query("open_sat") String sat,
+                                                   @Query("wash") List<String> wash);
+
+    @GET("car_wash/list/?")
+    Call<List<CarWashContents>> SearchCarWash_sun_kind(
+                                                   @Query("dong") String dong, @Query("open_sun") String sun,
+                                                   @Query("wash") List<String> wash);
+
+    @GET("car_wash/list/?")
+    Call<List<CarWashContents>> SearchCarWash_notime_kind(
+                                                   @Query("dong") String dong, @Query("wash") List<String> wash);
+
+    @GET("car_wash/list/?")
+    Call<List<CarWashContents>> SearchCarWash_week_nokind(
+                                                          @Query("dong") String dong, @Query("open_week") String week);
+
+    @GET("car_wash/list/?")
+    Call<List<CarWashContents>> SearchCarWash_sat_nokind(
+                                                          @Query("dong") String dong, @Query("open_sat") String sat);
+
+    @GET("car_wash/list/?")
+    Call<List<CarWashContents>> SearchCarWash_sun_nokind(
+                                                          @Query("dong") String dong, @Query("open_sun") String sun);
+
+    @GET("car_wash/list/?")
+    Call<List<CarWashContents>> SearchCarWash_onlyaddress(@Query("dong") String dong);
 
 }
