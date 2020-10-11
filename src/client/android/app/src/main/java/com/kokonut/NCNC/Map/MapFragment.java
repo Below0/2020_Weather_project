@@ -325,10 +325,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
 
                         fetchCarWash(Integer.toString(carWashContentsList.get(markerArrayList.indexOf(marker)).getId()));
 
-                        tvBoxName.setText(carWashContentsList.get(markerArrayList.indexOf(marker)).getName());
-                        tvBoxTime.setText(carWashContentsList.get(markerArrayList.indexOf(marker)).getOpenWeek());
-                        tvBoxAddress.setText(carWashContentsList.get(markerArrayList.indexOf(marker)).getAddress());
-                        tvBoxType.setText(carWashTypeMap.get(carWashContentsList.get(markerArrayList.indexOf(marker)).getName()));
+//                        tvBoxName.setText(carWashContentsList.get(markerArrayList.indexOf(marker)).getName());
+//                        tvBoxTime.setText(carWashContentsList.get(markerArrayList.indexOf(marker)).getOpenWeek());
+//                        tvBoxAddress.setText(carWashContentsList.get(markerArrayList.indexOf(marker)).getAddress());
+//                        tvBoxType.setText(carWashTypeMap.get(carWashContentsList.get(markerArrayList.indexOf(marker)).getName()));
                         carWashInfoBox.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
@@ -338,15 +338,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
 
                                 intent.putExtra("id", Integer.toString(carWashContentsList.get(markerArrayList.indexOf(marker)).getId()));
                                 intent.putExtra("name", carWashContentsList.get(markerArrayList.indexOf(marker)).getName());
-                                intent.putExtra("latitude", Double.toString(carWashContentsList.get(markerArrayList.indexOf(marker)).getLat()));
-                                intent.putExtra("longitude", Double.toString(carWashContentsList.get(markerArrayList.indexOf(marker)).getLon()));
-                                intent.putExtra("address", carWashContentsList.get(markerArrayList.indexOf(marker)).getAddress());
-                                intent.putExtra("phone", carWashContentsList.get(markerArrayList.indexOf(marker)).getPhone());
-                                intent.putExtra("city", carWashContentsList.get(markerArrayList.indexOf(marker)).getCity());
+//                                intent.putExtra("latitude", Double.toString(carWashContentsList.get(markerArrayList.indexOf(marker)).getLat()));
+//                                intent.putExtra("longitude", Double.toString(carWashContentsList.get(markerArrayList.indexOf(marker)).getLon()));
+//                                intent.putExtra("address", carWashContentsList.get(markerArrayList.indexOf(marker)).getAddress());
+//                                intent.putExtra("phone", carWashContentsList.get(markerArrayList.indexOf(marker)).getPhone());
+//                                intent.putExtra("city", carWashContentsList.get(markerArrayList.indexOf(marker)).getCity());
 //                                intent.putExtra("type", carWashTypeMap.get(carWashContentsList.get(markerArrayList.indexOf(marker)).getName()));
-                                intent.putExtra("open_week", carWashContentsList.get(markerArrayList.indexOf(marker)).getOpenWeek());
-                                intent.putExtra("open_sat", carWashContentsList.get(markerArrayList.indexOf(marker)).getOpenSat());
-                                intent.putExtra("open_sun", carWashContentsList.get(markerArrayList.indexOf(marker)).getOpenSun());
+//                                intent.putExtra("open_week", carWashContentsList.get(markerArrayList.indexOf(marker)).getOpenWeek());
+//                                intent.putExtra("open_sat", carWashContentsList.get(markerArrayList.indexOf(marker)).getOpenSat());
+//                                intent.putExtra("open_sun", carWashContentsList.get(markerArrayList.indexOf(marker)).getOpenSun());
 
                                 startActivityForResult(intent, sub);
                             }
@@ -454,11 +454,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
                                         typeStr = typeStr + ", " + carWashDetail.getType().get(j).getName();
                                     }
                                 }
-
-                                rbBoxStar.setRating(score);
-                                tvBoxScore.setText(Float.toString(score));
-                                tvBoxType.setText(typeStr);
-
+                                setInfo(carWashContents, score, typeStr);
                             }
 
                             @Override
@@ -475,6 +471,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
                 Log.e("fetch_review", "failure: "+t.toString());
             }
         });
+    }
+
+    void setInfo(CarWashContents carWashContents, float score, String typeStr){
+        tvBoxName.setText(carWashContents.getName());
+        tvBoxTime.setText(carWashContents.getOpenWeek());
+        tvBoxAddress.setText(carWashContents.getAddress());
+        tvBoxType.setText(carWashTypeMap.get(carWashContents.getName()));
+        rbBoxStar.setRating(score);
+        tvBoxScore.setText(Float.toString(score));
+        tvBoxType.setText(typeStr);
     }
 
 }
