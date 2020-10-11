@@ -14,6 +14,10 @@ public class CarWashDetail {
     @Expose
     private List<CarWashDetailType> type;
 
+    @SerializedName("score")
+    @Expose
+    private double score;
+
 
     public String getName() {
         return name;
@@ -30,5 +34,9 @@ public class CarWashDetail {
     public void setType(List<CarWashDetailType> type) {
         this.type = type;
     }
+
+    public double getScore() {return score;}
+
+    public void setScore(double score) {this.score = score;}
 
 }

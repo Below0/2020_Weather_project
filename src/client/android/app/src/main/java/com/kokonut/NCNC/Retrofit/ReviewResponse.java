@@ -15,10 +15,36 @@ public class ReviewResponse {
     @Expose
     private Integer id;
 
-    public Integer getStatus() {return status;}
+//    @SerializedName("score")
+//    private Integer score;
+//
+//    @SerializedName("content")
+//    private String content;
+//
+//    public ReviewResponse(Integer id, Integer score, String content) {
+//        this.id = id;
+//        this.score = score;
+//        this.content = content;
+//        this.status=300; //before return
+//    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
     public Integer getId() {
+
         return id;
     }
+
+//    public Integer getScore(){
+//        return score;
+//    }
+//
+//    public String getContent(){
+//        return content;
+//    }
+
 
 
 }

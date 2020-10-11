@@ -20,6 +20,7 @@
             android:background="@drawable/back_arrow" />
 
         <TextView
+            android:id="@+id/car_wash_review_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -30,6 +31,10 @@
             android:text="쓱싹쓱싹 세차장">
         </TextView>
     </FrameLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:background="@drawable/shadow_box"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -73,6 +78,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="10dp"
                 android:orientation="vertical"/>

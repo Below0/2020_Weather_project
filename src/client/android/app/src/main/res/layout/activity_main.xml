@@ -15,8 +15,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="13dp"
-            android:layout_marginLeft="141dp"
+            android:layout_gravity="center"
             android:background="@drawable/main_logo">
         </ImageView>
     </androidx.appcompat.widget.Toolbar>
