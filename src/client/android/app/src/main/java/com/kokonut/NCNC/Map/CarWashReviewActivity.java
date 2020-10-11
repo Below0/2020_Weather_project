@@ -61,15 +61,15 @@ public class CarWashReviewActivity extends AppCompatActivity {
 
         String id = intent.getExtras().getString("id");
         String name = intent.getExtras().getString("name");
-        String latitude = intent.getExtras().getString("latitude");
-        String longitude = intent.getExtras().getString("longitude");
-        String address = intent.getExtras().getString("address");
-        String phone = intent.getExtras().getString("phone");
-        String city = intent.getExtras().getString("city");
-        String type = intent.getExtras().getString("type");
-        String open_week = intent.getExtras().getString("open_week");
-        String open_sat = intent.getExtras().getString("open_sat");
-        String open_sun = intent.getExtras().getString("open_sun");
+//        String latitude = intent.getExtras().getString("latitude");
+//        String longitude = intent.getExtras().getString("longitude");
+//        String address = intent.getExtras().getString("address");
+//        String phone = intent.getExtras().getString("phone");
+//        String city = intent.getExtras().getString("city");
+//        String type = intent.getExtras().getString("type");
+//        String open_week = intent.getExtras().getString("open_week");
+//        String open_sat = intent.getExtras().getString("open_sat");
+//        String open_sun = intent.getExtras().getString("open_sun");
 
         setContentView(R.layout.activity_car_wash_review);
         initView();
@@ -85,15 +85,15 @@ public class CarWashReviewActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), CarWashInfoActivity.class);
                 intent.putExtra("id", id);
                 intent.putExtra("name", name);
-                intent.putExtra("latitude", latitude);
-                intent.putExtra("longitude", longitude);
-                intent.putExtra("address", address);
-                intent.putExtra("phone",phone);
-                intent.putExtra("city", city);
-                intent.putExtra("type", type);
-                intent.putExtra("open_week", open_week);
-                intent.putExtra("open_sat", open_sat);
-                intent.putExtra("open_sun", open_sun);
+//                intent.putExtra("latitude", latitude);
+//                intent.putExtra("longitude", longitude);
+//                intent.putExtra("address", address);
+//                intent.putExtra("phone",phone);
+//                intent.putExtra("city", city);
+//                intent.putExtra("type", type);
+//                intent.putExtra("open_week", open_week);
+//                intent.putExtra("open_sat", open_sat);
+//                intent.putExtra("open_sun", open_sun);
 
                 startActivityForResult(intent, sub);
             }
@@ -110,15 +110,15 @@ public class CarWashReviewActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), WriteReviewActivity.class);
                 intent.putExtra("id", id);
                 intent.putExtra("name", name);
-                intent.putExtra("latitude", latitude);
-                intent.putExtra("longitude", longitude);
-                intent.putExtra("address", address);
-                intent.putExtra("phone",phone);
-                intent.putExtra("city", city);
-                intent.putExtra("type", type);
-                intent.putExtra("open_week", open_week);
-                intent.putExtra("open_sat", open_sat);
-                intent.putExtra("open_sun", open_sun);
+//                intent.putExtra("latitude", latitude);
+//                intent.putExtra("longitude", longitude);
+//                intent.putExtra("address", address);
+//                intent.putExtra("phone",phone);
+//                intent.putExtra("city", city);
+//                intent.putExtra("type", type);
+//                intent.putExtra("open_week", open_week);
+//                intent.putExtra("open_sat", open_sat);
+//                intent.putExtra("open_sun", open_sun);
                 startActivityForResult(intent, sub);
             }
         });
