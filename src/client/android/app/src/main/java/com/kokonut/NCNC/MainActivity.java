@@ -25,8 +25,6 @@ import android.content.Context;
 
 
 import com.google.gson.Gson;
-import com.gun0912.tedpermission.PermissionListener;
-import com.gun0912.tedpermission.TedPermission;
 import com.google.android.material.tabs.TabLayout;
 
 import com.google.gson.Gson;
@@ -90,13 +88,14 @@ public class MainActivity extends AppCompatActivity implements Calendar_PopupFra
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        kakaoAdapter = KakaoAdapter.getInstance(getApplicationContext());
+        kakaoAdapter = KakaoAdapter.getInstance(MainActivity.this);
+
         kakaoAdapter.kakaoLogin();
         viewPager2 = findViewById(R.id.home_viewpager2);
         tabLayout = findViewById(R.id.home_tablayout);
         bottomNavigationBar = findViewById(R.id.bottom_navigation_bar);
         BottomNavigationMenuView menuView = (BottomNavigationMenuView) bottomNavigationBar.getChildAt(0);
-        Log.d("hash_key", getKeyHash(getApplicationContext()));
+        Log.d("hash_key", getKeyHash(MainActivity.this));
 
         for (int i = 0; i < menuView.getChildCount(); i++) {
             final View iconView = menuView.getChildAt(i).findViewById(R.id.icon);
@@ -122,7 +121,6 @@ public class MainActivity extends AppCompatActivity implements Calendar_PopupFra
                     scoreList= new String[8]; //초기화
                     for(int i=0; i<7; i++){
                         scoreList[i] = makeScoreList(mlist.get(i).getRnLv(), mlist.get(i).getTaLv());
-                        //Log.d("scoreList", scoreList[i]);
                         if(maxScore<Integer.parseInt(scoreList[i])){
                             maxScore = Integer.parseInt(scoreList[i]);
                             maxScoreDay = i;

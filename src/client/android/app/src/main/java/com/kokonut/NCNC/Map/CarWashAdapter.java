@@ -95,15 +95,9 @@ public class CarWashAdapter extends RecyclerView.Adapter<CarWashAdapter.CustomVi
     public void onBindViewHolder(@NonNull CarWashAdapter.CustomViewHolder viewholder, int position) {
 
         viewholder.id.setText(mList.get(position).getId());
-//        viewholder.latitude.setText(mList.get(position).getMember_latitude());
-//        viewholder.longitude.setText(mList.get(position).getMember_longitude());
         viewholder.name.setText(mList.get(position).getName());
         viewholder.address.setText(mList.get(position).getAddress());
         viewholder.phone.setText(mList.get(position).getPhone());
-//        viewholder.city.setText(mList.get(position).getMember_city());
-//        viewholder.district.setText(mList.get(position).getMember_district());
-//        viewholder.dong.setText(mList.get(position).getMember_dong());
-//        viewholder.type.setText(mList.get(position).getMember_type());
     }
 
     @Override

@@ -6,6 +6,8 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Body;
+import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -37,9 +39,14 @@ public interface RetrofitAPI {
     @FormUrlEncoded
     @POST("car_wash/review/{id}")
     Call<ReviewResponse> writeReview (@Path("id") String id, @FieldMap HashMap<String, String> params);
+//    Call<ReviewResponse> writeReview (@Path("id") String id,
+//                                      @Field("score") Integer score,
+//                                      @Field("content") String content);
+
 
     @GET("car_wash/review/{id}")
     Call<ReviewContents> fetchReview (@Path("id") String id);
+//    Call<ReviewContents> fetchReview (@Path("id") String id);
 
     @FormUrlEncoded
     @POST("account/check")

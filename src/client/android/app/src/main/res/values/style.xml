@@ -22,4 +22,14 @@
         <item name="android:textColor">@color/color_main</item>
         <item name="android:fontFamily">@font/ns_regular</item>
     </style>
+
+    <style name="RatingBar" parent="Theme.AppCompat">
+        <item name="colorControlNormal">@color/color_star_blank</item>
+        <item name="colorControlActivated">@color/color_star_gold</item>
+    </style>
+
+    <style name="RatingBar_map" parent="Theme.AppCompat">
+        <item name="colorControlNormal">@color/color_star_map_blank</item>
+        <item name="colorControlActivated">@color/color_star_gold</item>
+    </style>
 </resources>
