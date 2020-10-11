@@ -128,11 +128,13 @@ public class CalendarFragment extends Fragment{
         return day;
 
          */
+       // Log.d("끝5", "getDate2: "+ weekday);
+        weekday--;
         java.text.SimpleDateFormat format = new java.text.SimpleDateFormat("MM-dd");
         Calendar calendar = Calendar.getInstance(); //현재 날짜
         calendar.add(Calendar.DAY_OF_MONTH, weekday); //오늘로부터 일주일일때
         String day = format.format(calendar.getTime());
-        Log.d("끝5", "getDate: "+day);
+       // Log.d("끝5", "getDate: "+day);
 
         String[] res = day.split("-");
         for(int i=0; i<2; i++){
