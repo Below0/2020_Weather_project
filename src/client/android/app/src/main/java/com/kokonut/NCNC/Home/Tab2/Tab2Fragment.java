@@ -5,11 +5,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStore;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,28 +19,17 @@ import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kokonut.NCNC.GpsTracker;
-import com.kokonut.NCNC.Retrofit.Location2Contents;
 import com.kokonut.NCNC.Retrofit.RetrofitAPI;
-import com.kokonut.NCNC.Retrofit.RetrofitClient;
-import com.kokonut.NCNC.Home.SharedViewModel;
 import com.kokonut.NCNC.R;
-
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class Tab2Fragment extends Fragment {
     private RetrofitAPI retrofitAPI;
@@ -53,13 +38,14 @@ public class Tab2Fragment extends Fragment {
     public Double myLat, myLon;
 
     ArrayAdapter<CharSequence> adspin1, adspin2, adspin3;
+    ArrayAdapter<CharSequence> dayspin, timespin;
 
-    public ArrayList<SelectedSearchInfo> selectedSearchInfo;
+    public ArrayList<SelectedSearchInfo> selectedSearchInfo = new ArrayList<>();
     public String selectedLocation1; //시
     public String selectedLocation2; //구
     public String selectedLocation3; //동
-    public String selectedTime1; //요일
-    public String selectedTime2; //시간
+    public String selectedTime1 = "선택안함"; //요일
+    public String selectedTime2 = "선택안함";//시간
     public ArrayList<String> selectedKind = new ArrayList(); //세차종류
 
     public Tab2Fragment() {
@@ -227,17 +213,15 @@ public class Tab2Fragment extends Fragment {
         time_sp1.setPrompt("요일"); time_sp2.setPrompt("시간");
 
 
-        String sp1_items[]={"평일", "토요일", "일요일"};
-        String sp2_items[]={"00:00", "01:00","02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00", "09:00", "10:00",
-                "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00", "24:00"};
+        dayspin = ArrayAdapter.createFromResource(getActivity(), R.array.spinner_day, android.R.layout.simple_spinner_dropdown_item);
+        //ArrayAdapter<String> timeSp1Adapter = new ArrayAdapter<String>.createFromResource(getActivity(), R.array.spinner_day, android.R.layout.simple_spinner_dropdown_item);
+        dayspin.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        time_sp1.setAdapter(dayspin);
 
-        ArrayAdapter<String> timeSp1Adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, sp1_items);
-        timeSp1Adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        time_sp1.setAdapter(timeSp1Adapter);
-
-        ArrayAdapter<String> timeSp2Adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, sp2_items);
-        timeSp2Adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        time_sp2.setAdapter(timeSp2Adapter);
+        //ArrayAdapter<String> timeSp2Adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, sp2_items);
+        timespin = ArrayAdapter.createFromResource(getActivity(), R.array.spinner_time, android.R.layout.simple_spinner_dropdown_item);
+        timespin.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        time_sp2.setAdapter(timespin);
 
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -283,11 +267,13 @@ public class Tab2Fragment extends Fragment {
                 if(time_check.isChecked()){
                     time_sp1.setVisibility(View.VISIBLE);
                     time_sp2.setVisibility(View.VISIBLE);
+
                 }
                 else{
                     time_sp1.setVisibility(View.INVISIBLE);
                     time_sp2.setVisibility(View.INVISIBLE);
-
+                    selectedTime1 = "선택안함";
+                    selectedTime2 = "선택안함";
                 }
             }
         });
@@ -297,8 +283,9 @@ public class Tab2Fragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 if(position!=0){
-                    timeSp1Adapter.notifyDataSetChanged();
-                    selectedTime1 = timeSp1Adapter.getItem(position);
+                    dayspin.notifyDataSetChanged();
+                    selectedTime1 = "";
+                    selectedTime1 = (String) dayspin.getItem(position);
                 }
                 else{
                     time_sp1.requestFocus();
@@ -315,14 +302,9 @@ public class Tab2Fragment extends Fragment {
         //시간 spinner 선택리스너
         time_sp2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                if(position!=0){
-                    timeSp2Adapter.notifyDataSetChanged();
-                    selectedTime2 = timeSp2Adapter.getItem(position);
-                }
-                else{
-                    time_sp2.requestFocus();
-                }
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long id) {
+                selectedTime2 = "";
+                selectedTime2 = String.valueOf(i);
             }
 
             @Override
@@ -333,6 +315,7 @@ public class Tab2Fragment extends Fragment {
         });
 
         //'세차종류' 체크박스
+        //selectedKind.add("선택안함");
         kind_check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -380,11 +363,23 @@ public class Tab2Fragment extends Fragment {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectedSearchInfo.add(new SelectedSearchInfo(selectedLocation1, selectedLocation2, selectedLocation3,
-                        selectedTime1, selectedTime2, selectedKind));
-                Intent intent = new Intent(getActivity(), Tab2_SearchList.class);
-                intent.putExtra("selectedinfodata", (Serializable)selectedSearchInfo);
-                startActivity(intent);
+                if(selectedLocation1==null || selectedLocation2==null || selectedLocation3==null){
+                    Toast.makeText(getContext(),"위치를 선택해주세요.",Toast.LENGTH_LONG).show();
+                }
+                else{
+                    selectedSearchInfo.add(new SelectedSearchInfo(selectedLocation1, selectedLocation2, selectedLocation3,
+                            selectedTime1, selectedTime2, selectedKind));
+
+                    Intent intent = new Intent(getActivity(), Tab2_SearchList.class);
+                    intent.putExtra("selectedinfodata", (Serializable)selectedSearchInfo);
+                    startActivity(intent);
+                }
+
+                if(selectedKind == null){
+                    selectedKind.add("선택안함");
+                }
+
+                //System.out.println(selectedLocation1+selectedLocation2+selectedLocation3+selectedTime1+selectedTime2+selectedKind.toString());
             }
         });
     return viewGroup;
