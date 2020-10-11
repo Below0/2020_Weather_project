@@ -78,7 +78,7 @@ public class Tab1_CarWashList extends AppCompatActivity {
         }
     }
 
-    private String makeOpenTime(String open_time){
+    public String makeOpenTime(String open_time){
         String result;
         if(open_time == "99:99-99:99") result= "휴무";
         else if(open_time =="00:00-00:00") result= "24시간 운영";

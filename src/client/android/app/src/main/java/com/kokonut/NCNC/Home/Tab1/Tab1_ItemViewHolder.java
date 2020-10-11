@@ -19,7 +19,6 @@ public class Tab1_ItemViewHolder extends RecyclerView.ViewHolder {
 
     public Tab1_ItemViewHolder(@NonNull View itemView) {
         super(itemView);
-        //handleShowView(itemView);
 
         imageView = itemView.findViewById(R.id.carwashlist_image2);
         name = itemView.findViewById(R.id.carwashlist_name2);
@@ -30,14 +29,4 @@ public class Tab1_ItemViewHolder extends RecyclerView.ViewHolder {
         time3 = itemView.findViewById(R.id.carwashlist_time32);
 
     }
-/*
-    private void handleShowView(View itemView){
-        if(getAdapterPosition()>2){
-            itemView.setVisibility(View.GONE);
-            return;
-        }
-        itemView.setVisibility(View.VISIBLE);
-    }
-
- */
 }

@@ -11,6 +11,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface RetrofitAPI {
 
@@ -49,4 +50,11 @@ public interface RetrofitAPI {
             .baseUrl(RetrofitAPI.URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build();
+
+    @GET("car_wash/list/?")
+    Call<List<CarWashContents>> SearchCarWash(@Query("city") String si, @Query("district") String gu,
+                                              @Query("dong") String dong, @Query("open_week") String week,
+                                              @Query("open_sat") String sat, @Query("open_sun") String sun,
+                                              @Query("wash") List<String> wash);
+
 }

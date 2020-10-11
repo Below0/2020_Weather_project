@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements Tab1_PopupFragmen
         retrofitAPI.fetchScore().enqueue(new Callback<ScoreContents>() {
             @Override
             public void onResponse(Call<ScoreContents> call, Response<ScoreContents> response) {
-                Log.d("Retrofit_Score", "Success: "+new Gson().toJson(response.body().getContents()));
+                Log.d("Retrofit_Score", "Success: "+new Gson().toJson(response.body()));
 
                 List<ScoreContents.Content> mlist = response.body().getContents();
                 if(mlist==null){ //서버에 해당정보 없을 때

@@ -89,7 +89,6 @@ public class ScoreContents {
         public void setPm10Lv(Integer taLv) {
             this.pm10Lv = pm10Lv;
         }
-
     }
 
 }
