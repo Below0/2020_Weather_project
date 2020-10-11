@@ -17,13 +17,29 @@ def washer_list(request):
         if len(request.GET.keys()) == 0:
             washer_set = Washer.objects.all()
         else:
+            time_filter = {}
+            for k, v in request.GET.items():
+                if k.startswith('open'):
+                    time_filter[k] = v
+
             filter_dict = {
                     key:value
-                    for key, value in request.GET.items()
+                    for key, value in request.GET.items() \
+                            if key.startswith('open') is False
                     }
-            print(filter_dict)
-            washer_set = Washer.objects.filter(**filter_dict) 
-        
+
+            washer_set = Washer.objects.filter(**filter_dict)
+
+
+            delete_list = []
+            if len(time_filter) > 0 :
+                for w in washer_set:
+                    if w.time_check(time_filter) is False:
+                        delete_list.append(w.id)
+
+                if len(delete_list) > 0:
+                    washer_set = washer_set.exclude(id__in=delete_list)
+                    
         
         data = list(washer_set.values())
         for i in range(len(data)):

@@ -28,7 +28,9 @@ def call_api(address):
             print("TIMEOUT Retry:", try_cnt)
             time.sleep(self.TIME_OUT)
 
+    #print(req.json())
     res = req.json()["documents"][0]["address"]
+    
     return res
 
 
@@ -59,7 +61,6 @@ def time_parser(input_time):
 
     for schedule in time_list:
         schedule = schedule.strip()
-        print(schedule)
         words = schedule.split(' ')
         if not words[0] in keywords.keys():
             continue
@@ -79,18 +80,23 @@ def time_parser(input_time):
 
 def parse_input(target):
     wash_dict = {'자동세차':'1', '손세차':'2', '디테일링':'3', '출장세차':'4', '실내세차':'5', '출장세차(손세차)':'4',
-            '셀프세차':'6'}
+            '셀프세차':'6','스팀세차':'7'}
     name, address, phone, wash_type, open_time = target.split('	')
    
     addr_info = call_api(address)
    
     lat = addr_info["y"]
     lon = addr_info["x"]
-   
+
+    #print(addr_info)
     city = addr_info["region_1depth_name"]+"시"
     district = addr_info["region_2depth_name"]
     dong = addr_info["region_3depth_h_name"]
-    
+
+    #city = "서울시"
+    #district = "성동구"
+    #dong = "성수동"
+
     wash_list = wash_type.split('/')
     time = time_parser(open_time)
     
