@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,12 +17,31 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentActivity;
 
 import com.kokonut.NCNC.Home.HomeContract;
 import com.kokonut.NCNC.Home.HomeDBHelper;
+import com.kokonut.NCNC.Home.ScoreInfoData;
 import com.kokonut.NCNC.R;
+import com.kokonut.NCNC.Retrofit.RetrofitAPI;
+import com.kokonut.NCNC.Retrofit.RetrofitClient;
+import com.kokonut.NCNC.Retrofit.ScoreContents;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
 
 public class Tab1_PopupFragment extends DialogFragment {
+    RetrofitAPI retrofitAPI;
+    List<ScoreContents.Content> scoreContentsList;
+    ArrayList<ScoreInfoData> scoreInfoData;
+    int maxScore=0, maxScoreDay=0;
+    public Tab1Fragment.scoreTask sct;
+
+
+
 
     private DialogInterface.OnDismissListener onDismissListener = null;
 
@@ -316,11 +336,17 @@ public class Tab1_PopupFragment extends DialogFragment {
             textView1_score.setText(Integer.toString(temp));
             textView2_score.setText(Integer.toString(rain));
             textView3_score.setText(Integer.toString(dust));
-            Log.d("TASD","test");
+            Log.d("TASD", "test");
 
         }
-    }
 
+/*
+        Log.d("밖임", "initDB: ");
+        Tab1Fragment tab1Fragment = new Tab1Fragment();
+        Tab1Fragment.scoreTask innerScoreTask = tab1Fragment.new scoreTask(getActivity(), temp, rain, dust);
+        innerScoreTask.selfRestart();
+*/
+    }
 
     public interface uploadDialogInterface
     {

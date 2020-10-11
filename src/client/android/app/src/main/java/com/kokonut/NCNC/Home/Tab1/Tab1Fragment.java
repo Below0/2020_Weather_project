@@ -18,6 +18,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
@@ -124,6 +125,7 @@ public class Tab1Fragment extends Fragment implements ActivityCompat.OnRequestPe
     public View onCreateView(@Nullable LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
+        Log.d("온크리레이트", "onCreateView: ");
         viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_tab1, container, false);
         recyclerView = viewGroup.findViewById(R.id.tab1_recycler_view);
         popupButton = viewGroup.findViewById(R.id.home_popupButton);
@@ -304,8 +306,17 @@ public class Tab1Fragment extends Fragment implements ActivityCompat.OnRequestPe
 
     public class scoreTask extends AsyncTask<Void, String, ArrayList<ScoreInfoData>>{
         private FragmentActivity activity;
+        //int getTemp, getRain, getDust;
         public scoreTask(FragmentActivity activity) {
             this.activity = activity;
+        }
+
+        public scoreTask(FragmentActivity activity, int getTemp2, int getRain2, int getDust2){
+            Log.d("밖에서 들어옴", +getTemp+", "+ getRain + ", "+ getDust);
+            this.activity = activity;
+            getTemp = getTemp2;
+            getRain = getRain2;
+            getDust = getDust2;
         }
 
         @Override
@@ -352,12 +363,17 @@ public class Tab1Fragment extends Fragment implements ActivityCompat.OnRequestPe
             score7 = viewGroup.findViewById(R.id.home_tab1_day7_score);
             goodDay = viewGroup.findViewById(R.id.home_tab1_goodday_text);
 */
+
+            Log.d("부른다 - 7", "selfRestart()에 들어옴: ");
             updateScoreDate(result);
         }
         public void selfRestart(){
-            sct.cancel(true);
+            //sct.cancel(true);
             //System.out.println(getDust+" "+getRain+" "+getTemp);
+            Log.d("부른다 - 3", "selfRestart()에 들어옴: ");
             new scoreTask(getActivity()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            Log.d("부른다 - 6", "selfRestart()에 들어옴: ");
+
         }
     }
 
@@ -372,17 +388,22 @@ public class Tab1Fragment extends Fragment implements ActivityCompat.OnRequestPe
 
     public String makeScoreList(int rn_lv, int ta_lv, int pm10_lv){
         String str;
+        Log.d("부른다 - 10", "selfRestart()에 들어옴: " + getDust + ", "+ getRain + ", "+ getTemp);
+
         double val1=0.33, val2=0.33, val3=0.33;
         int total = getTemp + getRain + getDust;
         if(total>0){
-            val1 = getTemp / total;
-            val2 = getRain / total;
-            val3 = getDust / total;
+            val1 = (double)getTemp / total;
+            val2 = (double)getRain / total;
+            val3 = (double)getDust / total;
 
+            Log.d("부른다 10.0", "makeScoreList: "+val1+", "+val2+"," +val3);
             str = String.valueOf((int)Math.abs((ta_lv*2*val1 + rn_lv*8*val2 + pm10_lv*2.5*val3)*3));
         }
         else
             str = String.valueOf((int)Math.abs((ta_lv*2*val1 + rn_lv*8*val2 + pm10_lv*2.5*val3)*3));
+
+        Log.d("부른다 - 11", "selfRestart()에 들어옴: " + str);
 
         //String str = String.valueOf(rn_lv*9 + ta_lv*2);
         return str;
@@ -453,6 +474,13 @@ public class Tab1Fragment extends Fragment implements ActivityCompat.OnRequestPe
 
             //popupchecked = true;
         }
+
+        Log.d("부른다 - 1", "initDB: ");
+        //Tab1Fragment tab1Fragment = new Tab1Fragment();
+        scoreTask innerScoreTask = new scoreTask(getActivity(), getTemp, getRain, getDust);
+        Log.d("부른다 - 2 ", "initDB: ");
+
+        innerScoreTask.selfRestart();
     }
 
     //현재 내위치~세차장 위치 거리
@@ -465,7 +493,10 @@ public class Tab1Fragment extends Fragment implements ActivityCompat.OnRequestPe
     }
 
     //세차점수 띄우기
-    private void updateScoreDate(ArrayList<ScoreInfoData> scoreInfoData){
+    public void updateScoreDate(ArrayList<ScoreInfoData> scoreInfoData){
+        Log.d("부른다 - 8", "selfRestart()에 들어옴: " + getDust + ", "+ getRain + ", "+ getTemp);
+
+
         if(scoreInfoData != null){
 
             String[] scorelist = new String[7];
@@ -477,6 +508,14 @@ public class Tab1Fragment extends Fragment implements ActivityCompat.OnRequestPe
                     maxScore = Integer.parseInt(scorelist[i]);
                     maxScoreDay = i;
                 }
+
+                Log.d("부른다 - for문", "selfRestart()에 들어옴: ");
+
+            }
+            Log.d("부른다 - 9", "selfRestart()에 들어옴: ");
+
+            if(todayScore== null){
+                Log.d("널이다", ": " + maxScoreDay);
             }
 
             todayScore.setText(scorelist[0] +"점");
@@ -538,6 +577,9 @@ public class Tab1Fragment extends Fragment implements ActivityCompat.OnRequestPe
                         //메시지 처리할 코드
                         break;
                 }
-            }
+
         }
+
+    }
+
 }
