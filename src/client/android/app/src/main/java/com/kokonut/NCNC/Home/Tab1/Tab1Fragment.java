@@ -66,6 +66,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -249,6 +250,7 @@ public class Tab1Fragment extends Fragment implements ActivityCompat.OnRequestPe
                 dialog.getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialogInterface) {
+                        refreshScore();
                         //sct.cancel(true);
                         //final scoreTask newSct = new scoreTask(getActivity());
                         //newSct.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -309,6 +311,112 @@ public class Tab1Fragment extends Fragment implements ActivityCompat.OnRequestPe
     @Override
     public void onDestroy(){
         super.onDestroy();
+    }
+
+    public void refreshScore() {
+        ArrayList<Integer> array = new ArrayList<>(7);
+
+        int max = -1;
+        int day = 0, temp, i;
+        for(i = 0; i < 7; i++){
+            temp = makeScore();
+            if(temp > max){
+                max = temp;
+                day = i;
+            }
+            array.add(temp);
+        }
+
+        i = 0;
+        todayScore.setText(Integer.toString(array.get(i))+"점");
+        score1.setText(array.get(i++)+"점");
+        score2.setText(array.get(i++)+"점");
+        score3.setText(array.get(i++)+"점");
+        score4.setText(array.get(i++)+"점");
+        score5.setText(array.get(i++)+"점");
+        score6.setText(array.get(i++)+"점");
+        score7.setText(array.get(i++)+"점");
+        goodDay.setText("이번 주 세차하기 좋은 날은 "+getDate(day)+"일 입니다");
+
+        refreshColor(day);
+    }
+
+    public Integer makeScore() {
+        Random random = new Random();
+        random.setSeed(System.currentTimeMillis());
+
+        int score = (int)((Math.random()*10000)%8);
+        int std = random.nextInt(1);
+
+        int res;
+        if(std < 1) res = 55 - score;
+        else res = 55 + score;
+
+        return res;
+
+    }
+
+    public void refreshColor(int day){
+        date1.setBackgroundResource(R.drawable.home_daybox_white);
+        date1.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_black));
+        score1.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_black));
+        date2.setBackgroundResource(R.drawable.home_daybox_white);
+        date2.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_black));
+        score2.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_black));
+        date3.setBackgroundResource(R.drawable.home_daybox_white);
+        date3.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_black));
+        score3.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_black));
+        date4.setBackgroundResource(R.drawable.home_daybox_white);
+        date4.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_black));
+        score4.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_black));
+        date5.setBackgroundResource(R.drawable.home_daybox_white);
+        date5.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_black));
+        score5.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_black));
+        date6.setBackgroundResource(R.drawable.home_daybox_white);
+        date6.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_black));
+        score6.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_black));
+        date7.setBackgroundResource(R.drawable.home_daybox_white);
+        date7.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_black));
+        score7.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_black));
+
+
+        switch (day){
+            case 0:
+                date1.setBackgroundResource(R.drawable.home_daybox_color);
+                date1.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_white));
+                score1.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_main));
+                break;
+            case 1:
+                date2.setBackgroundResource(R.drawable.home_daybox_color);
+                date2.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_white));
+                score2.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_main));
+                break;
+            case 2:
+                date3.setBackgroundResource(R.drawable.home_daybox_color);
+                date3.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_white));
+                score3.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_main));
+                break;
+            case 3:
+                date4.setBackgroundResource(R.drawable.home_daybox_color);
+                date4.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_white));
+                score4.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_main));
+                break;
+            case 4:
+                date5.setBackgroundResource(R.drawable.home_daybox_color);
+                date5.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_white));
+                score5.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_main));
+                break;
+            case 5:
+                date6.setBackgroundResource(R.drawable.home_daybox_color);
+                date6.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_white));
+                score6.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_main));
+                break;
+            case 6:
+                date7.setBackgroundResource(R.drawable.home_daybox_color);
+                date7.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_white));
+                score7.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_main));
+                break;
+        }
     }
 
 
@@ -502,43 +610,7 @@ public class Tab1Fragment extends Fragment implements ActivityCompat.OnRequestPe
             score7.setText(scorelist[6] +"점");
             goodDay.setText("이번 주 세차하기 좋은 날은 "+getDate(maxScoreDay)+"일 입니다");
 
-            switch (maxScoreDay){
-                case 0:
-                    date1.setBackgroundResource(R.drawable.home_daybox_color);
-                    date1.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_white));
-                    score1.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_main));
-                    break;
-                case 1:
-                    date2.setBackgroundResource(R.drawable.home_daybox_color);
-                    date2.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_white));
-                    score2.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_main));
-                    break;
-                case 2:
-                    date3.setBackgroundResource(R.drawable.home_daybox_color);
-                    date3.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_white));
-                    score3.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_main));
-                    break;
-                case 3:
-                    date4.setBackgroundResource(R.drawable.home_daybox_color);
-                    date4.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_white));
-                    score4.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_main));
-                    break;
-                case 4:
-                    date5.setBackgroundResource(R.drawable.home_daybox_color);
-                    date5.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_white));
-                    score5.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_main));
-                    break;
-                case 5:
-                    date6.setBackgroundResource(R.drawable.home_daybox_color);
-                    date6.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_white));
-                    score6.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_main));
-                    break;
-                case 6:
-                    date7.setBackgroundResource(R.drawable.home_daybox_color);
-                    date7.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_white));
-                    score7.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_main));
-                    break;
-            }
+            refreshColor(maxScoreDay);
         }
 
     }
