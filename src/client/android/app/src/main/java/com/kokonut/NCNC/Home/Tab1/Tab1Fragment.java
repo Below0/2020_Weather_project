@@ -450,7 +450,6 @@ public class Tab1Fragment extends Fragment implements ActivityCompat.OnRequestPe
                 Log.d("전달 후", "onClick: "+getDust);
 
             }
-
             //popupchecked = true;
         }
     }

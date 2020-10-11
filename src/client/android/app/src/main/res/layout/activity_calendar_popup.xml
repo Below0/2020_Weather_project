@@ -20,24 +20,24 @@
         android:layout_height="wrap_content"
         android:stretchColumns="2">
         <TableRow>
-        <TextView
-            android:id="@+id/calendar_textview_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="19sp"
-            android:paddingBottom="16dp"
-            android:textColor="#000000"
-            android:lineSpacingExtra="2sp"
-            tools:text="2020년 7월 23일" />
+            <TextView
+                android:id="@+id/calendar_textview_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="19sp"
+                android:paddingBottom="16dp"
+                android:textColor="#000000"
+                android:lineSpacingExtra="2sp"
+                tools:text="2020년 7월 23일" />
 
-        <TextView
-            android:id="@+id/calendar_textview_delete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:layout_gravity="center"
-            android:text = "데이터 삭제"
-            />
+            <TextView
+                android:id="@+id/calendar_textview_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:layout_gravity="center"
+                android:text = "데이터 삭제"
+                />
 
         </TableRow>
     </TableLayout>

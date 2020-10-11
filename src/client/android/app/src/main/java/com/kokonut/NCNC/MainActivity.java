@@ -3,6 +3,7 @@ package com.kokonut.NCNC;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,6 +23,7 @@ import com.google.android.material.tabs.TabLayout;
 
 import com.kokonut.NCNC.Calendar.CalendarFragment;
 import com.kokonut.NCNC.Calendar.Calendar_PopupFragment;
+import com.kokonut.NCNC.Home.HomeDBHelper;
 import com.kokonut.NCNC.Home.HomeFragment;
 
 import com.kokonut.NCNC.Home.Tab1.Tab1Fragment;
@@ -77,6 +79,9 @@ public class MainActivity extends AppCompatActivity implements Tab1_PopupFragmen
         //kakaoAdapter.kakaoLogin();
         viewPager2 = findViewById(R.id.home_viewpager2);
         tabLayout = findViewById(R.id.home_tablayout);
+
+        //SQLiteDatabase sqlDB = HomeDBHelper.getInstance(getApplicationContext()).getWritableDatabase();
+
         bottomNavigationBar = findViewById(R.id.bottom_navigation_bar);
         BottomNavigationMenuView menuView = (BottomNavigationMenuView) bottomNavigationBar.getChildAt(0);
         Log.d("hash_key", getKeyHash(getApplicationContext()));
