@@ -45,6 +45,7 @@ import com.kokonut.NCNC.Home.HomeContract;
 import com.kokonut.NCNC.Home.HomeDBHelper;
 import com.kokonut.NCNC.Home.CarWashInfoData;
 import com.kokonut.NCNC.Home.ScoreInfoData;
+import com.kokonut.NCNC.Map.CarWashInfoActivity;
 import com.kokonut.NCNC.Retrofit.CarWashContents;
 import com.kokonut.NCNC.Retrofit.RealTimeWeatherContents;
 import com.kokonut.NCNC.Retrofit.RetrofitAPI;
@@ -52,6 +53,8 @@ import com.kokonut.NCNC.Retrofit.RetrofitClient;
 import com.kokonut.NCNC.Retrofit.ScoreContents;
 
 import com.kokonut.NCNC.R;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -70,6 +73,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class Tab1Fragment extends Fragment implements ActivityCompat.OnRequestPermissionsResultCallback{
+    Tab1_RecyclerAdapter_Horizontal tab1_recyclerAdapter_horizontal;
     private static final int MSG_POPUP_CHANGED = 1;
     PopupHandler popupHandler = new PopupHandler();
 
@@ -162,6 +166,8 @@ public class Tab1Fragment extends Fragment implements ActivityCompat.OnRequestPe
         //tvLocation.setText(str1+" "+str2+" "+str3+" 기준");
 
 
+
+
         //서버 통신 - 세차장 정보 리스트, 세차 점수
         new AsyncTask<Void, Void, String>(){
             @Override
@@ -197,9 +203,13 @@ public class Tab1Fragment extends Fragment implements ActivityCompat.OnRequestPe
                 recyclerView.setHasFixedSize(true);
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
                 recyclerView.setLayoutManager(linearLayoutManager);
-                recyclerView.setAdapter(new Tab1_RecyclerAdapter_Horizontal(carWashInfoData));
+                tab1_recyclerAdapter_horizontal = new Tab1_RecyclerAdapter_Horizontal(carWashInfoData);
+                recyclerView.setAdapter(tab1_recyclerAdapter_horizontal);
+
             }
         }.execute();
+
+
 
         Log.d("팝업에서 돌아옴!! -- 탭1 ", "onCreateView: ");
 
@@ -362,6 +372,7 @@ public class Tab1Fragment extends Fragment implements ActivityCompat.OnRequestPe
     }
 
 
+    @NotNull
     public static String getDate(int weekday){
         java.text.SimpleDateFormat format = new java.text.SimpleDateFormat("d");
         Calendar calendar = Calendar.getInstance(); //현재 날짜
@@ -450,7 +461,7 @@ public class Tab1Fragment extends Fragment implements ActivityCompat.OnRequestPe
                 Log.d("전달 후", "onClick: "+getDust);
 
             }
-
+            sct.selfRestart();
             //popupchecked = true;
         }
     }

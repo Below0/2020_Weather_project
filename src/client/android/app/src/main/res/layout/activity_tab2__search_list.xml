@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Home.Tab2.Tab2_SearchList"
-    android:background="@color/color_white">
+    android:background="@color/color_white"
+    android:orientation="vertical">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -33,23 +34,31 @@
         </TextView>
     </FrameLayout>
 
-    <ScrollView
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity ="center"
-        android:layout_weight="1"
-        android:layout_marginTop="5dp"
-        android:fillViewport="true">
+        android:layout_height="match_parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_searchlist"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_gravity="center">
-        </androidx.recyclerview.widget.RecyclerView>
-    </ScrollView>
+            android:gravity ="center"
+            android:layout_weight="1"
+            android:layout_marginTop="5dp"
+            android:fillViewport="true">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_searchlist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical"
+                android:gravity="center">
+            </androidx.recyclerview.widget.RecyclerView>
+        </ScrollView>
+
+    </FrameLayout>
+
+
 
 </LinearLayout>
