@@ -29,22 +29,16 @@
             android:fontFamily="@font/ns_extrabold"/>
 
         <RelativeLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_toRightOf="@id/text1"
             android:gravity="center_vertical">
-
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/home_popupButton"
                 android:layout_alignParentEnd="true">
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
 
                 <TextView
                     android:id="@+id/text2"
@@ -80,12 +74,31 @@
         android:background="@drawable/home_box_top"
         android:gravity="center">
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="right"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="40dp">
+            <TextView
+                android:id="@+id/tab1_tv_location"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_gravity="center_vertical"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ns_regular"
+                android:textColor="@color/color_black"
+                android:textSize="12sp"/>
+        </LinearLayout>
+
         <GridLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:orientation="horizontal"
-            android:layout_marginBottom="15dp"
+            android:layout_marginBottom="13dp"
             android:columnCount="5"
             android:rowCount="2">
 
@@ -413,7 +426,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:layout_gravity="center"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
         </androidx.recyclerview.widget.RecyclerView>

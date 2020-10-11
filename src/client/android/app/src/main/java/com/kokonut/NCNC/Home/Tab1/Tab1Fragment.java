@@ -2,6 +2,7 @@ package com.kokonut.NCNC.Home.Tab1;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.database.Cursor;
 
 import android.content.Intent;
@@ -16,12 +17,16 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.os.Handler;
+import android.os.Message;
 import android.os.Parcelable;
+import android.text.PrecomputedText;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,6 +44,7 @@ import com.kokonut.NCNC.GpsTracker;
 import com.kokonut.NCNC.Home.HomeContract;
 import com.kokonut.NCNC.Home.HomeDBHelper;
 import com.kokonut.NCNC.Home.CarWashInfoData;
+import com.kokonut.NCNC.Home.ScoreInfoData;
 import com.kokonut.NCNC.Retrofit.CarWashContents;
 import com.kokonut.NCNC.Retrofit.RealTimeWeatherContents;
 import com.kokonut.NCNC.Retrofit.RetrofitAPI;
@@ -64,29 +70,33 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class Tab1Fragment extends Fragment implements ActivityCompat.OnRequestPermissionsResultCallback{
+    private static final int MSG_POPUP_CHANGED = 1;
+    PopupHandler popupHandler = new PopupHandler();
+
+    public scoreTask sct;
+
+    public Boolean popupchecked = false;
+
     private RetrofitAPI retrofitAPI;
-    public String[] scoreList = new String[8];
+    private List<ScoreContents.Content> scoreContentsList;
+    public ArrayList<ScoreInfoData> scoreInfoData;
+    int maxScore=0, maxScoreDay=0;
 
     public ArrayList<CarWashInfoData> carWashInfoData;
     private List<CarWashContents> carWashContentsList;
 
     RecyclerView recyclerView;
-    Tab1_RecyclerAdapter_Horizontal tab1_recyclerAdapter_horizontal;
-    private ArrayList<CarWashInfoData> datalist1;
 
     private GpsTracker gpsTracker;
     Geocoder geocoder;
     public Double myLat, myLon;
     String str1, str2, str3;
 
-    TextView tvLocation;
+    //TextView tvLocation;
 
     ViewGroup viewGroup;
     LinearLayout popupButton;
 
-    ViewPager2 viewPager2;
-    FragmentStateAdapter pagerAdapter;
-    FrameLayout tab1_layout;
 
     TextView date1, date2, date3, date4, date5, date6, date7;
     TextView todayScore, score1, score2, score3, score4, score5, score6, score7, goodDay;
@@ -113,10 +123,8 @@ public class Tab1Fragment extends Fragment implements ActivityCompat.OnRequestPe
     @Nullable @Override
     public View onCreateView(@Nullable LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        //int permissionCheck = ContextCompat.checkSelfPermission(getActivity(), PERMISSIONS[1]);
 
         viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_tab1, container, false);
-        //popupButton = viewGroup.findViewById(R.id.home_popupButton);
         recyclerView = viewGroup.findViewById(R.id.tab1_recycler_view);
         popupButton = viewGroup.findViewById(R.id.home_popupButton);
 
@@ -154,8 +162,12 @@ public class Tab1Fragment extends Fragment implements ActivityCompat.OnRequestPe
         //tvLocation.setText(str1+" "+str2+" "+str3+" 기준");
 
 
-        //서버 통신 - 세차장 정보 리스트
+        //서버 통신 - 세차장 정보 리스트, 세차 점수
         new AsyncTask<Void, Void, String>(){
+            @Override
+            protected void onPreExecute(){
+                Log.i("AsyncTask_carwashlist", "onPreExecute()");
+            }
 
             @Override
             protected String doInBackground(Void... params) {
@@ -173,7 +185,6 @@ public class Tab1Fragment extends Fragment implements ActivityCompat.OnRequestPe
                                 carWashContentsList.get(i).getWash().toString()));
                     }
                     Collections.sort(carWashInfoData);
-                    //datalist1 = (ArrayList<CarWashInfoData>) carWashInfoData.clone();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -182,6 +193,11 @@ public class Tab1Fragment extends Fragment implements ActivityCompat.OnRequestPe
             @Override
             protected void onPostExecute(String s){
                 super.onPostExecute(s);
+
+                recyclerView.setHasFixedSize(true);
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+                recyclerView.setLayoutManager(linearLayoutManager);
+                recyclerView.setAdapter(new Tab1_RecyclerAdapter_Horizontal(carWashInfoData));
             }
         }.execute();
 
@@ -192,7 +208,6 @@ public class Tab1Fragment extends Fragment implements ActivityCompat.OnRequestPe
         retrofitAPI.fetchRealtimeWeather().enqueue(new Callback<RealTimeWeatherContents>() {
             @Override
             public void onResponse(Call<RealTimeWeatherContents> call, Response<RealTimeWeatherContents> response) {
-                //Log.d("Retrofit_Realtime", "Success: "+new Gson().toJson(response.body().getData()));
                 RealTimeWeatherContents.Data result = response.body().getData();
                 if(result==null){
                     Log.e("Retrofit_Realtime", "Success: NULL");
@@ -210,89 +225,6 @@ public class Tab1Fragment extends Fragment implements ActivityCompat.OnRequestPe
             }
         });
 
-
-
-        //서버 통신 - 세차 점수
-        retrofitAPI = RetrofitClient.getInstance().getClient1().create(RetrofitAPI.class);
-        retrofitAPI.fetchScore().enqueue(new Callback<ScoreContents>() {
-            @SuppressLint("ResourceAsColor")
-            @Override
-            public void onResponse(Call<ScoreContents> call, Response<ScoreContents> response) {
-                //Log.d("Retrofit_Score", "Success: "+new Gson().toJson(response.body().getContents()));
-
-                List<ScoreContents.Content> mlist = response.body().getContents();
-                if(mlist==null){ //서버에 해당정보 없을 때
-                    Log.e("Retrofit_Score", "Success: NULL");
-                }
-                else{
-                    scoreList= new String[8]; //초기화
-                    int maxScore = 0, maxScoreDay = 0;
-                    for(int i=0; i<7; i++){
-                        scoreList[i] = makeScoreList(mlist.get(i).getRnLv(), mlist.get(i).getTaLv(), mlist.get(i).getPm10Lv());
-
-                        if(maxScore < Integer.parseInt(scoreList[i])){
-                            maxScore = Integer.parseInt(scoreList[i]);
-                            maxScoreDay = i;
-                        }
-                    }
-
-                    todayScore.setText(scoreList[0]+"점");
-                    score1.setText(scoreList[0]+"점");
-                    score2.setText(scoreList[1]+"점");
-                    score3.setText(scoreList[2]+"점");
-                    score4.setText(scoreList[3]+"점");
-                    score5.setText(scoreList[4]+"점");
-                    score6.setText(scoreList[5]+"점");
-                    score7.setText(scoreList[6]+"점");
-                    goodDay.setText("이번 주 세차하기 좋은 날은 "+getDate(maxScoreDay)+"일 입니다");
-
-                    switch (maxScoreDay){
-                        case 0:
-                            date1.setBackgroundResource(R.drawable.home_daybox_color);
-                            date1.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_white));
-                            score1.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_main));
-                            break;
-                        case 1:
-                            date2.setBackgroundResource(R.drawable.home_daybox_color);
-                            date2.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_white));
-                            score2.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_main));
-                            break;
-                        case 2:
-                            date3.setBackgroundResource(R.drawable.home_daybox_color);
-                            date3.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_white));
-                            score3.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_main));
-                            break;
-                        case 3:
-                            date4.setBackgroundResource(R.drawable.home_daybox_color);
-                            date4.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_white));
-                            score4.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_main));
-                            break;
-                        case 4:
-                            date5.setBackgroundResource(R.drawable.home_daybox_color);
-                            date5.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_white));
-                            score5.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_main));
-                            break;
-                        case 5:
-                            date6.setBackgroundResource(R.drawable.home_daybox_color);
-                            date6.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_white));
-                            score6.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_main));
-                            break;
-                        case 6:
-                            date7.setBackgroundResource(R.drawable.home_daybox_color);
-                            date7.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_white));
-                            score7.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_main));
-                            break;
-                    }
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ScoreContents> call, Throwable t) {
-                Log.e("Retrofit_Score", "failure: "+t.toString());
-            }
-        });
-
         //'맞춤형 세차점수 설정하기' 버튼 클릭 시
         popupButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -302,87 +234,22 @@ public class Tab1Fragment extends Fragment implements ActivityCompat.OnRequestPe
                 //dialog.setTargetFragment(dialog, 1); //
 
                 dialog.show(getActivity().getSupportFragmentManager(), "tab1");
+
+                getActivity().getSupportFragmentManager().executePendingTransactions();
+                dialog.getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialogInterface) {
+                        //sct.cancel(true);
+                        //final scoreTask newSct = new scoreTask(getActivity());
+                        //newSct.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                        //popupchecked = true;
+                        //sct.selfRestart();
+                        //System.out.println(getDust+" "+getRain+" "+getTemp);
+                    }
+                });
+
             }
         });
-
-/*
-        //현재 위치
-        gpsTracker = new GpsTracker(getContext());
-        myLat = gpsTracker.getLatitude();
-        myLon = gpsTracker.getLongitude();
-        GetAddress(myLat, myLon);
-        tvLocation.setText(str1+" "+str2+" "+str3);
-
-
-        //서버 통신 - 세차장 정보 리스트
-        //carWashInfoData = new CarWashInfoData[29];
-
-        retrofitAPI.fetchCarWash().enqueue(new Callback<List<CarWashContents>>() {
-            @Override
-            public void onResponse(Call<List<CarWashContents>> call, Response<List<CarWashContents>> response) {
-                //List<CarWashContents> alist = response.body();
-                carWashInfoData1 = new ArrayList<>();
-                for(int i=0; i<29; i++){
-                    carWashInfoData1.add(new CarWashInfoData(response.body().get(i).getName(), response.body().get(i).getAddress(),
-                            response.body().get(i).getPhone(), response.body().get(i).getCity(), response.body().get(i).getDistrict(),
-                            response.body().get(i).getDong(), response.body().get(i).getOpenSat(), response.body().get(i).getOpenSun(),
-                            response.body().get(i).getOpenWeek(), makeDistance(response.body().get(i).getLat(), response.body().get(i).getLon()),
-                            response.body().get(i).getWash().toString()));
-                }
-                Collections.sort(carWashInfoData1);
-
-                 /*
-                for(int i=0; i<carWashInfoData.length; i++){
-                   carWashInfoData[i] = new CarWashInfoData(response.body().get(i).getName(), response.body().get(i).getAddress(),
-                            response.body().get(i).getPhone(), response.body().get(i).getCity(), response.body().get(i).getDistrict(),
-                            response.body().get(i).getDong(), response.body().get(i).getOpenSat(), response.body().get(i).getOpenSun(),
-                            response.body().get(i).getOpenWeek(), makeDistance(response.body().get(i).getLat(), response.body().get(i).getLon()),
-                            response.body().get(i).getWash().toString());
-                }
-
-                Arrays.sort(carWashInfoData);
-
-                /*
-                for(int i=0; i<carWashInfoData.length; i++){
-                    System.out.println(new Gson().toJson(carWashInfoData[i]));
-                }
-                 */
-
-            }
-            @Override
-            public void onFailure(Call<List<CarWashContents>> call, Throwable t) {
-                Log.e("Retrofit_CarWash", "failure: "+t.toString());
-            }
-        });
-
-*/
-        //'내주변세차장' viewpager 구현
-        /*
-        viewPager2 = viewGroup.findViewById(R.id.tab1_viewpager);
-        pagerAdapter = new Tab1CarWashInfo_Viewpager2Adapter(this);
-        viewPager2.setAdapter(pagerAdapter);
-        viewPager2.setSaveEnabled(false);
-        viewPager2.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
-        viewPager2.setOffscreenPageLimit(2);
-
-        tab1_layout = viewGroup.findViewById(R.id.tab1_framelayout);
-
-        viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                super.onPageScrolled(position, positionOffset, positionOffsetPixels);
-                if(positionOffsetPixels==0){
-                    viewPager2.setCurrentItem(position);
-                }
-            }
-            /* indicator 설정시 이용
-            @Override
-            public void onPageSelected(int position){
-                super.onPageSelected(position);
-                indicator.animatePageSelected(position%VIEW_CNT);
-            }
-        });
-             */
 
         //오늘로부터 일주일 날짜
         date1.setText(getDate(0)); //오늘
@@ -399,30 +266,26 @@ public class Tab1Fragment extends Fragment implements ActivityCompat.OnRequestPe
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), Tab1_CarWashList.class);
                 intent.putExtra("carwashinfodata", (Serializable)carWashInfoData);
-                /*if((Serializable)carWashInfoData1 != null){
-                    Log.d("!!!!!!!!!!!!", "보내는 건 성공");
-                }
-                else Log.d("!!!!!!!!!!!!", "보내기 실패");
-                 */
                 startActivity(intent);
             }
         });
 
-        //recyclerview
-        recyclerView.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(new Tab1_RecyclerAdapter_Horizontal(carWashInfoData));
-
+        if(popupchecked == true){
+            sct.selfRestart();
+            popupchecked = false;
+        }
 
 
         return viewGroup;
-        }
+    }
 
 
     @Override
     public void onStart(){
         super.onStart();
+        sct = new scoreTask(getActivity());
+        sct.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        //new scoreTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR); //세차점수
     }
 
     @Override
@@ -439,6 +302,66 @@ public class Tab1Fragment extends Fragment implements ActivityCompat.OnRequestPe
     }
 
 
+    public class scoreTask extends AsyncTask<Void, String, ArrayList<ScoreInfoData>>{
+        private FragmentActivity activity;
+        public scoreTask(FragmentActivity activity) {
+            this.activity = activity;
+        }
+
+        @Override
+        protected ArrayList<ScoreInfoData> doInBackground(Void... params) {
+            while(!isCancelled()){
+                retrofitAPI = RetrofitClient.getInstance().getClient1().create(RetrofitAPI.class);
+                Call<ScoreContents> call2 = retrofitAPI.fetchScore();
+                try {
+                    scoreContentsList = call2.execute().body().getContents();
+                    scoreInfoData = new ArrayList<>();
+                    for (int i = 0; i < 7; i++) {
+                        scoreInfoData.add(new ScoreInfoData(scoreContentsList.get(i).getDate(), scoreContentsList.get(i).getRegID(),
+                                scoreContentsList.get(i).getPm10Lv(), scoreContentsList.get(i).getRnLv(), scoreContentsList.get(i).getTaLv()));
+                    }
+                    return scoreInfoData;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values){ //this only runs when doInBackground() calls it with publishProgress()
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<ScoreInfoData>result){ //runs after doInBackground() completes
+            super.onPostExecute(result);
+/*
+            if(popupchecked == true){
+                new scoreTask(getActivity()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                popupchecked = false;
+            }
+
+/*            todayScore = viewGroup.findViewById(R.id.home_score);
+            score1 = viewGroup.findViewById(R.id.home_tab1_day1_score);
+            score2 = viewGroup.findViewById(R.id.home_tab1_day2_score);
+            score3 = viewGroup.findViewById(R.id.home_tab1_day3_score);
+            score4 = viewGroup.findViewById(R.id.home_tab1_day4_score);
+            score5 = viewGroup.findViewById(R.id.home_tab1_day5_score);
+            score6 = viewGroup.findViewById(R.id.home_tab1_day6_score);
+            score7 = viewGroup.findViewById(R.id.home_tab1_day7_score);
+            goodDay = viewGroup.findViewById(R.id.home_tab1_goodday_text);
+*/
+            updateScoreDate(result);
+        }
+        public void selfRestart(){
+            sct.cancel(true);
+            //System.out.println(getDust+" "+getRain+" "+getTemp);
+            new scoreTask(getActivity()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
+    }
+
+
     public static String getDate(int weekday){
         java.text.SimpleDateFormat format = new java.text.SimpleDateFormat("d");
         Calendar calendar = Calendar.getInstance(); //현재 날짜
@@ -448,7 +371,20 @@ public class Tab1Fragment extends Fragment implements ActivityCompat.OnRequestPe
     }
 
     public String makeScoreList(int rn_lv, int ta_lv, int pm10_lv){
-        String str = String.valueOf(rn_lv*9 + ta_lv*2);
+        String str;
+        double val1=0.33, val2=0.33, val3=0.33;
+        int total = getTemp + getRain + getDust;
+        if(total>0){
+            val1 = getTemp / total;
+            val2 = getRain / total;
+            val3 = getDust / total;
+
+            str = String.valueOf((int)Math.abs((ta_lv*2*val1 + rn_lv*8*val2 + pm10_lv*2.5*val3)*3));
+        }
+        else
+            str = String.valueOf((int)Math.abs((ta_lv*2*val1 + rn_lv*8*val2 + pm10_lv*2.5*val3)*3));
+
+        //String str = String.valueOf(rn_lv*9 + ta_lv*2);
         return str;
     }
 
@@ -490,7 +426,6 @@ public class Tab1Fragment extends Fragment implements ActivityCompat.OnRequestPe
 
     //interface 메소드 , 팝업으로부터 신호를 받음
     public void startDB(int resultcode){
-        //
         if(resultcode == 1) {
             Log.d("전달 완료 ", "startDB: ");
 
@@ -513,14 +448,12 @@ public class Tab1Fragment extends Fragment implements ActivityCompat.OnRequestPe
                 Log.d("전달 후 ", "onClick: "+getTemp);
                 Log.d("전달 후", "onClick: "+getRain);
                 Log.d("전달 후", "onClick: "+getDust);
+
             }
 
-
+            //popupchecked = true;
         }
-
-
     }
-
 
     //현재 내위치~세차장 위치 거리
     private double makeDistance(double carwashLat, double carwashLon){
@@ -530,4 +463,81 @@ public class Tab1Fragment extends Fragment implements ActivityCompat.OnRequestPe
 
         return d;
     }
+
+    //세차점수 띄우기
+    private void updateScoreDate(ArrayList<ScoreInfoData> scoreInfoData){
+        if(scoreInfoData != null){
+
+            String[] scorelist = new String[7];
+            maxScore = 0; maxScoreDay = 0;
+            for(int i=0; i<7; i++){
+                scorelist[i] = makeScoreList(scoreInfoData.get(i).getRnLv(),scoreInfoData.get(i).getTaLv(),scoreInfoData.get(i).getPm10Lv());
+
+                if(maxScore < Integer.parseInt(scorelist[i])){
+                    maxScore = Integer.parseInt(scorelist[i]);
+                    maxScoreDay = i;
+                }
+            }
+
+            todayScore.setText(scorelist[0] +"점");
+            score1.setText(scorelist[0] +"점");
+            score2.setText(scorelist[1] +"점");
+            score3.setText(scorelist[2] +"점");
+            score4.setText(scorelist[3] +"점");
+            score5.setText(scorelist[4] +"점");
+            score6.setText(scorelist[5] +"점");
+            score7.setText(scorelist[6] +"점");
+            goodDay.setText("이번 주 세차하기 좋은 날은 "+getDate(maxScoreDay)+"일 입니다");
+
+            switch (maxScoreDay){
+                case 0:
+                    date1.setBackgroundResource(R.drawable.home_daybox_color);
+                    date1.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_white));
+                    score1.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_main));
+                    break;
+                case 1:
+                    date2.setBackgroundResource(R.drawable.home_daybox_color);
+                    date2.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_white));
+                    score2.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_main));
+                    break;
+                case 2:
+                    date3.setBackgroundResource(R.drawable.home_daybox_color);
+                    date3.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_white));
+                    score3.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_main));
+                    break;
+                case 3:
+                    date4.setBackgroundResource(R.drawable.home_daybox_color);
+                    date4.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_white));
+                    score4.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_main));
+                    break;
+                case 4:
+                    date5.setBackgroundResource(R.drawable.home_daybox_color);
+                    date5.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_white));
+                    score5.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_main));
+                    break;
+                case 5:
+                    date6.setBackgroundResource(R.drawable.home_daybox_color);
+                    date6.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_white));
+                    score6.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_main));
+                    break;
+                case 6:
+                    date7.setBackgroundResource(R.drawable.home_daybox_color);
+                    date7.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_white));
+                    score7.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_main));
+                    break;
+            }
+        }
+
+    }
+
+    private class PopupHandler extends Handler{
+        public void handleMessage(Message msg){
+                switch(msg.what){
+                    case MSG_POPUP_CHANGED:
+                        Toast.makeText(getActivity(), "popup_changed", Toast.LENGTH_LONG);
+                        //메시지 처리할 코드
+                        break;
+                }
+            }
+        }
 }

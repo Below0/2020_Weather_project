@@ -1,6 +1,7 @@
 package com.kokonut.NCNC.Home.Tab1;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -22,6 +23,8 @@ import com.kokonut.NCNC.R;
 
 public class Tab1_PopupFragment extends DialogFragment {
 
+    private DialogInterface.OnDismissListener onDismissListener = null;
+
     private int lastValue1, lastValue2, lastValue3; //마지막으로 설정한 '맞춤형 세차점수 설정하기'
     public String result1, result2, result3; //설정한거
 
@@ -31,7 +34,6 @@ public class Tab1_PopupFragment extends DialogFragment {
     private HomeDBHelper HomedbHelper;//ㅈㅇ
 
     uploadDialogInterface interfaceObj;
-
 
     View view;
     TextView textView_title, textView_subtitle;
@@ -247,7 +249,9 @@ public class Tab1_PopupFragment extends DialogFragment {
                 }
 
 
-
+                if(onDismissListener!=null){
+                    onDismissListener.onDismiss((DialogInterface) Tab1_PopupFragment.this);
+                }
 
                 getDialog().dismiss();
             }
@@ -316,6 +320,7 @@ public class Tab1_PopupFragment extends DialogFragment {
 
         }
     }
+
 
     public interface uploadDialogInterface
     {

@@ -2,8 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".Home.Tab1.Tab1_CarWashInfo1">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:id="@+id/tab1_info1_layout"
