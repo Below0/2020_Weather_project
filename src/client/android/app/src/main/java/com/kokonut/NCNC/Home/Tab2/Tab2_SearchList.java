@@ -41,7 +41,8 @@ public class Tab2_SearchList extends AppCompatActivity {
     Tab2_RecyclerAdapter tab2_recyclerAdapter;
     public ArrayList<SelectedSearchInfo> selectedSearchInfo; //검색 조건 - 받아온거
     //private ArrayList<CarWashInfoData> condition; //검색 조건 - carwashinfodata 형식으로 바꾼거
-    private ArrayList<CarWashInfoData> datalist;
+//    private ArrayList<CarWashInfoData> datalist;
+    private List<CarWashContents> carWashContentsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,18 +66,28 @@ public class Tab2_SearchList extends AppCompatActivity {
                                 selectedSearchInfo.get(0).getTime()).enqueue(new Callback<List<CarWashContents>>() {
                             @Override
                             public void onResponse(Call<List<CarWashContents>> call, Response<List<CarWashContents>> response) {
-                                List<CarWashContents> result = response.body();
-                                datalist = new ArrayList<>();
-                                for(int i=0; i<result.size(); i++){
-                                    datalist.add(new CarWashInfoData(result.get(i).getId(), result.get(i).getName(), result.get(i).getAddress(), result.get(i).getPhone(),
-                                            result.get(i).getCity(), result.get(i).getDistrict(), result.get(i).getDong(), result.get(i).getOpenSat(),
-                                            result.get(i).getOpenSun(), result.get(i).getOpenWeek(), Double.valueOf(i), result.get(i).getWash().toString()));
-                                }
+//                                 List<CarWashContents> result = response.body();
+//                                 datalist = new ArrayList<>();
+//                                 for(int i=0; i<result.size(); i++){
+//                                     datalist.add(new CarWashInfoData(result.get(i).getId(), result.get(i).getName(), result.get(i).getAddress(), result.get(i).getPhone(),
+//                                             result.get(i).getCity(), result.get(i).getDistrict(), result.get(i).getDong(), result.get(i).getOpenSat(),
+//                                             result.get(i).getOpenSun(), result.get(i).getOpenWeek(), Double.valueOf(i), result.get(i).getWash().toString()));
+//                                 }
+//                                List<CarWashContents> result = response.body();
+//                                datalist = new ArrayList<>();
+//                                for(int i=0; i<result.size(); i++){
+//                                    datalist.add(new CarWashInfoData(result.get(i).getId(), result.get(i).getName(), result.get(i).getAddress(), result.get(i).getPhone(),
+//                                            result.get(i).getCity(), result.get(i).getDistrict(), result.get(i).getDong(), result.get(i).getOpenSat(),
+//                                            result.get(i).getOpenSun(), result.get(i).getOpenWeek(), Double.valueOf(i), result.get(i).getWash().toString(),
+//                                            result.get(i).getScore()));
+//                                }
+
+                                carWashContentsList = response.body();
 
                                 recyclerView.setHasFixedSize(true);
                                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
                                 recyclerView.setLayoutManager(linearLayoutManager);
-                                tab2_recyclerAdapter = new Tab2_RecyclerAdapter(datalist);
+                                tab2_recyclerAdapter = new Tab2_RecyclerAdapter(carWashContentsList);
                                 recyclerView.setAdapter(tab2_recyclerAdapter);
                             }
                             @Override
@@ -89,18 +100,28 @@ public class Tab2_SearchList extends AppCompatActivity {
                                 selectedSearchInfo.get(0).getTime(),selectedSearchInfo.get(0).getKind()).enqueue(new Callback<List<CarWashContents>>() {
                             @Override
                             public void onResponse(Call<List<CarWashContents>> call, Response<List<CarWashContents>> response) {
-                                List<CarWashContents> result = response.body();
-                                datalist = new ArrayList<>();
-                                for(int i=0; i<result.size(); i++){
-                                    datalist.add(new CarWashInfoData(result.get(i).getId(), result.get(i).getName(), result.get(i).getAddress(), result.get(i).getPhone(),
-                                            result.get(i).getCity(), result.get(i).getDistrict(), result.get(i).getDong(), result.get(i).getOpenSat(),
-                                            result.get(i).getOpenSun(), result.get(i).getOpenWeek(), Double.valueOf(i), result.get(i).getWash().toString()));
-                                }
+                                // List<CarWashContents> result = response.body();
+                                // datalist = new ArrayList<>();
+                                // for(int i=0; i<result.size(); i++){
+                                //     datalist.add(new CarWashInfoData(result.get(i).getId(), result.get(i).getName(), result.get(i).getAddress(), result.get(i).getPhone(),
+                                //             result.get(i).getCity(), result.get(i).getDistrict(), result.get(i).getDong(), result.get(i).getOpenSat(),
+                                //             result.get(i).getOpenSun(), result.get(i).getOpenWeek(), Double.valueOf(i), result.get(i).getWash().toString()));
+                                // }
+//                                List<CarWashContents> result = response.body();
+//                                datalist = new ArrayList<>();
+//                                for(int i=0; i<result.size(); i++){
+//                                    datalist.add(new CarWashInfoData(result.get(i).getId(), result.get(i).getName(), result.get(i).getAddress(), result.get(i).getPhone(),
+//                                            result.get(i).getCity(), result.get(i).getDistrict(), result.get(i).getDong(), result.get(i).getOpenSat(),
+//                                            result.get(i).getOpenSun(), result.get(i).getOpenWeek(), Double.valueOf(i), result.get(i).getWash().toString(),
+//                                            result.get(i).getScore()));
+//                                }
+
+                                carWashContentsList = response.body();
 
                                 recyclerView.setHasFixedSize(true);
                                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
                                 recyclerView.setLayoutManager(linearLayoutManager);
-                                tab2_recyclerAdapter = new Tab2_RecyclerAdapter(datalist);
+                                tab2_recyclerAdapter = new Tab2_RecyclerAdapter(carWashContentsList);
                                 recyclerView.setAdapter(tab2_recyclerAdapter);
                             }
                             @Override
@@ -115,18 +136,29 @@ public class Tab2_SearchList extends AppCompatActivity {
                                 selectedSearchInfo.get(0).getTime()).enqueue(new Callback<List<CarWashContents>>() {
                             @Override
                             public void onResponse(Call<List<CarWashContents>> call, Response<List<CarWashContents>> response) {
-                                List<CarWashContents> result = response.body();
-                                datalist = new ArrayList<>();
-                                for(int i=0; i<result.size(); i++){
-                                    datalist.add(new CarWashInfoData(result.get(i).getId(), result.get(i).getName(), result.get(i).getAddress(), result.get(i).getPhone(),
-                                            result.get(i).getCity(), result.get(i).getDistrict(), result.get(i).getDong(), result.get(i).getOpenSat(),
-                                            result.get(i).getOpenSun(), result.get(i).getOpenWeek(), Double.valueOf(i), result.get(i).getWash().toString()));
-                                }
+                                // List<CarWashContents> result = response.body();
+                                // datalist = new ArrayList<>();
+                                // for(int i=0; i<result.size(); i++){
+                                //     datalist.add(new CarWashInfoData(result.get(i).getId(), result.get(i).getName(), result.get(i).getAddress(), result.get(i).getPhone(),
+                                //             result.get(i).getCity(), result.get(i).getDistrict(), result.get(i).getDong(), result.get(i).getOpenSat(),
+                                //             result.get(i).getOpenSun(), result.get(i).getOpenWeek(), Double.valueOf(i), result.get(i).getWash().toString()));
+                                // }
+
+//                                List<CarWashContents> result = response.body();
+//                                datalist = new ArrayList<>();
+//                                for(int i=0; i<result.size(); i++){
+//                                    datalist.add(new CarWashInfoData(result.get(i).getId(), result.get(i).getName(), result.get(i).getAddress(), result.get(i).getPhone(),
+//                                            result.get(i).getCity(), result.get(i).getDistrict(), result.get(i).getDong(), result.get(i).getOpenSat(),
+//                                            result.get(i).getOpenSun(), result.get(i).getOpenWeek(), Double.valueOf(i), result.get(i).getWash().toString(),
+//                                            result.get(i).getScore()));
+//                                }
+
+                                carWashContentsList = response.body();
 
                                 recyclerView.setHasFixedSize(true);
                                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
                                 recyclerView.setLayoutManager(linearLayoutManager);
-                                tab2_recyclerAdapter = new Tab2_RecyclerAdapter(datalist);
+                                tab2_recyclerAdapter = new Tab2_RecyclerAdapter(carWashContentsList);
                                 recyclerView.setAdapter(tab2_recyclerAdapter);
                             }
                             @Override
@@ -139,18 +171,28 @@ public class Tab2_SearchList extends AppCompatActivity {
                                 selectedSearchInfo.get(0).getTime(),selectedSearchInfo.get(0).getKind()).enqueue(new Callback<List<CarWashContents>>() {
                             @Override
                             public void onResponse(Call<List<CarWashContents>> call, Response<List<CarWashContents>> response) {
-                                List<CarWashContents> result = response.body();
-                                datalist = new ArrayList<>();
-                                for(int i=0; i<result.size(); i++){
-                                    datalist.add(new CarWashInfoData(result.get(i).getId(), result.get(i).getName(), result.get(i).getAddress(), result.get(i).getPhone(),
-                                            result.get(i).getCity(), result.get(i).getDistrict(), result.get(i).getDong(), result.get(i).getOpenSat(),
-                                            result.get(i).getOpenSun(), result.get(i).getOpenWeek(), Double.valueOf(i), result.get(i).getWash().toString()));
-                                }
+                                // List<CarWashContents> result = response.body();
+                                // datalist = new ArrayList<>();
+                                // for(int i=0; i<result.size(); i++){
+                                //     datalist.add(new CarWashInfoData(result.get(i).getId(), result.get(i).getName(), result.get(i).getAddress(), result.get(i).getPhone(),
+                                //             result.get(i).getCity(), result.get(i).getDistrict(), result.get(i).getDong(), result.get(i).getOpenSat(),
+                                //             result.get(i).getOpenSun(), result.get(i).getOpenWeek(), Double.valueOf(i), result.get(i).getWash().toString()));
+                                // }
+//                                List<CarWashContents> result = response.body();
+//                                datalist = new ArrayList<>();
+//                                for(int i=0; i<result.size(); i++){
+//                                    datalist.add(new CarWashInfoData(result.get(i).getId(), result.get(i).getName(), result.get(i).getAddress(), result.get(i).getPhone(),
+//                                            result.get(i).getCity(), result.get(i).getDistrict(), result.get(i).getDong(), result.get(i).getOpenSat(),
+//                                            result.get(i).getOpenSun(), result.get(i).getOpenWeek(), Double.valueOf(i), result.get(i).getWash().toString(),
+//                                            result.get(i).getScore()));
+//                                }
+
+                                carWashContentsList = response.body();
 
                                 recyclerView.setHasFixedSize(true);
                                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
                                 recyclerView.setLayoutManager(linearLayoutManager);
-                                tab2_recyclerAdapter = new Tab2_RecyclerAdapter(datalist);
+                                tab2_recyclerAdapter = new Tab2_RecyclerAdapter(carWashContentsList);
                                 recyclerView.setAdapter(tab2_recyclerAdapter);
                             }
                             @Override
@@ -165,18 +207,28 @@ public class Tab2_SearchList extends AppCompatActivity {
                                 selectedSearchInfo.get(0).getTime()).enqueue(new Callback<List<CarWashContents>>() {
                             @Override
                             public void onResponse(Call<List<CarWashContents>> call, Response<List<CarWashContents>> response) {
-                                List<CarWashContents> result = response.body();
-                                datalist = new ArrayList<>();
-                                for(int i=0; i<result.size(); i++){
-                                    datalist.add(new CarWashInfoData(result.get(i).getId(), result.get(i).getName(), result.get(i).getAddress(), result.get(i).getPhone(),
-                                            result.get(i).getCity(), result.get(i).getDistrict(), result.get(i).getDong(), result.get(i).getOpenSat(),
-                                            result.get(i).getOpenSun(), result.get(i).getOpenWeek(), Double.valueOf(i), result.get(i).getWash().toString()));
-                                }
+                                // List<CarWashContents> result = response.body();
+                                // datalist = new ArrayList<>();
+                                // for(int i=0; i<result.size(); i++){
+                                //     datalist.add(new CarWashInfoData(result.get(i).getId(), result.get(i).getName(), result.get(i).getAddress(), result.get(i).getPhone(),
+                                //             result.get(i).getCity(), result.get(i).getDistrict(), result.get(i).getDong(), result.get(i).getOpenSat(),
+                                //             result.get(i).getOpenSun(), result.get(i).getOpenWeek(), Double.valueOf(i), result.get(i).getWash().toString()));
+                                // }
+//                                List<CarWashContents> result = response.body();
+//                                datalist = new ArrayList<>();
+//                                for(int i=0; i<result.size(); i++){
+//                                    datalist.add(new CarWashInfoData(result.get(i).getId(), result.get(i).getName(), result.get(i).getAddress(), result.get(i).getPhone(),
+//                                            result.get(i).getCity(), result.get(i).getDistrict(), result.get(i).getDong(), result.get(i).getOpenSat(),
+//                                            result.get(i).getOpenSun(), result.get(i).getOpenWeek(), Double.valueOf(i), result.get(i).getWash().toString(),
+//                                            result.get(i).getScore()));
+//                                }
+
+                                carWashContentsList = response.body();
 
                                 recyclerView.setHasFixedSize(true);
                                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
                                 recyclerView.setLayoutManager(linearLayoutManager);
-                                tab2_recyclerAdapter = new Tab2_RecyclerAdapter(datalist);
+                                tab2_recyclerAdapter = new Tab2_RecyclerAdapter(carWashContentsList);
                                 recyclerView.setAdapter(tab2_recyclerAdapter);
                             }
                             @Override
@@ -189,18 +241,28 @@ public class Tab2_SearchList extends AppCompatActivity {
                                 selectedSearchInfo.get(0).getTime(),selectedSearchInfo.get(0).getKind()).enqueue(new Callback<List<CarWashContents>>() {
                             @Override
                             public void onResponse(Call<List<CarWashContents>> call, Response<List<CarWashContents>> response) {
-                                List<CarWashContents> result = response.body();
-                                datalist = new ArrayList<>();
-                                for(int i=0; i<result.size(); i++){
-                                    datalist.add(new CarWashInfoData(result.get(i).getId(), result.get(i).getName(), result.get(i).getAddress(), result.get(i).getPhone(),
-                                            result.get(i).getCity(), result.get(i).getDistrict(), result.get(i).getDong(), result.get(i).getOpenSat(),
-                                            result.get(i).getOpenSun(), result.get(i).getOpenWeek(), Double.valueOf(i), result.get(i).getWash().toString()));
-                                }
+                                // List<CarWashContents> result = response.body();
+                                // datalist = new ArrayList<>();
+                                // for(int i=0; i<result.size(); i++){
+                                //     datalist.add(new CarWashInfoData(result.get(i).getId(), result.get(i).getName(), result.get(i).getAddress(), result.get(i).getPhone(),
+                                //             result.get(i).getCity(), result.get(i).getDistrict(), result.get(i).getDong(), result.get(i).getOpenSat(),
+                                //             result.get(i).getOpenSun(), result.get(i).getOpenWeek(), Double.valueOf(i), result.get(i).getWash().toString()));
+                                // }
+//                                List<CarWashContents> result = response.body();
+//                                datalist = new ArrayList<>();
+//                                for(int i=0; i<result.size(); i++){
+//                                    datalist.add(new CarWashInfoData(result.get(i).getId(), result.get(i).getName(), result.get(i).getAddress(), result.get(i).getPhone(),
+//                                            result.get(i).getCity(), result.get(i).getDistrict(), result.get(i).getDong(), result.get(i).getOpenSat(),
+//                                            result.get(i).getOpenSun(), result.get(i).getOpenWeek(), Double.valueOf(i), result.get(i).getWash().toString(),
+//                                            result.get(i).getScore()));
+//                                }
+
+                                carWashContentsList = response.body();
 
                                 recyclerView.setHasFixedSize(true);
                                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
                                 recyclerView.setLayoutManager(linearLayoutManager);
-                                tab2_recyclerAdapter = new Tab2_RecyclerAdapter(datalist);
+                                tab2_recyclerAdapter = new Tab2_RecyclerAdapter(carWashContentsList);
                                 recyclerView.setAdapter(tab2_recyclerAdapter);
                             }
                             @Override
@@ -214,23 +276,32 @@ public class Tab2_SearchList extends AppCompatActivity {
                         retrofitAPI.SearchCarWash_onlyaddress(selectedSearchInfo.get(0).getDong()).enqueue(new Callback<List<CarWashContents>>() {
                             @Override
                             public void onResponse(Call<List<CarWashContents>> call, Response<List<CarWashContents>> response) {
-                                List<CarWashContents> result = response.body();
+//                                List<CarWashContents> result = response.body();
 
-                                if(result.size()<1)
+                                carWashContentsList = response.body();
+
+                                if(carWashContentsList.size()<1)
                                     emptyText.setVisibility(View.VISIBLE);
 
 
-                                datalist = new ArrayList<>();
-                                for(int i=0; i<result.size(); i++){
-                                    datalist.add(new CarWashInfoData(result.get(i).getId(), result.get(i).getName(), result.get(i).getAddress(), result.get(i).getPhone(),
-                                            result.get(i).getCity(), result.get(i).getDistrict(), result.get(i).getDong(), result.get(i).getOpenSat(),
-                                            result.get(i).getOpenSun(), result.get(i).getOpenWeek(), Double.valueOf(i), result.get(i).getWash().toString()));
-                                }
+                                // datalist = new ArrayList<>();
+                                // for(int i=0; i<result.size(); i++){
+                                //     datalist.add(new CarWashInfoData(result.get(i).getId(), result.get(i).getName(), result.get(i).getAddress(), result.get(i).getPhone(),
+                                //             result.get(i).getCity(), result.get(i).getDistrict(), result.get(i).getDong(), result.get(i).getOpenSat(),
+                                //             result.get(i).getOpenSun(), result.get(i).getOpenWeek(), Double.valueOf(i), result.get(i).getWash().toString()));
+                                // }
+//                                datalist = new ArrayList<>();
+//                                for(int i=0; i<result.size(); i++){
+//                                    datalist.add(new CarWashInfoData(result.get(i).getId(), result.get(i).getName(), result.get(i).getAddress(), result.get(i).getPhone(),
+//                                            result.get(i).getCity(), result.get(i).getDistrict(), result.get(i).getDong(), result.get(i).getOpenSat(),
+//                                            result.get(i).getOpenSun(), result.get(i).getOpenWeek(), Double.valueOf(i), result.get(i).getWash().toString(),
+//                                            result.get(i).getScore()));
+//                                }
 
                                 recyclerView.setHasFixedSize(true);
                                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
                                 recyclerView.setLayoutManager(linearLayoutManager);
-                                tab2_recyclerAdapter = new Tab2_RecyclerAdapter(datalist);
+                                tab2_recyclerAdapter = new Tab2_RecyclerAdapter(carWashContentsList);
                                 recyclerView.setAdapter(tab2_recyclerAdapter);
 
                                 tab2_recyclerAdapter.setOnItemClickListener(new Tab2_RecyclerAdapter.OnItemClickListener() {
@@ -252,18 +323,28 @@ public class Tab2_SearchList extends AppCompatActivity {
                                 selectedSearchInfo.get(0).getKind()).enqueue(new Callback<List<CarWashContents>>() {
                             @Override
                             public void onResponse(Call<List<CarWashContents>> call, Response<List<CarWashContents>> response) {
-                                List<CarWashContents> result = response.body();
-                                datalist = new ArrayList<>();
-                                for(int i=0; i<result.size(); i++){
-                                    datalist.add(new CarWashInfoData(result.get(i).getId(), result.get(i).getName(), result.get(i).getAddress(), result.get(i).getPhone(),
-                                            result.get(i).getCity(), result.get(i).getDistrict(), result.get(i).getDong(), result.get(i).getOpenSat(),
-                                            result.get(i).getOpenSun(), result.get(i).getOpenWeek(), Double.valueOf(i), result.get(i).getWash().toString()));
-                                }
+                                // List<CarWashContents> result = response.body();
+                                // datalist = new ArrayList<>();
+                                // for(int i=0; i<result.size(); i++){
+                                //     datalist.add(new CarWashInfoData(result.get(i).getId(), result.get(i).getName(), result.get(i).getAddress(), result.get(i).getPhone(),
+                                //             result.get(i).getCity(), result.get(i).getDistrict(), result.get(i).getDong(), result.get(i).getOpenSat(),
+                                //             result.get(i).getOpenSun(), result.get(i).getOpenWeek(), Double.valueOf(i), result.get(i).getWash().toString()));
+                                // }
+//                                List<CarWashContents> result = response.body();
+//                                datalist = new ArrayList<>();
+//                                for(int i=0; i<result.size(); i++){
+//                                    datalist.add(new CarWashInfoData(result.get(i).getId(), result.get(i).getName(), result.get(i).getAddress(), result.get(i).getPhone(),
+//                                            result.get(i).getCity(), result.get(i).getDistrict(), result.get(i).getDong(), result.get(i).getOpenSat(),
+//                                            result.get(i).getOpenSun(), result.get(i).getOpenWeek(), Double.valueOf(i), result.get(i).getWash().toString(),
+//                                            result.get(i).getScore()));
+//                                }
+
+                                carWashContentsList = response.body();
 
                                 recyclerView.setHasFixedSize(true);
                                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
                                 recyclerView.setLayoutManager(linearLayoutManager);
-                                tab2_recyclerAdapter = new Tab2_RecyclerAdapter(datalist);
+                                tab2_recyclerAdapter = new Tab2_RecyclerAdapter(carWashContentsList);
                                 recyclerView.setAdapter(tab2_recyclerAdapter);
 
 

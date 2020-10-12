@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal">
 
     <LinearLayout
-        android:id="@+id/carwashlist_layout"
-        android:layout_width="wrap_content"
+        android:id="@+id/carwashlist_layout2"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginRight="10dp"
         android:orientation="horizontal"
-        android:background="@drawable/car_wash_review_box_no_pic"
-        android:layout_gravity="center_horizontal">
+        android:layout_marginLeft="15dp"
+        android:background="@drawable/car_wash_review_box_no_pic">
 
         <ImageView
             android:id="@+id/carwashlist_image2"
@@ -25,7 +24,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="25dp"
             android:layout_marginLeft="15.5dp"
             android:orientation="vertical">
 
@@ -37,6 +36,38 @@
                 android:textColor="@color/color_black"
                 android:lineSpacingExtra="40sp"
                 android:fontFamily="@font/ns_bold"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <RatingBar
+                    android:id="@+id/carwashlist_rating_bar2"
+                    style="@style/Widget.AppCompat.RatingBar.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:isIndicator="true"
+                    android:scaleX="0.9"
+                    android:scaleY="0.9"
+                    android:transformPivotX="0dp"
+                    android:transformPivotY="0dp"
+                    android:stepSize="0.5"
+                    android:theme="@style/RatingBar"/>
+
+
+                <TextView
+                    android:id="@+id/carwashlist_score2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="10sp"
+                    android:textColor="#000000"
+                    android:layout_gravity="center_vertical"
+                    android:fontFamily="@font/ns_bold"/>
+
+            </LinearLayout>
+
 
             <TextView
                 android:id="@+id/carwashlist_wash2"
@@ -61,40 +92,28 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/carwashlist_time12"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginRight="8dp"
                     android:textSize="10sp"
-                    android:textColor="@color/color_black"
                     android:lineSpacingExtra="2sp"
-                    android:fontFamily="@font/ns_bold"/>
+                    android:fontFamily="@font/ns_bold"
+                    android:textColor="#000000"
+                    android:text="@string/car_wash_time"/>
+
                 <TextView
-                    android:id="@+id/carwashlist_time22"
+                    android:id="@+id/carwashlist_time2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
                     android:textSize="10sp"
-                    android:textColor="@color/color_black"
                     android:lineSpacingExtra="2sp"
-                    android:fontFamily="@font/ns_bold"/>
+                    android:fontFamily="@font/ns_bold"
+                    android:textColor="#000000"/>
 
             </LinearLayout>
-
-            <TextView
-                android:id="@+id/carwashlist_address2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:textSize="10sp"
-                android:textColor="@color/color_black"
-                android:lineSpacingExtra="2sp"
-                android:fontFamily="@font/ns_bold"/>
-
 
         </LinearLayout>
     </LinearLayout>
