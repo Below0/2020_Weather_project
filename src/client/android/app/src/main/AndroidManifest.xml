@@ -33,6 +33,9 @@
             android:name=".Home.Tab1.Tab1_CarWashList"
             android:label="CarWashList" />
         <activity
+            android:name=".Home.Tab2.Tab2ForTest"
+            android:label="Tab2ForTest" />
+        <activity
             android:name=".MyPage.AlarmActivity"
             android:label="Map"/>
         <activity

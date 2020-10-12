@@ -182,28 +182,29 @@ public class CarWashInfoActivity extends AppCompatActivity {
                 for (CarWashContents carWashContents : carWashContentsList) {
                     System.out.println("washerId : " + washerId);
                     if (carWashContents.getId() == Integer.parseInt(washerId)) {
-                        retrofitAPI2.getCarWashType(carWashContents.getId()).enqueue(new Callback<CarWashDetail>() {
-                            public void onResponse(Call<CarWashDetail> call, Response<CarWashDetail> response) {
-                                Log.d("fetch_review", "Success: " + new Gson().toJson(response.body()));
-                                CarWashDetail carWashDetail = response.body();
-                                score = (float) carWashDetail.getScore();
-
-                                typeStr = carWashDetail.getType().get(0).getName();
-                                System.out.println("첫번째 typeStr : " + typeStr);
-                                if(carWashDetail.getType().size() > 1){
-                                    for(int j = 1; j < carWashDetail.getType().size(); j++) {
-                                        typeStr = typeStr + ", " + carWashDetail.getType().get(j).getName();
-                                    }
-                                }
-
-                                setInfo(carWashContents, score, typeStr);
-                            }
-
-                            @Override
-                            public void onFailure(Call<CarWashDetail> call, Throwable t) {
-                                Log.e("fetch_review", "failure: "+t.toString());
-                            }
-                        });
+                        setInfo(carWashContents);
+//                        retrofitAPI2.getCarWashType(carWashContents.getId()).enqueue(new Callback<CarWashDetail>() {
+//                            public void onResponse(Call<CarWashDetail> call, Response<CarWashDetail> response) {
+//                                Log.d("fetch_review", "Success: " + new Gson().toJson(response.body()));
+//                                CarWashDetail carWashDetail = response.body();
+//                                score = (float) carWashDetail.getScore();
+//
+//                                typeStr = carWashDetail.getType().get(0).getName();
+//                                System.out.println("첫번째 typeStr : " + typeStr);
+//                                if(carWashDetail.getType().size() > 1){
+//                                    for(int j = 1; j < carWashDetail.getType().size(); j++) {
+//                                        typeStr = typeStr + ", " + carWashDetail.getType().get(j).getName();
+//                                    }
+//                                }
+//
+//                                setInfo(carWashContents, score, typeStr);
+//                            }
+//
+//                            @Override
+//                            public void onFailure(Call<CarWashDetail> call, Throwable t) {
+//                                Log.e("fetch_review", "failure: "+t.toString());
+//                            }
+//                        });
                     }
                 }
             }
@@ -215,7 +216,7 @@ public class CarWashInfoActivity extends AppCompatActivity {
         });
     }
 
-    public void setInfo(CarWashContents carWashContents, float score, String typeStr){
+    public void setInfo(CarWashContents carWashContents){
         final String[] eventStrList = {"30% 세일 행사", "카샴푸 20% 세일 행사", "첫 방문고객 무료 자동세차",
                                         "10회 이용 시 1회 무료 이용권 증정", "자동 세차 15% 할인"};
         final String[] priceStrList1 = {"12000원", "13000원", "14000원", "15000원", "18000원"};
@@ -223,12 +224,17 @@ public class CarWashInfoActivity extends AppCompatActivity {
         final String[] facStrList = {"카샴푸 구비", "셀프 세차 부스 6개", "폼건 사용 가능", "개인 용품 사용 가능",
                                     "버핑 타올, 드라이 타올 구비"};
 
+        String washType = carWashContents.getWash().get(0);
+        if(carWashContents.getWash().size() > 1){
+            for(int j = 1; j < carWashContents.getWash().size(); j++) {
+                washType = washType + ", " + carWashContents.getWash().get(j);
+            }
+        }
 
+        int randVal = (int)(Math.random() * 5);
         String open_week = carWashContents.getOpenWeek();
         String open_sat = carWashContents.getOpenSat();
         String open_sun = carWashContents.getOpenSun();
-        int randVal = (int)(Math.random() * 5);
-
 
         if(open_week.equals("99:99-99:99")){
             tvReviewTime1.setText("휴무");
@@ -262,8 +268,8 @@ public class CarWashInfoActivity extends AppCompatActivity {
         tvReviewFacilities2.setText(facStrList[(randVal + 1) % 5]);
         tvReviewFacilities3.setText(facStrList[(randVal + 2) % 5]);
 
-        rbReviewScore.setRating(score);
-        tvReviewScore.setText(Float.toString(score));
-        tvReviewType.setText(typeStr);
+        rbReviewScore.setRating(carWashContents.getScore());
+        tvReviewScore.setText(Float.toString(carWashContents.getScore()));
+        tvReviewType.setText(washType);
     }
 }

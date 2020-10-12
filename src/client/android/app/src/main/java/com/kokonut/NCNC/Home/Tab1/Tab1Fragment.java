@@ -47,12 +47,16 @@ import com.kokonut.NCNC.Home.CarWashInfoData;
 import com.kokonut.NCNC.Home.ScoreInfoData;
 import com.kokonut.NCNC.Map.CarWashInfoActivity;
 import com.kokonut.NCNC.Retrofit.CarWashContents;
+import com.kokonut.NCNC.Retrofit.CarWashDetail;
 import com.kokonut.NCNC.Retrofit.RealTimeWeatherContents;
 import com.kokonut.NCNC.Retrofit.RetrofitAPI;
 import com.kokonut.NCNC.Retrofit.RetrofitClient;
 import com.kokonut.NCNC.Retrofit.ScoreContents;
 
 import com.kokonut.NCNC.R;
+import com.naver.maps.geometry.LatLng;
+import com.naver.maps.map.CameraAnimation;
+import com.naver.maps.map.CameraUpdate;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -64,17 +68,23 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class Tab1Fragment extends Fragment implements ActivityCompat.OnRequestPermissionsResultCallback{
+public class Tab1Fragment extends Fragment implements ActivityCompat.OnRequestPermissionsResultCallback, Serializable{
+
     Tab1_RecyclerAdapter_Horizontal tab1_recyclerAdapter_horizontal;
     private static final int MSG_POPUP_CHANGED = 1;
+    public static final int sub = 1001;
+    private static final long serialVersionUID = 1L;
+
     PopupHandler popupHandler = new PopupHandler();
 
     public scoreTask sct;
@@ -86,7 +96,6 @@ public class Tab1Fragment extends Fragment implements ActivityCompat.OnRequestPe
     public ArrayList<ScoreInfoData> scoreInfoData;
     int maxScore=0, maxScoreDay=0;
 
-    public ArrayList<CarWashInfoData> carWashInfoData;
     private List<CarWashContents> carWashContentsList;
 
     RecyclerView recyclerView;
@@ -95,6 +104,9 @@ public class Tab1Fragment extends Fragment implements ActivityCompat.OnRequestPe
     Geocoder geocoder;
     public Double myLat, myLon;
     String str1, str2, str3;
+
+    private Map<String, String> carWashTypeMap = new HashMap<>();
+    private Map<String, String> carWashScoreMap = new HashMap<>();
 
     //TextView tvLocation;
 
@@ -108,7 +120,7 @@ public class Tab1Fragment extends Fragment implements ActivityCompat.OnRequestPe
     HomeDBHelper HomedbHelper;
     int getTemp, getRain, getDust;
 
-    Button testButton;
+    TextView tvMoreList;
 
     public Tab1Fragment() {
         // Required empty public constructor
@@ -156,7 +168,7 @@ public class Tab1Fragment extends Fragment implements ActivityCompat.OnRequestPe
         rain = viewGroup.findViewById(R.id.rain);
         mask = viewGroup.findViewById(R.id.mask);
 
-        testButton = viewGroup .findViewById(R.id.test);
+        tvMoreList = viewGroup .findViewById(R.id.test);
 
         //현재 위치
         gpsTracker = new GpsTracker(getContext());
@@ -165,49 +177,95 @@ public class Tab1Fragment extends Fragment implements ActivityCompat.OnRequestPe
         //GetAddress(myLat, myLon);
         //tvLocation.setText(str1+" "+str2+" "+str3+" 기준");
 
-
-
-
-        //서버 통신 - 세차장 정보 리스트, 세차 점수
-        new AsyncTask<Void, Void, String>(){
-            @Override
-            protected void onPreExecute(){
-                Log.i("AsyncTask_carwashlist", "onPreExecute()");
-            }
+        new AsyncTask<Void, Void, String>() {
 
             @Override
             protected String doInBackground(Void... params) {
-                retrofitAPI = RetrofitClient.getInstance().getClient1().create(RetrofitAPI.class);
-                Call<List<CarWashContents>> call = retrofitAPI.fetchCarWash();
-
+                RetrofitAPI retrofitAPI = RetrofitAPI.retrofit.create(RetrofitAPI.class);
                 try {
-                    carWashContentsList = call.execute().body();
-                    carWashInfoData = new ArrayList<>();
-                    for (int i = 0; i < 29; i++) {
-                        carWashInfoData.add(new CarWashInfoData(carWashContentsList.get(i).getName(), carWashContentsList.get(i).getAddress(),
-                                carWashContentsList.get(i).getPhone(), carWashContentsList.get(i).getCity(), carWashContentsList.get(i).getDistrict(),
-                                carWashContentsList.get(i).getDong(), carWashContentsList.get(i).getOpenSat(), carWashContentsList.get(i).getOpenSun(),
-                                carWashContentsList.get(i).getOpenWeek(), makeDistance(carWashContentsList.get(i).getLat(), carWashContentsList.get(i).getLon()),
-                                carWashContentsList.get(i).getWash().toString()));
-                    }
-                    Collections.sort(carWashInfoData);
-                } catch (IOException e) {
+                    carWashContentsList = retrofitAPI.fetchCarWash().execute().body();
+                }
+                catch (IOException e){
                     e.printStackTrace();
                 }
                 return null;
             }
-            @Override
-            protected void onPostExecute(String s){
-                super.onPostExecute(s);
 
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
                 recyclerView.setHasFixedSize(true);
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
                 recyclerView.setLayoutManager(linearLayoutManager);
-                tab1_recyclerAdapter_horizontal = new Tab1_RecyclerAdapter_Horizontal(carWashInfoData);
+                System.out.println("carWashList size :::::" + carWashContentsList.size());
+                tab1_recyclerAdapter_horizontal = new Tab1_RecyclerAdapter_Horizontal(carWashContentsList);
                 recyclerView.setAdapter(tab1_recyclerAdapter_horizontal);
-
             }
         }.execute();
+
+
+        //서버 통신 - 세차장 정보 리스트, 세차 점수
+//        new AsyncTask<Void, Void, String>(){
+//            @Override
+//            protected void onPreExecute(){
+//                Log.i("AsyncTask_carwashlist", "onPreExecute()");
+//            }
+
+//            @Override
+//            protected String doInBackground(Void... params) {
+//                Call<List<CarWashContents>> call = retrofitAPI.fetchCarWash();
+//
+//                try {
+//                    carWashContentsList = call.execute().body();
+//                    carWashInfoData = new ArrayList<>();
+//                    for (int i = 0; i < 29; i++) {
+//                        retrofitAPI.getCarWashType(carWashContentsList.get(i).getId()).enqueue(new Callback<CarWashDetail>() {
+//                            public void onResponse(Call<CarWashDetail> call, Response<CarWashDetail> response) {
+//                                Log.d("fetch_review", "Success: " + new Gson().toJson(response.body()));
+//                                CarWashDetail carWashDetail = response.body();
+//                                float washer_score = (float) carWashDetail.getScore();
+//
+//                                String typeStr = carWashDetail.getType().get(0).getName();
+//                                if(carWashDetail.getType().size() > 1){
+//                                    for(int j = 1; j < carWashDetail.getType().size(); j++) {
+//                                        typeStr = typeStr + ", " + carWashDetail.getType().get(j).getName();
+//                                    }
+//                                }
+//                                carWashScoreMap.put(carWashDetail.getName(), Float.toString(washer_score));
+//                                carWashTypeMap.put(carWashDetail.getName(), typeStr);
+//                            }
+//
+//                            @Override
+//                            public void onFailure(Call<CarWashDetail> call, Throwable t) {
+//                                Log.e("fetch_review", "failure: "+t.toString());
+//                            }
+//                        });
+//
+//                        carWashInfoData.add(new CarWashInfoData(carWashContentsList.get(i).getId(),carWashContentsList.get(i).getName(), carWashContentsList.get(i).getAddress(),
+//                                carWashContentsList.get(i).getPhone(), carWashContentsList.get(i).getCity(), carWashContentsList.get(i).getDistrict(),
+//                                carWashContentsList.get(i).getDong(), carWashContentsList.get(i).getOpenSat(), carWashContentsList.get(i).getOpenSun(),
+//                                carWashContentsList.get(i).getOpenWeek(), makeDistance(carWashContentsList.get(i).getLat(), carWashContentsList.get(i).getLon()),
+//                                carWashContentsList.get(i).getWash().toString()));
+//
+//                    }
+//                    Collections.sort(carWashInfoData);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//                return null;
+//            }
+//            @Override
+//            protected void onPostExecute(String s){
+//                super.onPostExecute(s);
+//
+//                recyclerView.setHasFixedSize(true);
+//                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+//                recyclerView.setLayoutManager(linearLayoutManager);
+//                tab1_recyclerAdapter_horizontal = new Tab1_RecyclerAdapter_Horizontal(carWashInfoData, carWashTypeMap, carWashScoreMap);
+//                recyclerView.setAdapter(tab1_recyclerAdapter_horizontal);
+//            }
+//        }.execute();
+
 
 
 
@@ -271,11 +329,12 @@ public class Tab1Fragment extends Fragment implements ActivityCompat.OnRequestPe
         date7.setText(getDate(6));
 
         //더보기 버튼 클릭
-        testButton.setOnClickListener(new View.OnClickListener() {
+        tvMoreList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), Tab1_CarWashList.class);
-                intent.putExtra("carwashinfodata", (Serializable)carWashInfoData);
+                intent.putExtra("carWashContentsList", (Serializable)carWashContentsList);
+//                intent.putList("test", (List<String>) test);
                 startActivity(intent);
             }
         });

@@ -431,8 +431,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
 
     public void fetchCarWash(String washerId){
         RetrofitAPI retrofitAPI = RetrofitAPI.retrofit.create(RetrofitAPI.class);
-        RetrofitAPI retrofitAPI2 = RetrofitAPI.retrofit.create(RetrofitAPI.class);
-
         retrofitAPI.fetchCarWash().enqueue(new Callback<List<CarWashContents>>() {
             @Override
             public void onResponse(Call<List<CarWashContents>> call, Response<List<CarWashContents>> response) {
@@ -440,28 +438,30 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
                 List<CarWashContents> carWashContentsList = response.body();
 
                 for (CarWashContents carWashContents : carWashContentsList) {
-//                    System.out.println("washerId : " + washerId);
                     if (carWashContents.getId() == Integer.parseInt(washerId)) {
-                        retrofitAPI2.getCarWashType(carWashContents.getId()).enqueue(new Callback<CarWashDetail>() {
-                            public void onResponse(Call<CarWashDetail> call, Response<CarWashDetail> response) {
-                                Log.d("fetch_review", "Success: " + new Gson().toJson(response.body()));
-                                CarWashDetail carWashDetail = response.body();
-                                score = (float) carWashDetail.getScore();
+                        setInfo(carWashContents);
 
-                                typeStr = carWashDetail.getType().get(0).getName();
-                                if(carWashDetail.getType().size() > 1){
-                                    for(int j = 1; j < carWashDetail.getType().size(); j++) {
-                                        typeStr = typeStr + ", " + carWashDetail.getType().get(j).getName();
-                                    }
-                                }
-                                setInfo(carWashContents, score, typeStr);
-                            }
 
-                            @Override
-                            public void onFailure(Call<CarWashDetail> call, Throwable t) {
-                                Log.e("fetch_review", "failure: "+t.toString());
-                            }
-                        });
+//                        retrofitAPI2.getCarWashType(carWashContents.getId()).enqueue(new Callback<CarWashDetail>() {
+//                            public void onResponse(Call<CarWashDetail> call, Response<CarWashDetail> response) {
+//                                Log.d("fetch_review", "Success: " + new Gson().toJson(response.body()));
+//                                CarWashDetail carWashDetail = response.body();
+//                                score = (float) carWashDetail.getScore();
+//
+//                                typeStr = carWashDetail.getType().get(0).getName();
+//                                if(carWashDetail.getType().size() > 1){
+//                                    for(int j = 1; j < carWashDetail.getType().size(); j++) {
+//                                        typeStr = typeStr + ", " + carWashDetail.getType().get(j).getName();
+//                                    }
+//                                }
+//                                setInfo(carWashContents, score, typeStr);
+//                            }
+//
+//                            @Override
+//                            public void onFailure(Call<CarWashDetail> call, Throwable t) {
+//                                Log.e("fetch_review", "failure: "+t.toString());
+//                            }
+//                        });
                     }
                 }
             }
@@ -473,14 +473,19 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         });
     }
 
-    void setInfo(CarWashContents carWashContents, float score, String typeStr){
+    void setInfo(CarWashContents carWashContents){
+        String washType = carWashContents.getWash().get(0);
+        if(carWashContents.getWash().size() > 1){
+            for(int j = 1; j < carWashContents.getWash().size(); j++) {
+                washType = washType + ", " + carWashContents.getWash().get(j);
+            }
+        }
         tvBoxName.setText(carWashContents.getName());
         tvBoxTime.setText(carWashContents.getOpenWeek());
         tvBoxAddress.setText(carWashContents.getAddress());
-        tvBoxType.setText(carWashTypeMap.get(carWashContents.getName()));
-        rbBoxStar.setRating(score);
-        tvBoxScore.setText(Float.toString(score));
-        tvBoxType.setText(typeStr);
+        tvBoxType.setText(washType);
+        rbBoxStar.setRating(carWashContents.getScore());
+        tvBoxScore.setText(Float.toString(carWashContents.getScore()));
     }
 
 }

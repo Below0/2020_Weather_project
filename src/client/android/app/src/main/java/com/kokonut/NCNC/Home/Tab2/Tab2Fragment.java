@@ -370,7 +370,8 @@ public class Tab2Fragment extends Fragment {
                     selectedSearchInfo.add(new SelectedSearchInfo(selectedLocation1, selectedLocation2, selectedLocation3,
                             selectedTime1, selectedTime2, selectedKind));
 
-                    Intent intent = new Intent(getActivity(), Tab2_SearchList.class);
+//                    Intent intent = new Intent(getActivity(), Tab2_SearchList.class);
+                    Intent intent = new Intent(getActivity(), Tab2ForTest.class);
                     intent.putExtra("selectedinfodata", (Serializable)selectedSearchInfo);
                     startActivity(intent);
                 }

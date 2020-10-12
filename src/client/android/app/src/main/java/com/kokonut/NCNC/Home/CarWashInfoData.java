@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.List;
 
 public class CarWashInfoData implements Comparable<CarWashInfoData>, Serializable {
-    //private Integer id;
+    private Integer id;
     private String name;
     //private Double lat;
     //private Double lon;
@@ -20,11 +20,11 @@ public class CarWashInfoData implements Comparable<CarWashInfoData>, Serializabl
     private String open_week;
     private Double distance;
     private String wash;
+    private Float score;
     //private String opentime;
     //private List<String> wash = null;
 
 
-/*
     public Integer getId() {
         return id;
     }
@@ -32,7 +32,6 @@ public class CarWashInfoData implements Comparable<CarWashInfoData>, Serializabl
     public void setId(Integer id) {
         this.id = id;
     }
- */
 
     public String getName() {
         return name;
@@ -139,6 +138,11 @@ public class CarWashInfoData implements Comparable<CarWashInfoData>, Serializabl
         this.wash = wash;
     }
 
+    public Float getScore() { return score; }
+
+    public void setScore(Float score) { this.score = score; }
+
+
     /*public String getOpentime(){ return opentime;}
 
     public void setOpentime(String opentime){
@@ -157,9 +161,10 @@ public class CarWashInfoData implements Comparable<CarWashInfoData>, Serializabl
 
      */
 
-    public CarWashInfoData(String name, String address, String phone, String city,
+    public CarWashInfoData(Integer id, String name, String address, String phone, String city,
                            String district, String dong, String open_sat, String open_sun,
-                           String open_week, Double distance, String wash){
+                           String open_week, Double distance, String wash, Float score){
+        this.id = id;
         this.name = name;
         this.address = address;
         this.phone = phone;
@@ -171,6 +176,7 @@ public class CarWashInfoData implements Comparable<CarWashInfoData>, Serializabl
         this.open_week = open_week;
         this.distance = distance;
         this.wash = wash;
+        this.score = score;
         //this.opentime = opentime;
     }
 
