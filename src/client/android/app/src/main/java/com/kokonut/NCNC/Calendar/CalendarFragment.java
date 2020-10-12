@@ -209,6 +209,15 @@ public class CalendarFragment extends Fragment{
                 text1.setText("");
                 text2.setText("");
 
+                //5. 세차하기 좋은 날 뷰 추가
+                CustomDecorator_darkpurple = new customDecorator(getActivity(), drawable_darkblue,CalendarDay.from(2020, recommendDate[0], recommendDate[1]), 5);
+                materialCalendarView.addDecorators(CustomDecorator_darkpurple);
+
+                //6.오늘 날짜 뷰 추가
+                OneDayDecorator oneDayDecorator = new OneDayDecorator("세차새차");
+                materialCalendarView.addDecorators(oneDayDecorator);
+
+
                 /*
                 sqlDB = CalendardbHelper.getWritableDatabase();
                 CalendardbHelper.onUpgrade(sqlDB, 1, 2);
