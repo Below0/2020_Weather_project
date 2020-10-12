@@ -29,17 +29,19 @@
                     android:id="@+id/login_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
-                    android:text="로그인하고 세차새차의 다양한 서비스를 만나보세요!"/>
+                    android:textSize="13sp"
+                    android:fontFamily="@font/ns_regular"
+                    android:layout_marginBottom="10dp"
+                    android:text="로그인으로 세차새차의 다양한 서비스를 만나보세요!"/>
 
-                <ImageView
+                <ImageButton
                     android:layout_below="@+id/login_text"
                     android:layout_gravity="center"
                     android:id="@+id/login_but"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/login_bit">
-                </ImageView>
+                    android:src="@drawable/loginbox">
+                </ImageButton>
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>
@@ -61,20 +63,23 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             >
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="15dp"
+                android:layout_margin="13dp"
                 android:id="@+id/setalarm">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp"
+                    android:textSize="14sp"
                     android:gravity="center"
-                    android:text="알림 설정" />
+                    android:text="알림 설정"
+                    android:fontFamily="@font/ns_regular"
+                    android:textColor="@color/color_black"/>
                 <View
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -90,9 +95,11 @@
 
         </LinearLayout>
 
+
+
         <View
             android:layout_width="match_parent"
-            android:layout_height="3dp"
+            android:layout_height="1.5dp"
             android:background="#DDDDDD"/>
 
         <LinearLayout
@@ -102,15 +109,17 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:id="@+id/setasktosecha">
+                android:layout_margin="13dp"
+                android:id="@+id/gongji">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp"
+                    android:textSize="14sp"
                     android:gravity="center"
-                    android:text="세차새차에 문의하기" />
+                    android:text="공지사항"
+                    android:fontFamily="@font/ns_regular"
+                    android:textColor="@color/color_black"/>
 
                 <View
                     android:layout_width="0dp"
@@ -128,7 +137,78 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="3dp"
+            android:layout_height="1.5dp"
             android:background="#DDDDDD"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="13dp"
+                android:id="@+id/question">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:gravity="center"
+                    android:text="자주하는 질문"
+                    android:fontFamily="@font/ns_regular"
+                    android:textColor="@color/color_black"/>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+                <ImageView
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/map_arrow_more">
+
+                </ImageView>
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1.5dp"
+            android:background="#DDDDDD"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="13dp"
+                android:id="@+id/setasktosecha">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:gravity="center"
+                    android:text="세차새차에 문의하기"
+                    android:fontFamily="@font/ns_regular"
+                    android:textColor="@color/color_black"/>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+                <ImageView
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/map_arrow_more">
+
+                </ImageView>
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

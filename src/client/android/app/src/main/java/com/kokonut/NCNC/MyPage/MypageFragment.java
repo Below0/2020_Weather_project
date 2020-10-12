@@ -26,6 +26,8 @@ public class MypageFragment extends Fragment {
     ViewGroup viewGroup;
     LinearLayout setalarm;
     LinearLayout setasktosecha;
+    LinearLayout gongji;
+    LinearLayout question;
 
     @Nullable
     @Override
@@ -34,6 +36,9 @@ public class MypageFragment extends Fragment {
         login_but = viewGroup.findViewById(R.id.login_but);
         setalarm = viewGroup.findViewById(R.id.setalarm);
         setasktosecha = viewGroup.findViewById(R.id.setasktosecha);
+        gongji = viewGroup.findViewById(R.id.gongji);
+        question = viewGroup.findViewById(R.id.question);
+
 
         setalarm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,6 +56,26 @@ public class MypageFragment extends Fragment {
                 Log.d("111111", "onClick: ");
 
                 Intent intent = new Intent(getActivity(), AsktoSechaSecha.class);
+                startActivity(intent);
+            }
+        });
+
+        gongji.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("111111", "onClick: ");
+
+                Intent intent = new Intent(getActivity(), GonjiActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        question.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("111111", "onClick: ");
+
+                Intent intent = new Intent(getActivity(), QuestionActivity.class);
                 startActivity(intent);
             }
         });

@@ -50,16 +50,30 @@ public class Tab2_RecyclerAdapter extends RecyclerView.Adapter<Tab2_RecyclerAdap
     public void onBindViewHolder(@NonNull Tab2_RecyclerAdapter.CustomViewHolder viewholder, int position) {
         viewholder.name.setText(mydatalist.get(position).getName());
         viewholder.address.setText(mydatalist.get(position).getAddress());
-        viewholder.wash.setText(mydatalist.get(position).getWash());
-        viewholder.time1.setText(mydatalist.get(position).getOpenSat());
-        viewholder.time2.setText(mydatalist.get(position).getOpenSun());
-        viewholder.time3.setText(mydatalist.get(position).getOpenWeek());
+
+        if(mydatalist.get(position).getOpenWeek().equals("99:99-99:99")) viewholder.time3.setText("평일 : 휴무");
+        else if(mydatalist.get(position).getOpenWeek().equals("00:00-24:00")) viewholder.time3.setText("평일 : 24시간 운영");
+        else viewholder.time3.setText("평일 : "+mydatalist.get(position).getOpenWeek());
+        if(mydatalist.get(position).getOpenSat().equals("99:99-99:99")) viewholder.time1.setText("토 : 휴무");
+        else if(mydatalist.get(position).getOpenSat().equals("00:00-24:00")) viewholder.time1.setText("토 : 24시간 운영");
+        else viewholder.time1.setText("토 : "+mydatalist.get(position).getOpenSat());
+        if(mydatalist.get(position).getOpenSun().equals("99:99-99:99")) viewholder.time2.setText("일 : 휴무");
+        else if(mydatalist.get(position).getOpenSun().equals("00:00-24:00")) viewholder.time2.setText("일 : 24시간 운영");
+        else viewholder.time2.setText("일 : "+mydatalist.get(position).getOpenSun());
+
+        viewholder.wash.setText(stringReplace(mydatalist.get(position).getWash()));
     }
 
     @Override
     public int getItemCount() {
         //adapter가 관리하는 전체 데이터 개수
         return (mydatalist==null) ? 0 : mydatalist.size();
+    }
+
+    public static String stringReplace(String str){
+        str = str.replaceAll("\\[", "");
+        str = str.replaceAll("\\]", "");
+        return str;
     }
 
     public Activity getContext(){

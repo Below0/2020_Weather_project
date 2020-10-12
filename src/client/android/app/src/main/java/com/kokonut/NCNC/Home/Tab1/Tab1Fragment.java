@@ -185,7 +185,7 @@ public class Tab1Fragment extends Fragment implements ActivityCompat.OnRequestPe
                     carWashContentsList = call.execute().body();
                     carWashInfoData = new ArrayList<>();
                     for (int i = 0; i < 29; i++) {
-                        carWashInfoData.add(new CarWashInfoData(carWashContentsList.get(i).getName(), carWashContentsList.get(i).getAddress(),
+                        carWashInfoData.add(new CarWashInfoData(carWashContentsList.get(i).getId(), carWashContentsList.get(i).getName(), carWashContentsList.get(i).getAddress(),
                                 carWashContentsList.get(i).getPhone(), carWashContentsList.get(i).getCity(), carWashContentsList.get(i).getDistrict(),
                                 carWashContentsList.get(i).getDong(), carWashContentsList.get(i).getOpenSat(), carWashContentsList.get(i).getOpenSun(),
                                 carWashContentsList.get(i).getOpenWeek(), makeDistance(carWashContentsList.get(i).getLat(), carWashContentsList.get(i).getLon()),

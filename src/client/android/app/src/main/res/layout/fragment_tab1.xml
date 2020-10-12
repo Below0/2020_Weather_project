@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -15,6 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         android:layout_marginRight="30dp"
         android:layout_marginLeft="30dp">
 
@@ -67,31 +73,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="8dp"
+        android:layout_marginBottom="20dp"
         android:layout_marginRight="16dp"
         android:layout_marginLeft="16dp"
         android:orientation="vertical"
         android:background="@drawable/home_box_top"
         android:gravity="center">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="right"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="40dp">
-            <TextView
-                android:id="@+id/tab1_tv_location"
-                android:layout_width="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_gravity="center_vertical"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/ns_regular"
-                android:textColor="@color/color_black"
-                android:textSize="12sp"/>
-        </LinearLayout>
 
         <GridLayout
             android:layout_width="wrap_content"
@@ -391,8 +378,8 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="20dp"
         android:orientation="horizontal">
 
         <TextView
@@ -425,7 +412,6 @@
             android:id="@+id/tab1_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
             android:orientation="horizontal"
             android:layout_gravity="center"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
@@ -433,3 +419,4 @@
     </LinearLayout>
 
 </LinearLayout>
+</ScrollView>

@@ -2,8 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".Home.Tab1.Tab1_CarWashInfo1">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:id="@+id/carwashlist_layout"
@@ -12,7 +11,7 @@
         android:layout_marginBottom="10dp"
         android:layout_marginRight="10dp"
         android:orientation="horizontal"
-        android:background="@drawable/map_box_white"
+        android:background="@drawable/car_wash_review_box_no_pic"
         android:layout_gravity="center_horizontal">
 
         <ImageView
@@ -49,6 +48,16 @@
                 android:lineSpacingExtra="2sp"
                 android:fontFamily="@font/ns_bold"/>
 
+            <TextView
+                android:id="@+id/carwashlist_time32"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textSize="10sp"
+                android:textColor="@color/color_black"
+                android:lineSpacingExtra="2sp"
+                android:fontFamily="@font/ns_bold"/>
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -75,15 +84,6 @@
                     android:fontFamily="@font/ns_bold"/>
 
             </LinearLayout>
-            <TextView
-                android:id="@+id/carwashlist_time32"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:textSize="10sp"
-                android:textColor="@color/color_black"
-                android:lineSpacingExtra="2sp"
-                android:fontFamily="@font/ns_bold"/>
 
             <TextView
                 android:id="@+id/carwashlist_address2"

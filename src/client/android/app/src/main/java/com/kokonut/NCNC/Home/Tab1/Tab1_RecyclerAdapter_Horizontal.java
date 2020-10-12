@@ -50,10 +50,18 @@ public class Tab1_RecyclerAdapter_Horizontal extends RecyclerView.Adapter<Tab1_R
 
                 viewholder.name.setText(mydatalist1.get(position).getName());
                 viewholder.address.setText(mydatalist1.get(position).getAddress());
-                viewholder.wash.setText(mydatalist1.get(position).getWash());
-                viewholder.time1.setText(mydatalist1.get(position).getOpenSat());
-                viewholder.time2.setText(mydatalist1.get(position).getOpenSun());
-                viewholder.time3.setText(mydatalist1.get(position).getOpenWeek());
+
+                if(mydatalist1.get(position).getOpenWeek().equals("99:99-99:99")) viewholder.time3.setText("평일 : 휴무");
+                else if(mydatalist1.get(position).getOpenWeek().equals("00:00-24:00")) viewholder.time3.setText("평일 : 24시간 운영");
+                else viewholder.time3.setText("평일 : "+mydatalist1.get(position).getOpenWeek());
+                if(mydatalist1.get(position).getOpenSat().equals("99:99-99:99")) viewholder.time1.setText("토 : 휴무");
+                else if(mydatalist1.get(position).getOpenSat().equals("00:00-24:00")) viewholder.time1.setText("토 : 24시간 운영");
+                else viewholder.time1.setText("토 : "+mydatalist1.get(position).getOpenSat());
+                if(mydatalist1.get(position).getOpenSun().equals("99:99-99:99")) viewholder.time2.setText("일 : 휴무");
+                else if(mydatalist1.get(position).getOpenSun().equals("00:00-24:00")) viewholder.time2.setText("일 : 24시간 운영");
+                else viewholder.time2.setText("일 : "+mydatalist1.get(position).getOpenSun());
+
+                viewholder.wash.setText(stringReplace(mydatalist1.get(position).getWash()));
 
         }
 
@@ -61,6 +69,12 @@ public class Tab1_RecyclerAdapter_Horizontal extends RecyclerView.Adapter<Tab1_R
         public int getItemCount() {
                 //adapter가 관리하는 전체 데이터 개수
                 return (mydatalist1==null) ? 0 : mydatalist1.size();
+        }
+
+        public static String stringReplace(String str){
+                str = str.replaceAll("\\[", "");
+                str = str.replaceAll("\\]", "");
+                return str;
         }
 
         public Activity getContext(){
@@ -104,5 +118,7 @@ public class Tab1_RecyclerAdapter_Horizontal extends RecyclerView.Adapter<Tab1_R
                                 }
                         });
                 }
+
+
         }
 }
