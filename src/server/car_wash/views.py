@@ -48,6 +48,14 @@ def washer_list(request):
             for item in temp.wash_type.all().values():
                 wash_list.append(item['name'])
             data[i]['wash'] = wash_list
+
+            reviews = temp.reviews.all()
+            score = reviews.aggregate(Avg('score'))['score__avg']
+            if score is None:
+                score = 0.0
+
+            data[i]['score'] = round(score,1)
+            #data[i]['score'] = round(score,1)
         return JsonResponse(data, safe=False, json_dumps_params={'ensure_ascii': False})
 
     elif request.method == "POST":
