@@ -68,7 +68,7 @@ public class Tab2_SearchList extends AppCompatActivity {
                                 List<CarWashContents> result = response.body();
                                 datalist = new ArrayList<>();
                                 for(int i=0; i<result.size(); i++){
-                                    datalist.add(new CarWashInfoData(result.get(i).getName(), result.get(i).getAddress(), result.get(i).getPhone(),
+                                    datalist.add(new CarWashInfoData(result.get(i).getId(), result.get(i).getName(), result.get(i).getAddress(), result.get(i).getPhone(),
                                             result.get(i).getCity(), result.get(i).getDistrict(), result.get(i).getDong(), result.get(i).getOpenSat(),
                                             result.get(i).getOpenSun(), result.get(i).getOpenWeek(), Double.valueOf(i), result.get(i).getWash().toString()));
                                 }
@@ -92,7 +92,7 @@ public class Tab2_SearchList extends AppCompatActivity {
                                 List<CarWashContents> result = response.body();
                                 datalist = new ArrayList<>();
                                 for(int i=0; i<result.size(); i++){
-                                    datalist.add(new CarWashInfoData(result.get(i).getName(), result.get(i).getAddress(), result.get(i).getPhone(),
+                                    datalist.add(new CarWashInfoData(result.get(i).getId(), result.get(i).getName(), result.get(i).getAddress(), result.get(i).getPhone(),
                                             result.get(i).getCity(), result.get(i).getDistrict(), result.get(i).getDong(), result.get(i).getOpenSat(),
                                             result.get(i).getOpenSun(), result.get(i).getOpenWeek(), Double.valueOf(i), result.get(i).getWash().toString()));
                                 }
@@ -118,7 +118,7 @@ public class Tab2_SearchList extends AppCompatActivity {
                                 List<CarWashContents> result = response.body();
                                 datalist = new ArrayList<>();
                                 for(int i=0; i<result.size(); i++){
-                                    datalist.add(new CarWashInfoData(result.get(i).getName(), result.get(i).getAddress(), result.get(i).getPhone(),
+                                    datalist.add(new CarWashInfoData(result.get(i).getId(), result.get(i).getName(), result.get(i).getAddress(), result.get(i).getPhone(),
                                             result.get(i).getCity(), result.get(i).getDistrict(), result.get(i).getDong(), result.get(i).getOpenSat(),
                                             result.get(i).getOpenSun(), result.get(i).getOpenWeek(), Double.valueOf(i), result.get(i).getWash().toString()));
                                 }
@@ -142,7 +142,7 @@ public class Tab2_SearchList extends AppCompatActivity {
                                 List<CarWashContents> result = response.body();
                                 datalist = new ArrayList<>();
                                 for(int i=0; i<result.size(); i++){
-                                    datalist.add(new CarWashInfoData(result.get(i).getName(), result.get(i).getAddress(), result.get(i).getPhone(),
+                                    datalist.add(new CarWashInfoData(result.get(i).getId(), result.get(i).getName(), result.get(i).getAddress(), result.get(i).getPhone(),
                                             result.get(i).getCity(), result.get(i).getDistrict(), result.get(i).getDong(), result.get(i).getOpenSat(),
                                             result.get(i).getOpenSun(), result.get(i).getOpenWeek(), Double.valueOf(i), result.get(i).getWash().toString()));
                                 }
@@ -168,7 +168,7 @@ public class Tab2_SearchList extends AppCompatActivity {
                                 List<CarWashContents> result = response.body();
                                 datalist = new ArrayList<>();
                                 for(int i=0; i<result.size(); i++){
-                                    datalist.add(new CarWashInfoData(result.get(i).getName(), result.get(i).getAddress(), result.get(i).getPhone(),
+                                    datalist.add(new CarWashInfoData(result.get(i).getId(), result.get(i).getName(), result.get(i).getAddress(), result.get(i).getPhone(),
                                             result.get(i).getCity(), result.get(i).getDistrict(), result.get(i).getDong(), result.get(i).getOpenSat(),
                                             result.get(i).getOpenSun(), result.get(i).getOpenWeek(), Double.valueOf(i), result.get(i).getWash().toString()));
                                 }
@@ -192,7 +192,7 @@ public class Tab2_SearchList extends AppCompatActivity {
                                 List<CarWashContents> result = response.body();
                                 datalist = new ArrayList<>();
                                 for(int i=0; i<result.size(); i++){
-                                    datalist.add(new CarWashInfoData(result.get(i).getName(), result.get(i).getAddress(), result.get(i).getPhone(),
+                                    datalist.add(new CarWashInfoData(result.get(i).getId(), result.get(i).getName(), result.get(i).getAddress(), result.get(i).getPhone(),
                                             result.get(i).getCity(), result.get(i).getDistrict(), result.get(i).getDong(), result.get(i).getOpenSat(),
                                             result.get(i).getOpenSun(), result.get(i).getOpenWeek(), Double.valueOf(i), result.get(i).getWash().toString()));
                                 }
@@ -222,7 +222,7 @@ public class Tab2_SearchList extends AppCompatActivity {
 
                                 datalist = new ArrayList<>();
                                 for(int i=0; i<result.size(); i++){
-                                    datalist.add(new CarWashInfoData(result.get(i).getName(), result.get(i).getAddress(), result.get(i).getPhone(),
+                                    datalist.add(new CarWashInfoData(result.get(i).getId(), result.get(i).getName(), result.get(i).getAddress(), result.get(i).getPhone(),
                                             result.get(i).getCity(), result.get(i).getDistrict(), result.get(i).getDong(), result.get(i).getOpenSat(),
                                             result.get(i).getOpenSun(), result.get(i).getOpenWeek(), Double.valueOf(i), result.get(i).getWash().toString()));
                                 }
@@ -255,7 +255,7 @@ public class Tab2_SearchList extends AppCompatActivity {
                                 List<CarWashContents> result = response.body();
                                 datalist = new ArrayList<>();
                                 for(int i=0; i<result.size(); i++){
-                                    datalist.add(new CarWashInfoData(result.get(i).getName(), result.get(i).getAddress(), result.get(i).getPhone(),
+                                    datalist.add(new CarWashInfoData(result.get(i).getId(), result.get(i).getName(), result.get(i).getAddress(), result.get(i).getPhone(),
                                             result.get(i).getCity(), result.get(i).getDistrict(), result.get(i).getDong(), result.get(i).getOpenSat(),
                                             result.get(i).getOpenSun(), result.get(i).getOpenWeek(), Double.valueOf(i), result.get(i).getWash().toString()));
                                 }

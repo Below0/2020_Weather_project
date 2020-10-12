@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.List;
 
 public class CarWashInfoData implements Comparable<CarWashInfoData>, Serializable {
-    //private Integer id;
+    private Integer id;
     private String name;
     //private Double lat;
     //private Double lon;
@@ -24,7 +24,7 @@ public class CarWashInfoData implements Comparable<CarWashInfoData>, Serializabl
     //private List<String> wash = null;
 
 
-/*
+
     public Integer getId() {
         return id;
     }
@@ -32,7 +32,7 @@ public class CarWashInfoData implements Comparable<CarWashInfoData>, Serializabl
     public void setId(Integer id) {
         this.id = id;
     }
- */
+
 
     public String getName() {
         return name;
@@ -157,9 +157,10 @@ public class CarWashInfoData implements Comparable<CarWashInfoData>, Serializabl
 
      */
 
-    public CarWashInfoData(String name, String address, String phone, String city,
-                           String district, String dong, String open_sat, String open_sun,
-                           String open_week, Double distance, String wash){
+    public CarWashInfoData(Integer id, String name, String address, String phone, String city,
+                           String district, String dong, String open_week, String open_sat,
+                           String open_sun, Double distance, String wash){
+        this.id = id;
         this.name = name;
         this.address = address;
         this.phone = phone;

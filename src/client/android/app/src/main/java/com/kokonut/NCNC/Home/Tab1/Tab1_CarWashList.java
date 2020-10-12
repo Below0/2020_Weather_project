@@ -68,22 +68,10 @@ public class Tab1_CarWashList extends AppCompatActivity {
     public void InitializeData(){
         datalist = new ArrayList<>();
 
-        for(int i=0; i<29; i++){
-            //String time = "평일:"+ carWashInfoData.get(i).getOpenWeek()+" 토:"+carWashInfoData.get(i).getOpenSat()+" 일:"+carWashInfoData.get(i).getOpenSun();
-
-            datalist.add(new CarWashInfoData(carWashInfoData.get(i).getName(), carWashInfoData.get(i).getAddress(),
+        for(int i=0; i<carWashInfoData.size(); i++){
+            datalist.add(new CarWashInfoData(carWashInfoData.get(i).getId(), carWashInfoData.get(i).getName(), carWashInfoData.get(i).getAddress(),
                     carWashInfoData.get(i).getPhone(), carWashInfoData.get(i).getCity(), carWashInfoData.get(i).getDistrict(), carWashInfoData.get(i).getDong(),
-                    "토:"+makeOpenTime(carWashInfoData.get(i).getOpenSat()), " 일:"+makeOpenTime(carWashInfoData.get(i).getOpenSun()),
-                    "평일:"+makeOpenTime(carWashInfoData.get(i).getOpenWeek()),carWashInfoData.get(i).getDistance(), carWashInfoData.get(i).getWash().toString()));
+                    carWashInfoData.get(i).getOpenWeek(), carWashInfoData.get(i).getOpenSat(), carWashInfoData.get(i).getOpenSun(), carWashInfoData.get(i).getDistance(), carWashInfoData.get(i).getWash().toString()));
         }
-    }
-
-    public String makeOpenTime(String open_time){
-        String result;
-        if(open_time == "99:99-99:99") result= "휴무";
-        else if(open_time =="00:00-00:00") result= "24시간 운영";
-        else result=open_time;
-
-        return result;
     }
 }

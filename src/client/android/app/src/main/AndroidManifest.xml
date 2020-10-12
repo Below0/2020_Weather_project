@@ -2,16 +2,34 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.kokonut.NCNC">
 
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <uses-feature android:name="android.hardware.type.watch" />
+
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- 퍼미션 of 알람 -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher_newcar"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_newcar_round"
         android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".MyPage.QuestionActivity"></activity>
 
-        android:usesCleartextTraffic="true"
-        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".MyPage.GonjiActivity"
+            android:label="@string/title_activity_gonji">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"
@@ -34,11 +52,10 @@
             android:label="CarWashList" />
         <activity
             android:name=".MyPage.AlarmActivity"
-            android:label="Map"/>
+            android:label="Map" />
         <activity
             android:name=".MyPage.AsktoSechaSecha"
-            android:label="asktosecha"/>
-
+            android:label="asktosecha" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name">
@@ -51,23 +68,18 @@
         <activity android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <!-- Redirect URI: "kakao{NATIVE_APP_KEY}://oauth“ -->
-                <data android:host="oauth"
+                <data
+                    android:host="oauth"
                     android:scheme="kakao161c3ebdf4c87831197714a8529765a4" />
             </intent-filter>
         </activity>
-        <receiver android:name=".BroadcastAlarm"></receiver>
+
+        <receiver android:name=".BroadcastAlarm" />
     </application>
-
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.INTERNET" />
-    <!-- 퍼미션 of 알람-->
-    <uses-permission android:name="android.permission.VIBRATE"/>
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
-
 
 </manifest>

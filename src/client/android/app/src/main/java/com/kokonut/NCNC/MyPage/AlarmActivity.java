@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Switch;
@@ -37,6 +38,14 @@ public class AlarmActivity extends AppCompatActivity {
         switch2 = findViewById(R.id.visibilitySwitch2);
         switch3 = findViewById(R.id.visibilitySwitch3);
         switch4 = findViewById(R.id.visibilitySwitch4);
+
+        ImageButton preButton = findViewById(R.id.alram_backarrow);
+        preButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         MainActivity mainActivity = new MainActivity();
         int maxDayScore = mainActivity.getScoreDay();
