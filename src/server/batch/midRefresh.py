@@ -11,7 +11,7 @@ db = conn.get_database('scsc')
 weather_col = db.get_collection('weather')
 score_col = db.get_collection('score')
 
-with open("../config/key.json", "r") as sk_json:
+with open("/cron/config/key.json", "r") as sk_json:
     service_key = json.load(sk_json)['key']
 
 class ScoreCaculator:
@@ -20,7 +20,7 @@ class ScoreCaculator:
         self.lv_list = []
         self.rec = {}
         self.cnt = 0
-        with open('location_code.csv', 'r') as f:
+        with open('/cron/location_code.csv', 'r') as f:
             rdr = csv.reader(f)
             self.code = [item for item in rdr][0]
 
@@ -30,20 +30,20 @@ class ScoreCaculator:
         ta_max = int(line.get('taMax', 25))
 
         if ta_min < -10 or ta_max > 35:
-            ta_level = -5
+            ta_level = 1
         elif ta_min < 0 or ta_max > 33:
-            ta_level = 0
+            ta_level = 2
         elif ta_min < 5 or ta_max > 28:
             ta_level = 3
         elif ta_min < 10:
-            ta_level = 5
+            ta_level = 4
         else:
-            ta_level = 7
+            ta_level = 5
         return ta_level
 
     def calc_rn(self, value):
         if value is None:
-            return 3
+            return 2
 
         temp = int(value)
         return 5-int(temp/20)
@@ -55,6 +55,43 @@ class ScoreCaculator:
             pm_lv = self.calc_rn(self.rec[i].get('rnStPm', None))
             self.lv_list.append((am_lv, pm_lv))
 
+    def call_api(self, address):
+        req = None
+        try_cnt = 0
+
+        while try_cnt < 10 and req is None:
+            try:
+                req = urllib.request.urlopen(address, timeout=10)
+            except Exception as err:
+                try_cnt += 1
+                print("TIMEOUT Retry:", try_cnt)
+                time.sleep(self.TIME_OUT)
+
+        return req
+
+
+
+    def call_air(self):
+        air_address = "https://api.waqi.info/feed/seoul/?token=bfefdf2135b7497e3133bfe335a6db21842ad697"
+        req = self.call_api(air_address)
+        res = req.readline()
+        j = json.loads(res)["data"]["forecast"]["daily"]["pm10"]
+        result = {}
+        for item in j:
+            date_id = datetime.strptime(item['day'],"%Y-%m-%d").date().strftime('%Y%m%d')
+            if item['avg'] < 31:
+                pm10_lv = 4
+            elif item['avg'] < 81:
+                pm10_lv = 3
+            elif item['avg'] < 150:
+                pm10_lv = 2
+            else:
+                pm10_lv = 1
+
+            result[date_id] = pm10_lv
+
+        self.pm10 = result
+
     def make_record(self):
         result = []
         self.make_rnlv()
@@ -65,18 +102,25 @@ class ScoreCaculator:
             doc = {
                 'date': line['date'],
                 'regID': line['regID'],
+                'pm10_lv': self.pm10[line['date']]
                    }
+
             for j in range(i, i+4):
                 pivot = min(self.lv_list[j])
                 score += pivot*(i+5-j)
-            score += self.calc_ta(i)
-            doc['score'] = score
+            #score += self.calc_ta(i)
+            
+            
+            #doc['score'] = score
+            doc['rn_lv'] = int(score*(1/6))
+            doc['ta_lv'] = self.calc_ta(i)
             result.append(doc)
         return result
 
     def run(self):
         size = len(self.code)
         res = []
+        self.call_air()
         print("Start to refresh weather score...")
         for i in range(size):
             self.rec = weather_col.find({"regID": self.code[i], "date": {"$gte": datetime.now().strftime('%Y%m%d')}})
@@ -93,7 +137,7 @@ class MidWeatherService:  # 중기예보 서비스 모듈
         self.fc_cache = {}
         self.TIME_OUT = 0.5
 
-        with open('location_code.csv', 'r') as f:
+        with open('/cron/location_code.csv', 'r') as f:
             rdr = csv.reader(f)
             self.code = [item for item in rdr][0]
 
@@ -222,5 +266,3 @@ m_service.run()
 
 calculator = ScoreCaculator()
 calculator.run()
-
-

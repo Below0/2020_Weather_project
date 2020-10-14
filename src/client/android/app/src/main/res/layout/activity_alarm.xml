@@ -6,14 +6,36 @@
     android:layout_marginRight="30dp"
     android:layout_marginLeft="30dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="PUSH 알림"
-        android:textSize="18sp"
-        android:layout_marginBottom="20dp"
-        android:textColor="@color/color_black">
-    </TextView>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="47dp"
+        android:background="@drawable/upper_tab">
+
+        <ImageButton
+            android:id="@+id/alram_backarrow"
+            android:layout_width="10dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="14dp"
+            android:layout_marginTop="17dp"
+            android:background="@drawable/back_arrow" />
+
+        <TextView
+            android:id="@+id/car_wash_review_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:lineSpacingExtra="18sp"
+            android:fontFamily="@font/ns_extrabold"
+            android:text="PUSH 알람">
+        </TextView>
+    </FrameLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:background="@drawable/shadow_box"/>
 
 
     <LinearLayout
@@ -43,16 +65,17 @@
             </TextView>
 
         </LinearLayout>
+
         <View
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_weight="1" />
-            <Switch
-                android:id="@+id/visibilitySwitch1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right|center"
-                android:switchMinWidth="50dp" />
+        <Switch
+            android:id="@+id/visibilitySwitch1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center"
+            android:switchMinWidth="50dp" />
 
     </LinearLayout>
 

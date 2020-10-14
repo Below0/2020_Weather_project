@@ -45,6 +45,9 @@ public class ReviewContents {
         @SerializedName("user_id")
         @Expose
         private String user_id;
+        @SerializedName("score")
+        @Expose
+        private Integer score;
         @SerializedName("user_name")
         @Expose
         private String user_name;
@@ -69,6 +72,14 @@ public class ReviewContents {
 
         public void setUser_id(String id) {
             this.user_id = user_id;
+        }
+
+        public Integer getScore() {
+            return score;
+        }
+
+        public void setScore(Integer score) {
+            this.score = score;
         }
 
         public String getUser_name() {

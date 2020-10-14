@@ -37,6 +37,11 @@ public class Calendar_PopupFragment extends DialogFragment {
         buttonAdd = view.findViewById(R.id.buttonAdd);
         calendar_textview_delete = view.findViewById(R.id.calendar_textview_delete);
 
+        Bundle mArgs = getArguments();
+        String mValue = mArgs.getString("clickedDate");
+        mValue = parceDate(mValue);
+        textView_Date.setText(mValue);
+
         setCancelable(false); //popup에서 여백을 만져도 꺼지지 않게 함
         checkList();
 
@@ -59,7 +64,7 @@ public class Calendar_PopupFragment extends DialogFragment {
     @Override
     public void onStart() {
         super.onStart();
-        textView_Date.setText("2020년 7월 23일");
+        //textView_Date.setText("2020년 7월 23일");
 
     }
 
@@ -116,13 +121,13 @@ public class Calendar_PopupFragment extends DialogFragment {
                 if(checkBox2.isChecked() == true) result += (checkBox2.getText().toString() + "_");
                 if(checkBox3.isChecked() == true) result += (checkBox3.getText().toString() + "_");
 */
-                if(checkBox1.isChecked() == true) result = 1;
+                if(checkBox1.isChecked() == true) result = 1; //내부 선택
                 if(checkBox2.isChecked() == true) {
                     if(result == 1){
                         result = 3; //내부, 외부 둘다 선택
                     }
                     else
-                        result = 2;
+                        result = 2; //외부 선택
                 }
 
                 Log.d("wow", "customDecorator: is null 1122");
@@ -138,6 +143,32 @@ public class Calendar_PopupFragment extends DialogFragment {
                 dismiss();
             }
         });
+    }
+
+    private String parceDate(String calendar_date){
+
+
+        int i=0; int last = 0;
+        String result;
+        int[] dates_info = new int[3];
+
+        result = calendar_date.substring(12);
+        String[] dates_string = result.split("-");
+
+        for(i=0; i<2; i++)
+            dates_info[i] = Integer.parseInt(dates_string[i]);
+
+        result = dates_string[i].replace("}", "");
+        dates_info[i] = Integer.parseInt(result);
+
+        for(i=0; i<3; i++)
+            Log.d("$$$$$", "parceDate: " + dates_info[i]);
+
+        calendar_date = dates_info[0] + "년 " + dates_info[1] + "월 " + dates_info[2] + "일 ";
+
+        Log.d("앙", "parceDate: " + calendar_date);
+
+        return calendar_date;
     }
 
     public interface uploadDialogInterface

@@ -55,15 +55,8 @@ public class HomeFragment extends Fragment {
             Manifest.permission.ACCESS_COARSE_LOCATION
     };
 
-    public String str1 = ""; //시
-    public String str2 = ""; //구
-    public String str3 = ""; //동
-
-    //ImageView gpsMark;
     LinearLayout layout;
-    //TextView tvLocation;
     static int REQUEST_CODE = 1;
-    Geocoder geocoder;
 
 
     TabLayout tabLayout;
@@ -99,7 +92,7 @@ public class HomeFragment extends Fragment {
         ).attach();
 
 
-        int locationPermission = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION);
+        //int locationPermission = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION);
 
         Log.d("HomeFragment", "onCreateView: 1");
 
@@ -135,17 +128,7 @@ public class HomeFragment extends Fragment {
         }
 
 
-        //Bundle bundle = new Bundle();
-        //bundle.putString("key", str1);
-        //Tab1Fragment tab1Fragment = new Tab1Fragment();
-        //bundle.putSerializable("key", str1);
-        //tab1Fragment.setArguments(bundle);
-        
 
-        //현재 위치 정보 -> Tab1Fragment로 전송
-        //Bundle result = new Bundle();
-        //result.putString("bundleKey", str1);
-        //getParentFragmentManager().setFragmentResult("requestKey", result);
 
 
 */

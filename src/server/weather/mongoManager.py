@@ -1,9 +1,10 @@
 import pymongo
+import os
 
 
 class MongoDbManager:
     _instance = None
-    client = pymongo.MongoClient(host='172.17.0.1',
+    client = pymongo.MongoClient(host=os.environ['IP'],
                                  port=27017)
     database = client['scsc']['weather']
 

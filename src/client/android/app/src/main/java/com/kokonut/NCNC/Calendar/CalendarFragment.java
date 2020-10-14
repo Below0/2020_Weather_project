@@ -27,11 +27,13 @@ import java.util.Date;
 import java.util.HashSet;
 
 public class CalendarFragment extends Fragment{
+    static Calendar calToday = Calendar.getInstance();
     TextView textView1;
     ViewGroup viewGroup;
     CalendarDay clickedDate;
     MaterialCalendarView materialCalendarView;
-    Drawable drawable;
+    Drawable drawable_lightpurple;
+    Drawable drawable_darkblue;
     FragmentTransaction ft;
     String popupResult;
     TextView bottomeText1;
@@ -42,13 +44,14 @@ public class CalendarFragment extends Fragment{
     int[] dates_info;
     private CalendarDBHelper CalendardbHelper;
     int maxScoreDay;
-
     customDecorator CustomDecorator;
+    customDecorator CustomDecorator_darkpurple;
+    String maxDayString;
     ArrayList<CalendarInfo> CalendarList;
+    int recommendDate[] = {0,0};
 
     SQLiteDatabase sqlDB;
 
-    Calendar calToday = Calendar.getInstance();
     private CalendarInfo CalendarInfo;
 
     private static final int LOADER_ID = 1;
@@ -72,21 +75,24 @@ public class CalendarFragment extends Fragment{
         text2 = viewGroup.findViewById(R.id.text2);
         text3 = viewGroup.findViewById(R.id.text3);
         CalendarList = new ArrayList<CalendarInfo>();
-        drawable = this.getResources().getDrawable(R.drawable.calendar_circle_inside);
+        drawable_lightpurple = this.getResources().getDrawable(R.drawable.calendar_circle_inside);
+        drawable_darkblue = this.getResources().getDrawable(R.drawable.calendar_fullcircle);
+        //drawable_darkblue = this.getResources().getDrawable();
+
         CalendardbHelper = CalendarDBHelper.getInstance(getActivity());
 
         maxScoreDay = getArguments().getInt("maxScoreDay");
         Log.d("끝0", "initCalendarDB: " + maxScoreDay);
-        Log.d("끝1", "initCalendarDB: " + out_minmilli);
-        Log.d("끝2", "initCalendarDB: " + in_minmilli);
+
+        //세차추천일
+        maxDayString = getDate(maxScoreDay, recommendDate);
 
 
         initCalendarDB();
         initCalendar();
 
-        //세차추천일
-        String maxDayString = getDate(maxScoreDay);
         text3.setText(maxDayString);
+        //Log.d("알았다", "onCreateView: -"+maxDayString);
         text3.setPaintFlags(text1.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
 
         return viewGroup;
@@ -111,7 +117,8 @@ public class CalendarFragment extends Fragment{
     }
 
 
-    public static String getDate(int weekday){
+    public static String getDate(int weekday, int recommendedDate[]){
+        /*
         java.text.SimpleDateFormat format = new java.text.SimpleDateFormat("MM월dd일");
         Calendar calendar = Calendar.getInstance(); //현재 날짜
         calendar.add(Calendar.DAY_OF_MONTH, weekday); //오늘로부터 일주일일때
@@ -119,9 +126,35 @@ public class CalendarFragment extends Fragment{
         Log.d("끝5", "getDate: "+day);
 
         return day;
+
+         */
+       // Log.d("끝5", "getDate2: "+ weekday);
+        weekday--;
+        java.text.SimpleDateFormat format = new java.text.SimpleDateFormat("MM-dd");
+        Calendar calendar = Calendar.getInstance(); //현재 날짜
+        calendar.add(Calendar.DAY_OF_MONTH, weekday); //오늘로부터 일주일일때
+        String day = format.format(calendar.getTime());
+       // Log.d("끝5", "getDate: "+day);
+
+        String[] res = day.split("-");
+        for(int i=0; i<2; i++){
+            recommendedDate[i] = Integer.parseInt(res[i]);
+        }
+
+        String res_day = String.format("%d월%d일", recommendedDate[0], recommendedDate[1]);
+
+        return res_day;
+
     }
 
     public void initCalendar() {
+
+        // 세차추천일 view 추가
+
+        CustomDecorator_darkpurple = new customDecorator(getActivity(), drawable_darkblue,CalendarDay.from(2020, recommendDate[0], recommendDate[1]), 5);
+        materialCalendarView.addDecorators(CustomDecorator_darkpurple);
+
+        Log.d("추천 일 임니", ",," + recommendDate[0] + " / "+ recommendDate[1] );
 
         bottomeText1.setText("세차 예정일 ");
         bottomeText2.setText("세차한 날 ");
@@ -145,8 +178,10 @@ public class CalendarFragment extends Fragment{
         materialCalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-
+                Bundle args = new Bundle();
+                args.putString("clickedDate", date.toString());
                 Calendar_PopupFragment calendar_popupfragment = new Calendar_PopupFragment();
+                calendar_popupfragment.setArguments(args);
                 calendar_popupfragment.show(getFragmentManager(), "tag");
                 clickedDate = date;
             }
@@ -158,6 +193,8 @@ public class CalendarFragment extends Fragment{
 
             @Override
             public void onClick(View v) {
+                //dynamic_maxmilli[0] = -1; //maxmilli[0] 내부세차, maxmilli[1] 외부세차
+                //dynamic_maxmilli[1] = -1;
 
                 //1. view 의 데코레이터 모두 삭제
                 materialCalendarView.removeDecorators();
@@ -166,9 +203,26 @@ public class CalendarFragment extends Fragment{
                 CalendarList.clear();
 
                 //3. db 데이터 모두 삭제
+                CalendardbHelper.deleteAllrecord();
+
+                //4. 나의 세차 일정 view 초기화
+                text1.setText("");
+                text2.setText("");
+
+                //5. 세차하기 좋은 날 뷰 추가
+                CustomDecorator_darkpurple = new customDecorator(getActivity(), drawable_darkblue,CalendarDay.from(2020, recommendDate[0], recommendDate[1]), 5);
+                materialCalendarView.addDecorators(CustomDecorator_darkpurple);
+
+                //6.오늘 날짜 뷰 추가
+                OneDayDecorator oneDayDecorator = new OneDayDecorator("세차새차");
+                materialCalendarView.addDecorators(oneDayDecorator);
+
+
+                /*
                 sqlDB = CalendardbHelper.getWritableDatabase();
                 CalendardbHelper.onUpgrade(sqlDB, 1, 2);
                 sqlDB.close();
+                 */
             }
         });
     }
@@ -186,26 +240,29 @@ public class CalendarFragment extends Fragment{
 
     //캘린더 뷰에 동그라미 뷰를 추가할 경우
     public void devidepopupValue(int checkedList){
+        long[] dynamic_maxmilli = {-1,-1}; //maxmilli[0] 내부세차, maxmilli[1] 외부세차
+
         /*value 가 내부 , 외부 , 전체 인지에 따라 동그라미 아래 text 달리해줄것 */
         int cur_part;
 
-        //이미 '내부'나 '외부' 중 하나가 체크돼있을 경우 '전체'로 바꿀지 말지 결정
+        //이미 동그라미가 처져있는 날짜를 또다시 클릭했을 때 전체로 바꿀지 판단
         for(int p=0; p<CalendarList.size(); p++){
 
-            Log.d("~!~!", "devidepopupValue: "+ CalendarList.get(p).getPart());
-            //이미 동그라미가 처져있는 날짜를 또다시 클릭했을 때 전체로 바꿀지 판단
             if(CalendarList.get(p).getDate().toString().equals(clickedDate.toString())){
-                cur_part = CalendarList.get(p).getPart(); //내부, 외부 여부를 가져옴
 
-                if(checkedList != cur_part){ //내부, 외부를 겹쳐 선택 했을 경우
-                    //기존뷰를 삭제해야함
-                    checkedList = 3;
-                }
+                //1. Arraylist 에서 삭제
+                materialCalendarView.removeDecorator(CalendarList.get(p).getCustomDecorator());
+                materialCalendarView.invalidateDecorators();
+                CalendarList.remove(CalendarList.get(p));
+
+                //2. DB에서 삭제
+                CalendardbHelper.deleteRecord(clickedDate.toString());
+
             }
         }
 
         // 1. view 추가
-        CustomDecorator = new customDecorator(getActivity(), drawable, clickedDate, checkedList);
+        CustomDecorator = new customDecorator(getActivity(), drawable_lightpurple, clickedDate, checkedList);
         materialCalendarView.addDecorators(CustomDecorator);
 
         // 2. arraylist 에 날짜대입
@@ -213,20 +270,62 @@ public class CalendarFragment extends Fragment{
 
         // 3. db에 날짜 추가
         Log.d("csg", "devidepopupValue: " + checkedList);
-        CalendardbHelper.insertRecord(clickedDate.toString(), CustomDecorator.getColor(), checkedList);
+        CalendardbHelper.insertRecord(clickedDate.toString(), checkedList, CustomDecorator.getColor());
+
+        Cursor cursor = CalendardbHelper.readRecordOrderByAge();
+        while (cursor.moveToNext()) {
+            int itemId = cursor.getInt(cursor.getColumnIndexOrThrow(CalendarContract.CalendarEntry._ID)); //?
+            String gotDate = cursor.getString(cursor.getColumnIndexOrThrow(CalendarContract.CalendarEntry.COLUMN_DATE));
+            int gotPart = cursor.getInt(cursor.getColumnIndexOrThrow(CalendarContract.CalendarEntry.COLUMN_PART));
+            Log.d("클릭했을 때 디비 안 날짜", "initCalendarDB: "+gotDate);
+            Log.d("--> 클릭했을 때 디비 안 dynamic", ": "+dynamic_maxmilli[0] + ", "+ dynamic_maxmilli[1]);
+
+            //나의 세차일정 갱신함 -- 안될거같은데;
+
+            parceDate(clickedDate.toString());
+            CalendarDateView calendarDateView = new CalendarDateView(dynamic_maxmilli);
+            Log.d("dynamic 내부 콜---", " "+dynamic_maxmilli[0]);
+            Log.d("dynamic 외부 콜---", " "+dynamic_maxmilli[1]);
+
+            ///&&&&
+            Date datee11 = new Date(dynamic_maxmilli[0]);
+            SimpleDateFormat format22 = new SimpleDateFormat("yyyy-MM-dd");
+            Log.d("1. datee1 클릭한 날짜 ", " : " + format22.format(datee11));
+            Date datee21 = new Date(dynamic_maxmilli[1]);
+            SimpleDateFormat format31 = new SimpleDateFormat("yyyy-MM-dd");
+            Log.d("1. datee2 클릭한 날짜 ", " : " + format31.format(datee21));
+            ///&&&&
+
+            calendarDateView.findAdjacentDateFromToday(dates_info, checkedList, dynamic_maxmilli);
+
+            Log.d("dynamic 내부 콜_2---", " "+dynamic_maxmilli[0]);
+            Log.d("dynamic 외부 콜_2---", " "+dynamic_maxmilli[1]);
+
+            ///&&&&
+            Date datee1 = new Date(dynamic_maxmilli[0]);
+            SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd");
+            Log.d("2. datee1 클릭한 날짜 ", " : " + format2.format(datee1));
+            Date datee2 = new Date(dynamic_maxmilli[1]);
+            SimpleDateFormat format3 = new SimpleDateFormat("yyyy-MM-dd");
+            Log.d("2. datee2 클릭한 날짜 ", " : " + format3.format(datee2));
+            ///&&&&
+
+            setmyPlanView(dynamic_maxmilli);
+
+        }
 
     }
 
 
-    long in_minmilli = -1; //내부세차
-    long out_minmilli = -1; //외부세차
+    //long in_maxmilli =-1; //내부세차
+    //long out_maxmilli = -1; //외부세차
+    long[] maxmilli = {-1,-1}; //maxmilli[0] 내부세차, maxmilli[1] 외부세차
     long calmilli = 0;
 
     private void initCalendarDB(){
 
         Calendar calTemp;
         calTemp = calToday;
-
 
         //1. 빼고
         //2. 뺀 정보를 info class 에 나눠서 넣기
@@ -241,43 +340,20 @@ public class CalendarFragment extends Fragment{
             Log.d("gjkd1", "initCalendarDB: "+gotPart);
             String getCalendarObject = cursor.getString(cursor.getColumnIndexOrThrow(CalendarContract.CalendarEntry.COLUMN_CALENDAROBJECT));
 
-            //db 초기화 과정*
+            //db
+            // 초기화 과정*
             parceDate(gotDate);
             CalendarDay CalendarDay_date = CalendarDay.from(dates_info[0], dates_info[1], dates_info[2]);
             Log.d("222223", "initCalendarDB: " + CalendarDay_date.toString());
 
+            //오늘로부터 과거에 가장 최근에 세차한 날을 계산하는 함수
+            CalendarDateView calendarDateView = new CalendarDateView(maxmilli);
+            calendarDateView.findAdjacentDateFromToday(dates_info, gotPart, maxmilli);
+            Log.d("콜 - 내부세차", "initCalendarDB: " + maxmilli[0]);
+            Log.d("콜 - 외부세차", "initCalendarDB: " + maxmilli[1]);
 
-            //가장 최근 날짜를 찾음
-            //milisecond 로 변환하기 위해 calendar type 설정
-            calTemp.set(Calendar.YEAR , dates_info[0]);
-            calTemp.set(Calendar.MONTH, dates_info[1]);
-            calTemp.set(Calendar.DATE, dates_info[2]);
-
-
-            calmilli = calTemp.getTimeInMillis(); //millisecond 형태로 비교
-
-            //가장 최근 날짜로 저장한 내부, 외부 세차 날짜를 알기위해 최대값을 찾음
-            Log.d("쭉", "initCalendarDB: " + in_minmilli);
-            Date date2 = new Date(in_minmilli);
-            SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd");
-            Log.d("포맷 쭉", "getGapDay: " + format2.format(date2));
-            Log.d("포맷 쭉", "getGapDay: " + in_minmilli);
-
-            if(gotPart == 1){
-                if(calmilli > in_minmilli){
-                    in_minmilli = calmilli;
-                    Log.d("77771", "initCalendarDB: " + in_minmilli);
-                }
-            }
-
-            if(gotPart == 2){
-                if(calmilli > out_minmilli){
-                    out_minmilli = calmilli;
-                    Log.d("77772", "initCalendarDB: " + out_minmilli);
-                }
-            }
-
-            customDecorator CustomDecorator = new customDecorator(getActivity(), drawable, CalendarDay_date , gotPart);
+            //customDecorator CustomDecorator = new customDecorator(getActivity(), drawable_lightpurple, CalendarDay_date , gotPart);
+            CustomDecorator = new customDecorator(getActivity(), drawable_lightpurple, CalendarDay_date , gotPart);
 
             // 1. arraylist 에 날짜대입
             CalendarList.add(new CalendarInfo(CustomDecorator, CalendarDay_date, gotPart));
@@ -294,49 +370,86 @@ public class CalendarFragment extends Fragment{
         System.out.println(format1.format(date));
         Log.d("포맷 데이트3", "getGapDay: " + format1.format(date));
 
-        Log.d("끝1", "initCalendarDB: " + out_minmilli);
-        Log.d("끝2", "initCalendarDB: " + in_minmilli);
+        Log.d("오늘로부터 가장 가까운 외부세차", "initCalendarDB: " + maxmilli[1]);
+        Log.d("오늘로부터 가장 가까운 내부세차", "initCalendarDB: " + maxmilli[0]);
 
-
-
-        long subCal;
-
-        if(in_minmilli > -1){
-            subCal = getGapDay(in_minmilli);
-            text1.setText(Long.toString(subCal)+"일 경과");
-            text1.setPaintFlags(text1.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
-
-        }
-        else{ // 가장 최근에 한 내부세차를 찾음
-
-        }
-
-        if(out_minmilli > -1){
-            subCal = getGapDay(out_minmilli);
-            text2.setText(Long.toString(subCal)+"일 경과");
-            text2.setPaintFlags(text1.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
-        }
-        else{
-
-        }
-
-
-
+        //나의 세차일정 뷰 세팅
+        setmyPlanView(maxmilli);
 
     }
 
-    private long getGapDay(long calendaree){
+    private void setmyPlanView(long maxmilli[]){
 
+        long subCal;
+
+        if(maxmilli[0] > -1){
+            Log.d("...오늘로부터내부세차 on text", "initCalendarDB: " + maxmilli[1]);
+            subCal = getGapDay(maxmilli[0]);
+            text1.setText(Long.toString(subCal)+"일 경과");
+            text1.setPaintFlags(text1.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
+        }
+
+        if(maxmilli[1] > -1){
+            Log.d("...오늘로부터외부세차 on text", "initCalendarDB: " + maxmilli[1]);
+            subCal = getGapDay(maxmilli[1]);
+            Log.d("백 subcal", " : "+subCal);
+            text2.setText(Long.toString(subCal)+"일 경과");
+            text2.setPaintFlags(text1.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
+        }
+    }
+
+    private boolean isPastDate(long maxmilli){
+
+        Log.d("파데", "isPastDate: " + maxmilli);
         Calendar calendarToday = Calendar.getInstance();
-/*
+        Date date = calendarToday.getTime();
+        long today = date.getTime();
+
+        Log.d("파데오늘", "isPastDate: " + today);
+
+
+        Date date7 = new Date(today);
+        SimpleDateFormat format7 = new SimpleDateFormat("yyyy-MM-dd");
+        Log.d("포맷 쭉", "getGapDay: " + format7.format(date7));
+
+
+        if(maxmilli < today) {
+
+            Log.d("과거다", "initCalendarDB: ");
+            Log.d("쭉", "initCalendarDB: " + maxmilli);
+            Date date3 = new Date(maxmilli);
+            SimpleDateFormat format3 = new SimpleDateFormat("yyyy-MM-dd");
+            Log.d("포맷 쭉", "getGapDay: " + format3.format(date3));
+            Log.d("포맷 쭉", "getGapDay: " + maxmilli);
+
+
+            return true;
+        }
+        else {
+
+            Log.d("미래다", "initCalendarDB: ");
+            Log.d("쭉", "initCalendarDB: " + maxmilli);
+            Date date4 = new Date(maxmilli);
+            SimpleDateFormat format4 = new SimpleDateFormat("yyyy-MM-dd");
+            Log.d("포맷 쭉", "getGapDay: " + format4.format(date4));
+            Log.d("포맷 쭉", "getGapDay: " + maxmilli);
+            return false;
+        }
+    }
+
+    private long getGapDay(long calendaree){
+        Calendar calendarToday = Calendar.getInstance();
+
         Date date = new Date(calendarToday.getTimeInMillis());
         SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
 
         Date date2 = new Date(calendaree);
         SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd");
-  */
 
-        long sub = (calendaree - calendarToday.getTimeInMillis());
+        Log.d("gapday 클릭한 날짜 ", " : " + format2.format(date2));
+
+        long sub = (calendarToday.getTimeInMillis()- calendaree);
+        //long sub = (calendaree - calendarToday.getTimeInMillis());
         Log.d("포맷 데이트4410", "getGapDay: " + sub);
 
         if(sub < 0){
@@ -350,6 +463,8 @@ public class CalendarFragment extends Fragment{
         return day;
     }
 
+
+    //calendarday 형식을 int 형으로 배열에 각각 저장한다
     private void parceDate(String calendar_date){
 
         int i=0; int last = 0;
@@ -370,24 +485,76 @@ public class CalendarFragment extends Fragment{
 
     }
 
+    //-월-일 형식을 int 형으로 분리한다
+    /*
+    private String parceDateFromDateKor(String calendarday_kor){
+
+        int res[] = new int[2];
+        int i=0; int date_ind, date, day, year;
+        String result;
+
+        Date  = new Date(calToday.getTimeInMillis());
+        SimpleDateFormat formatofyear = new SimpleDateFormat("yyyy");
+        year = Integer.toString(formatofyear.format(date));
+
+        date_ind = calendarday_kor.indexOf("월");
+        date = Integer.parseInt(calendarday_kor.substring(0,date_ind));
+        Log.d("변환 날짜 ", "parceDateFromDateKor: " + date_ind + "// " + calendarday_kor.indexOf("일"));
+        day = Integer.parseInt(calendarday_kor.substring(date_ind+1, calendarday_kor.indexOf("일")));
+        Log.d("변환 날짜 ", "parceDateFromDateKor: " + date +"/ " + day);
+
+        res[0] = date;
+        res[1] = day;
+
+        return intToCalendarDay(res);  //Calendar{0000-00-00} 형식 return
+
+    }*/
+/*
+    private String intToCalendarDay(int res[]){
+        String year, calendarDay;
+
+        Date date = new Date(calToday.getTimeInMillis());
+        SimpleDateFormat format = new SimpleDateFormat("yyyy");
+        year = format.format(date);
+        Log.d("이번년도는 ", "getGapDay: " + format.format(date));
+
+        calendarDay = String.format("CalendarDay{%s-%d-%d}", year, res[0], res[1]);
+
+        Log.d("바꿈", "intToCalendarDay: "+calendarDay);
+
+        return calendarDay;
+    }
+*/
+
+
+
     public void removeCustomDecorator(int checkedList) {
+        //dynamic_maxmilli[0] = -1; //maxmilli[0] 내부세차, maxmilli[1] 외부세차
+        //dynamic_maxmilli[1] = -1;
+
 
         //삭제 버튼을 눌렀을 때
         if (CalendarList.size() > 0 && checkedList == 4) {
             for (int i = 0; i < CalendarList.size(); i++) {
                 if (CalendarList.get(i).getDate().equals(clickedDate.toString())) {
                     Log.d("2-----isthesame", "removeCustomDecorator: " + CalendarList.get(i).getDate());
-                    //1. Arraylist 에서 삭제
+
+                    //1. 나의 세차일정 view 삭제
+                    if(CalendarList.get(i).getPart()==1)
+                        text1.setText(" ");
+                    else if(CalendarList.get(i).getPart()==2)
+                        text2.setText(" ");
+
+                    //2. Arraylist 에서 삭제
                     materialCalendarView.removeDecorator(CalendarList.get(i).getCustomDecorator());
                     materialCalendarView.invalidateDecorators();
                     CalendarList.remove(CalendarList.get(i));
 
-                    //2. DB에서 삭제
+                    //3. DB에서 삭제
                     CalendardbHelper.deleteRecord(clickedDate.toString());
+
                 }
             }
         }
-
-
     }
 }

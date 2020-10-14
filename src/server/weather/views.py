@@ -23,9 +23,12 @@ def weather_list(request, region):
 
 
 def weather_detail(request, region, date):
+
     temp = MongoDbManager().get_weather_from_collection({"regID": region, "date": date})
+
     if temp.count() < 1:
-       return JsonResponse({"message": "해당하는 데이터가 없습니다."}, json_dumps_params={'ensure_ascii': False})
+        return JsonResponse({"message": "해당하는 데이터가 없습니다."}, json_dumps_params={'ensure_ascii': False})
+
 
     result = [item for item in temp]
     for i in range(len(result)):

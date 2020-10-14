@@ -1,26 +1,9 @@
 from django import forms
-from django.utils.translation import ugettext_lazy as _
+from .models import User
+# 모델클래스 GuessNumbers로 부터 데이터를 입력 받을 폼을 작성한다.
 
-from .models import Profile
+class PostForm(forms.ModelForm): #forms의 ModelForm 클래스를 상속 받는다.
 
-
-class SignupForm(forms.Form):
-    first_name = forms.CharField(label=_('name'),
-                                 max_length=30,
-                                 widget=forms.TextInput(
-                                     attrs={'placeholder':
-                                                _('name'), }))
-    phone = forms.CharField(label=_('Phone number'),
-                            max_length=30,
-                            widget=forms.TextInput(
-                                attrs={'placeholder':
-                                           _('Phone number'), }))
-
-    def signup(self, request, user):
-        user.name = self.cleaned_data['name']
-        user.save()
-
-        profile = Profile()
-        profile.user = user
-        profile.phone = self.cleaned_data['phone']
-        profile.save()
+    class Meta:
+        model = User
+        fields = ('id','name') # 그 중에 입력 받을 것

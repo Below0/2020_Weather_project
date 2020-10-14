@@ -1,7 +1,7 @@
 package com.kokonut.NCNC.Home.Tab1;
 
 import android.app.Activity;
-import android.content.Intent;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -16,14 +16,14 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import com.kokonut.NCNC.Home.HomeContract;
 import com.kokonut.NCNC.Home.HomeDBHelper;
 import com.kokonut.NCNC.R;
 
 public class Tab1_PopupFragment extends DialogFragment {
+
+    private DialogInterface.OnDismissListener onDismissListener = null;
 
     private int lastValue1, lastValue2, lastValue3; //마지막으로 설정한 '맞춤형 세차점수 설정하기'
     public String result1, result2, result3; //설정한거
@@ -33,6 +33,7 @@ public class Tab1_PopupFragment extends DialogFragment {
     SeekBar seekBar1, seekBar2, seekBar3;//ㅈㅇ
     private HomeDBHelper HomedbHelper;//ㅈㅇ
 
+    uploadDialogInterface interfaceObj;
 
     View view;
     TextView textView_title, textView_subtitle;
@@ -47,6 +48,24 @@ public class Tab1_PopupFragment extends DialogFragment {
         super.onCreate(savedInstanceState);
         //lastValue = UserConfig.getConfigInt(getActivity(), "gainvalue", 40);
     }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            interfaceObj = (Tab1_PopupFragment.uploadDialogInterface)activity;
+        }
+        catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement interfaceObj");
+        }
+    }
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        interfaceObj = null;
+    }
+
 
     @Nullable
     @Override
@@ -80,8 +99,6 @@ public class Tab1_PopupFragment extends DialogFragment {
 
         initDB(); //db 로 seekbar 초기화
 
-
-        //final SeekBar seekBar1 = view.findViewById(R.id.home_popup_seekBar1);
         //seekBar1.setProgress(lastValue); 마지막으로 설정한 값 기억
         //seekBar1.incrementProgressBy(1); 1씩 증가
         seekBar1.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -105,7 +122,6 @@ public class Tab1_PopupFragment extends DialogFragment {
             }
         });
 
-        //final SeekBar seekBar2 = view.findViewById(R.id.home_popup_seekBar2);
         seekBar2.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekbar2, int progress, boolean fromUser) {
@@ -122,7 +138,6 @@ public class Tab1_PopupFragment extends DialogFragment {
             public void onStopTrackingTouch(SeekBar seekbar2) {}
         });
 
-        //final SeekBar seekBar3 = view.findViewById(R.id.home_popup_seekBar3);
         seekBar3.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekbar3, int progress, boolean fromUser) {
@@ -161,13 +176,9 @@ public class Tab1_PopupFragment extends DialogFragment {
                 Log.d("result값들 --'x'눌렀을 경우 ", " "+ result1 + ", "+ result2 +", "+ result3);
 
                 HomedbHelper.insertRecord(temp, rain, dust); //color 안씀
+
+
                 getDialog().dismiss();
-                /*FragmentManager manager = getFragmentManager();
-                Fragment prev = manager.findFragmentByTag("tab1");
-                if(prev!=null){
-                    DialogFragment dialogfragment = (DialogFragment) prev;
-                    dialogfragment.dismiss();
-                }*/
             }
         });
 
@@ -215,6 +226,14 @@ public class Tab1_PopupFragment extends DialogFragment {
 
                 HomedbHelper.insertRecord(getTemp, getRain, getDust); //color 안씀
 
+                if(interfaceObj != null) {
+                    Log.d("wow7", "탭1한테 데이터 보낸다");
+                    interfaceObj.senddatatoTab1Fragment();
+                }
+                else
+                    Log.d("wow7", "탭1한테 데이터 못보냄");
+
+
 
                 Cursor cursor = HomedbHelper.readRecordOrderByID();
 
@@ -225,14 +244,14 @@ public class Tab1_PopupFragment extends DialogFragment {
                     dust = cursor.getInt(cursor.getColumnIndexOrThrow(HomeContract.homeEntry.COLUMN_DUST));
 
                     Log.d("캬캬컄캬캬", "onClick: "+temp);
-
                     Log.d("캬캬컄캬캬", "onClick: "+rain);
-
                     Log.d("캬캬컄캬캬", "onClick: "+dust);
                 }
 
 
-
+                if(onDismissListener!=null){
+                    onDismissListener.onDismiss((DialogInterface) Tab1_PopupFragment.this);
+                }
 
                 getDialog().dismiss();
             }
@@ -240,7 +259,6 @@ public class Tab1_PopupFragment extends DialogFragment {
 
 
         setCancelable(false); //popup에서 여백을 만져도 꺼지지 않게 함
-
         return view;
     }
     private void initDB() {
@@ -257,11 +275,15 @@ public class Tab1_PopupFragment extends DialogFragment {
             rain = cursor.getInt(cursor.getColumnIndexOrThrow(HomeContract.homeEntry.COLUMN_RAIN));
             dust = cursor.getInt(cursor.getColumnIndexOrThrow(HomeContract.homeEntry.COLUMN_DUST));
         }
+        Log.d("temp-11", "initDB: "+temp +", "+rain+", "+dust);
 
         //db 데이터 모두 삭제
+        //임시 주석
+
         SQLiteDatabase sqlDB = HomedbHelper.getWritableDatabase();
-        HomedbHelper.onUpgrade(sqlDB, 1, 2);
-        sqlDB.close();
+        HomedbHelper.onUpgrade(sqlDB, 2, 3);
+
+        //sqlDB.close();
 
 
         Log.d("~!~!---1", "devidepopupValue: " + temp);
@@ -295,12 +317,21 @@ public class Tab1_PopupFragment extends DialogFragment {
             seekBar2.setProgress(rain);
             seekBar3.setProgress(dust);
 
+            Log.d("temp", "initDB: "+temp +", "+rain+", "+dust);
             textView1_score.setText(Integer.toString(temp));
             textView2_score.setText(Integer.toString(rain));
             textView3_score.setText(Integer.toString(dust));
+            Log.d("TASD","test");
 
         }
-
-
     }
+
+
+    public interface uploadDialogInterface
+    {
+        //자동으로 public 으로 선언되기 때문에 public 안써도 됨
+        void senddatatoTab1Fragment();
+    }
+
+
 }

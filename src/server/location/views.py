@@ -12,3 +12,15 @@ def location_list(request):
     return JsonResponse(data, safe=False, json_dumps_params={'ensure_ascii': False})
 
 
+def find_code(request):
+    city = request.GET.get('city', None)
+    if city is None:
+        return JsonResponse({"status":"fail"})
+
+    code = Location.objects.get(name=city)
+    return JsonResponse(
+        {
+            "code": code.get_id()
+         },
+        safe=False, json_dumps_params={'ensure_ascii': False}
+    )

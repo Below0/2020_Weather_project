@@ -13,6 +13,7 @@ def score_list(request, region):
         return JsonResponse({"message": "해당하는 데이터가 없습니다."}, json_dumps_params= {'ensure_ascii': False})
 
     result = [item for item in temp]
+
     for i in range(len(result)):
         del result[i]['_id']
 
