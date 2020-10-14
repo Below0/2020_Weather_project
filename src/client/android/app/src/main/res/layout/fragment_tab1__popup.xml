@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Home.Tab1.Tab1_PopupFragment"
+    android:layout_gravity="center"
+    android:gravity="center_horizontal">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
+        android:background="@drawable/home_popup_radius">
+
+        <TextView
+            android:id="@+id/home_popup_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:text="맞춤형 세차점수 설정하기"
+            android:textColor="@color/color_black"
+            android:textSize="17sp"
+            android:layout_alignParentLeft="true"
+            android:fontFamily="@font/ns_regular"/>
+
+        <ImageButton
+            android:id="@+id/home_popup_buttonX"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/ic_x"
+            android:layout_alignParentRight="true"
+            android:background="@android:color/transparent"/>
+
+        <TextView
+            android:id="@+id/home_popup_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginRight="20dp"
+            android:text="중요한 만큼 드래그 해주세요."
+            android:textSize="12sp"
+            android:layout_below="@id/home_popup_buttonX"
+            android:layout_alignParentRight="true"/>
+
+        <RelativeLayout
+            android:id="@+id/home_settingpopup_layout_thermometer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/home_popup_subtitle"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/home_setting_box"
+            android:gravity="center_horizontal"
+            android:layout_centerHorizontal="true">
+
+            <LinearLayout
+                android:id="@+id/home_popup_linear1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="12dp">
+                <ImageView
+                    android:id="@+id/home_popup_Image1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_home_popup_image1"
+                    android:layout_gravity="center"/>
+
+                <TextView
+                    android:id="@+id/home_popup_text1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="기온"
+                    android:textColor="@color/color_black"
+                    android:textSize="9sp"
+                    android:fontFamily="@font/ns_regular"/>
+
+            </LinearLayout>
+
+            <SeekBar
+                android:id="@+id/home_popup_seekBar1"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_toRightOf="@id/home_popup_linear1"
+                android:max="100"
+                android:progress="0"
+                android:layout_centerInParent="true"/>
+
+            <TextView
+                android:id="@+id/home_popup_score1"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/home_setting_smallbox"
+                android:textSize="11sp"
+                android:textColor="@color/color_black"
+                android:fontFamily="@font/ns_regular"
+                android:gravity="center|center_vertical"
+                android:layout_gravity="center_vertical"
+                android:layout_toRightOf="@id/home_popup_seekBar1"
+                android:layout_centerVertical="true"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/home_settingpopup_layout_rain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/home_settingpopup_layout_thermometer"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/home_setting_box"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_horizontal">
+
+            <LinearLayout
+                android:id="@+id/home_popup_linear2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp">
+                <ImageView
+                    android:id="@+id/home_popup_Image2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_home_popup_image2"
+                    android:layout_gravity="center"/>
+
+                <TextView
+                    android:id="@+id/home_popup_text2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="강수"
+                    android:textColor="@color/color_black"
+                    android:textSize="9sp"
+                    android:fontFamily="@font/ns_regular"
+                    android:layout_gravity="center"/>
+
+            </LinearLayout>
+
+            <SeekBar
+                android:id="@+id/home_popup_seekBar2"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_toRightOf="@id/home_popup_linear2"
+                android:max="100"
+                android:progress="0"
+                android:layout_centerVertical="true"/>
+
+            <TextView
+                android:id="@+id/home_popup_score2"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/home_setting_smallbox"
+                android:textSize="11sp"
+                android:textColor="@color/color_black"
+                android:fontFamily="@font/ns_regular"
+                android:gravity="center|center_vertical"
+                android:layout_toRightOf="@id/home_popup_seekBar2"
+                android:layout_centerVertical="true"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/home_settingpopup_layout_mask"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/home_settingpopup_layout_rain"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/home_setting_box"
+            android:layout_centerInParent="true"
+            android:gravity="center_horizontal">
+
+            <LinearLayout
+                android:id="@+id/home_popup_linear3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_centerVertical="true">
+                <ImageView
+                    android:id="@+id/home_popup_Image3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_home_popup_image3"
+                    android:layout_marginBottom="2dp"/>
+
+                <TextView
+                    android:id="@+id/home_popup_text3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:fontFamily="@font/ns_regular"
+                    android:text="미세먼지"
+                    android:textSize="9sp"
+                    android:textColor="@color/color_black"/>
+
+            </LinearLayout>
+
+            <SeekBar
+                android:id="@+id/home_popup_seekBar3"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_toRightOf="@id/home_popup_linear3"
+                android:max="100"
+                android:progress="0"
+                android:layout_centerVertical="true"/>
+
+            <TextView
+                android:id="@+id/home_popup_score3"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/home_setting_smallbox"
+                android:textSize="11sp"
+                android:textColor="@color/color_black"
+                android:fontFamily="@font/ns_regular"
+                android:gravity="center|center_vertical"
+                android:layout_toRightOf="@id/home_popup_seekBar3"
+                android:layout_centerVertical="true"/>
+        </RelativeLayout>
+
+        <ImageButton
+            android:id="@+id/home_popupButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/home_settingpopup_layout_mask"
+            android:layout_marginBottom="20dp"
+            android:src="@drawable/home_settingbutton_ok"
+            android:layout_centerInParent="true"
+            android:background="@android:color/transparent"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

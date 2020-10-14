@@ -2,107 +2,232 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:weightSum = "5"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@android:color/white">
 
-    <LinearLayout
+
+    <ScrollView
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-
-        android:layout_weight="3.8"
-        android:background="@drawable/calendar_box_white">
-
-        <com.prolificinteractive.materialcalendarview.MaterialCalendarView xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/calendar_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:mcv_selectionColor="#00F"
-            app:mcv_showOtherDates="all" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_weight="1.2"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        android:layout_marginTop="5dp"
-        android:layout_gravity="center_horizontal"
-        >
-
-        <TextView
-            android:id="@+id/plan_text1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="14dp"
-            android:layout_marginLeft="16dp"
-            android:textSize="20sp"
-            android:lineSpacingExtra="2sp"
-            android:textColor="#000000"
-            tools:text="나의 세차 일정" />
-
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:background="@drawable/calendar_planbox_grey"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp">
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="350dp"
+                android:orientation="vertical"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="3dp"
+                android:background="@drawable/calendar_box_white">
 
-            <TableLayout
+                <com.prolificinteractive.materialcalendarview.MaterialCalendarView xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/calendar_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="325dp"
+                    app:mcv_selectionColor="@color/color_white"
+                    app:mcv_tileHeight="46dp"
+                    app:mcv_tileWidth="45dp">
+                </com.prolificinteractive.materialcalendarview.MaterialCalendarView>
+
+                <LinearLayout
+                    android:paddingRight="39dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:src="@drawable/small_circle1"
+                        android:id="@+id/bottom1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:id="@+id/bottom1_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="11sp"
+                        android:textColor="#292929"
+                        android:lineSpacingExtra="1sp"
+                        tools:text="세차 예정일  "/>
+
+                    <ImageView
+                        android:src="@drawable/small_circle2"
+                        android:id="@+id/bottom2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+
+                        android:id="@+id/bottom2_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="11sp"
+                        android:textColor="#292929"
+                        android:lineSpacingExtra="1sp"
+                        tools:text="세차한 날   "
+                        />
+                    <ImageView
+                        android:src="@drawable/small_circle3"
+                        android:id="@+id/bottom3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+
+                        android:id="@+id/bottom3_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="11sp"
+                        android:textColor="#292929"
+                        android:lineSpacingExtra="1sp"
+                        tools:text="세차하기 좋은 날"
+                        />
+
+                    <TextView
+                        android:id="@+id/initbutton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="초기화"
+                        android:textSize="8sp"
+                        android:paddingLeft="30dp"
+                        android:layout_gravity="right"
+                        android:textColor="#292929" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:stretchColumns="3">
+                android:layout_height="190dp"
+                android:orientation="vertical"
+                android:layout_marginTop="10dp"
+                android:paddingBottom="20dp"
+                android:layout_gravity="center_horizontal">
+                <!--android:layout_weight="1.6"-->
+
+                <TextView
+                    android:id="@+id/plan_text1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="14dp"
+                    android:layout_marginLeft="16dp"
+                    android:textSize="20sp"
+                    android:lineSpacingExtra="2sp"
+                    android:textColor="#000000"
+                    tools:text="나의 세차 일정" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="130dp"
+                    android:orientation="vertical"
+                    android:background="@drawable/calendar_planbox_grey"
+                    android:paddingTop="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="10dp">
+
+                    <TableLayout
+
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        android:stretchColumns="3">
 
 
-                <TableRow
-                    android:weightSum="3">
+                        <TableRow
+                            android:weightSum="3">
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_weight="1">
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:paddingTop="15sp"
+                                android:paddingLeft="0sp"
+                                android:orientation="vertical"
+                                android:layout_weight="1">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:textSize="10dp"
+                                    android:text="           마지막\n 내부세차일로부터 \n">
+                                </TextView>
+                                <TextView
+                                    android:id="@+id/text1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/color_main"
+                                    android:textSize="15dp"
+                                    android:layout_gravity="center">
+                                </TextView>
+                                <View
+                                    android:layout_width="3dp"
+                                    android:layout_height="100dp"
+                                    android:background="#DDDDDD"/>
+                            </LinearLayout>
 
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="right"
-                            android:layout_marginTop="20dp"
-                            android:layout_marginBottom="20dp"
-                            android:src="@drawable/calendar_planbox_line_grey" />
-                    </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_weight="1">
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:paddingTop="15sp"
+                                android:layout_weight="1"
+                                >
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:textSize="10dp"
+                                    android:text="           마지막\n 외부세차일로부터 \n">
 
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="right"
-                            android:layout_marginTop="20dp"
-                            android:layout_marginBottom="20dp"
-                            android:src="@drawable/calendar_planbox_line_grey" />
-                    </LinearLayout>
+                                </TextView>
+                                <TextView
+                                    android:id="@+id/text2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="15dp"
+                                    android:textColor="@color/color_main"
+                                    android:layout_gravity="center">
+                                </TextView>
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_weight="1">
+                            </LinearLayout>
 
-                    </LinearLayout>
-                </TableRow>
-            </TableLayout>
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:paddingTop="15sp"
+                                android:layout_weight="1">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:textSize="10dp"
+                                    android:text="       다음\n세차 추천일 \n">
+
+                                </TextView>
+                                <TextView
+                                    android:id="@+id/text3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="15dp"
+                                    android:textColor="@color/color_main"
+                                    android:layout_gravity="center">
+                                </TextView>
+
+                            </LinearLayout>
+                        </TableRow>
+                    </TableLayout>
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
+    </ScrollView>
 </LinearLayout>

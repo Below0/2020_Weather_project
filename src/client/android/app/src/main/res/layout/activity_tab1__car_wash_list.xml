@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Home.Tab1.Tab1_CarWashList"
+    android:orientation="vertical"
+    android:background="@color/color_white">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="47dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/upper_tab">
+
+        <ImageButton
+            android:id="@+id/tab1_list_back_arrow"
+            android:layout_width="10dp"
+            android:layout_height="15.9dp"
+            android:layout_marginTop="17dp"
+            android:layout_marginLeft="14dp"
+            android:background="@drawable/back_arrow"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:lineSpacingExtra="18sp"
+            android:fontFamily="@font/ns_extrabold"
+            android:text="내 위치 주변 세차장">
+        </TextView>
+    </FrameLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="5dp"
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:orientation="vertical">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_carwashlist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="vertical">
+        </androidx.recyclerview.widget.RecyclerView>
+    </ScrollView>
+
+
+</LinearLayout>

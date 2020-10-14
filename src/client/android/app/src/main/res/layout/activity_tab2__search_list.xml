@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_white"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="47dp"
+        android:background="@drawable/upper_tab">
+
+        <ImageButton
+            android:id="@+id/tab2_searchlist_back_arrow"
+            android:layout_width="10dp"
+            android:layout_height="15.9dp"
+            android:layout_marginTop="17dp"
+            android:layout_marginLeft="14dp"
+            android:background="@drawable/back_arrow"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:lineSpacingExtra="18sp"
+            android:fontFamily="@font/ns_extrabold"
+            android:text="상세 검색 결과">
+        </TextView>
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity ="center"
+            android:layout_weight="1"
+            android:layout_marginTop="5dp"
+            android:fillViewport="true">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_searchlist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical"
+                android:gravity="center">
+            </androidx.recyclerview.widget.RecyclerView>
+        </ScrollView>
+
+    </FrameLayout>
+
+
+
+</LinearLayout>

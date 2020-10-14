@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-189423980/NCNC.iml" filepath="$PROJECT_DIR$/.idea/modules/-189423980/NCNC.iml" group="NCNC" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/app.iml" filepath="$PROJECT_DIR$/.idea/app.iml" group="NCNC/app" />
+    </modules>
+  </component>
+</project>

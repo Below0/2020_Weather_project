@@ -3,147 +3,147 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".Home.HomeFragment">
 
     <!-- TODO: Update blank fragment layout -->
-<!--    <TextView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:gravity="center"-->
-<!--        android:text="map" />-->
-
-
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="465dp">
-        <!--        android:layout_height="465dp"-->
+        android:layout_height="wrap_content">
 
         <com.naver.maps.map.MapView
             android:id="@+id/map_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
-        <LinearLayout
-            android:id="@+id/map_more_info"
+        <ImageButton
+            android:id="@+id/map_mark_gps"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginLeft="15dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginTop="19dp"
+            android:layout_marginRight="16dp"
+            android:layout_gravity="right"
+            android:background="@drawable/map_mark_gps"/>
+
+        <FrameLayout
+            android:id="@+id/map_car_wash_info_box"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:layout_marginBottom="15dp"
             android:orientation="horizontal"
             android:background="@drawable/map_box_white">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_marginLeft="21dp"
-                android:src="@drawable/map_info_pic"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="19.5dp"
-                android:layout_marginLeft="15.5dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:textColor="#000000"
-                    android:lineSpacingExtra="40sp"
-                    android:text="쓱싹쓱싹 숭실대입구점"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="9dp"
-                    android:textSize="10sp"
-                    android:textColor="#000000"
-                    android:lineSpacingExtra="2sp"
-                    android:text="셀프세차"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:textSize="10sp"
-                    android:textColor="#000000"
-                    android:lineSpacingExtra="2sp"
-                    android:text="영업시간 : 9:00 ~ 21:30"/>
+                android:layout_gravity="left"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="21dp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp">
-                    <TextView
+                    android:layout_marginTop="7dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="10sp"
-                        android:textColor="#000000"
-                        android:lineSpacingExtra="2sp"
-                        android:text="부스 4개"/>
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/map_info_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="14sp"
+                            android:textColor="#000000"
+                            android:lineSpacingExtra="40sp"
+                            android:fontFamily="@font/ns_bold"/>
+
+                        <RatingBar
+                            android:id="@+id/map_info_rating_bar"
+                            style="@style/Widget.AppCompat.RatingBar.Small"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="12dp"
+                            android:isIndicator="true"
+                            android:numStars="5"
+                            android:stepSize="0.5"
+                            android:theme="@style/RatingBar_map" />
+
+
+                        <TextView
+                            android:id="@+id/map_info_score"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:textSize="10sp"
+                            android:textColor="#000000"
+                            android:lineSpacingExtra="40sp"
+                            android:fontFamily="@font/ns_bold"/>
+
+                    </LinearLayout>
 
                     <TextView
+                        android:id="@+id/map_info_type"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="9dp"
                         android:textSize="10sp"
-                        android:textColor="#000000"
                         android:lineSpacingExtra="2sp"
-                        android:gravity="center_horizontal"
-                        android:text="ㅣ"/>
-                    <TextView
+                        android:fontFamily="@font/ns_bold"
+                        android:textColor="#000000"/>
+
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="10sp"
-                        android:textColor="#000000"
-                        android:lineSpacingExtra="2sp"
-                        android:text="부스 4개"/>
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:textSize="10sp"
+                            android:lineSpacingExtra="2sp"
+                            android:fontFamily="@font/ns_bold"
+                            android:textColor="#000000"
+                            android:text="@string/car_wash_time"/>
+
+                        <TextView
+                            android:id="@+id/map_info_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:textSize="10sp"
+                            android:lineSpacingExtra="2sp"
+                            android:fontFamily="@font/ns_bold"
+                            android:textColor="#000000"/>
+
+                    </LinearLayout>
 
                     <TextView
+                        android:id="@+id/map_info_address"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
                         android:textSize="10sp"
-                        android:textColor="#000000"
                         android:lineSpacingExtra="2sp"
-                        android:gravity="center_horizontal"
-                        android:text="ㅣ"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="10sp"
                         android:textColor="#000000"
-                        android:lineSpacingExtra="2sp"
-                        android:text="부스 4개"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="10sp"
-                        android:textColor="#000000"
-                        android:lineSpacingExtra="2sp"
-                        android:gravity="center_horizontal"
-                        android:text="ㅣ"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="10sp"
-                        android:textColor="#000000"
-                        android:lineSpacingExtra="2sp"
-                        android:text="부스 4개"/>
+                        android:fontFamily="@font/ns_bold"/>
                 </LinearLayout>
+
             </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="-4dp"
-                android:layout_gravity="center_vertical"
+                android:layout_gravity="center_vertical|right"
+                android:layout_marginRight="20dp"
                 android:orientation="vertical">
 
                 <ImageView
@@ -160,9 +160,6 @@
                     android:lineSpacingExtra="14.6sp"
                     android:text="더보기"/>
             </LinearLayout>
-
-        </LinearLayout>
-
+        </FrameLayout>
     </FrameLayout>
-
 </LinearLayout>

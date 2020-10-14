@@ -1,47 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.kokonut.NCNC">
 
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <uses-feature android:name="android.hardware.type.watch" />
+
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- 퍼미션 of 알람 -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_launcher_newcar"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_launcher_newcar_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme" >
-
-        <meta-data
-            android:name="com.naver.maps.map.CLIENT_ID"
-            android:value="CLIENT_ID_HERE" />
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".MyPage.QuestionActivity"></activity>
 
         <activity
-            android:name=".Map.CarWashInfoActivity"
-            android:label="CarWashInfo">
-        </activity>
-
-        <activity
-            android:name=".Map.CarWashReviewActivity"
-            android:label="CarWashReview">
-        </activity>
-
-        <activity
-            android:name=".Map.WriteReviewActivity"
-            android:label="WriteReview">
-        </activity>
-
-        <activity
-            android:name=".Map.MapActivity"
-            android:label="Map">
-        </activity>
-
-        <activity
-            android:name=".MainActivity"
-            android:label="Main">
+            android:name=".MyPage.GonjiActivity"
+            android:label="@string/title_activity_gonji">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    </application>
 
+        <meta-data
+            android:name="com.naver.maps.map.CLIENT_ID"
+            android:value="frq2tpnvu5" />
+
+        <activity
+            android:name=".Map.CarWashInfoActivity"
+            android:label="CarWashInfo" />
+        <activity
+            android:name=".Map.CarWashReviewActivity"
+            android:label="CarWashReview" />
+        <activity
+            android:name=".Map.WriteReviewActivity"
+            android:label="WriteReview" />
+        <activity
+            android:name=".Home.Tab2.Tab2_SearchList"
+            android:label="CarWash_SearchList" />
+        <activity
+            android:name=".Home.Tab1.Tab1_CarWashList"
+            android:label="CarWashList" />
+        <activity
+            android:name=".Home.Tab2.Tab2ForTest"
+            android:label="Tab2ForTest" />
+        <activity
+            android:name=".MyPage.AlarmActivity"
+            android:label="Map" />
+        <activity
+            android:name=".MyPage.AsktoSechaSecha"
+            android:label="asktosecha" />
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <!-- Redirect URI: "kakao{NATIVE_APP_KEY}://oauth“ -->
+                <data
+                    android:host="oauth"
+                    android:scheme="kakao161c3ebdf4c87831197714a8529765a4" />
+            </intent-filter>
+        </activity>
+
+        <receiver android:name=".BroadcastAlarm" />
+    </application>
 
 </manifest>

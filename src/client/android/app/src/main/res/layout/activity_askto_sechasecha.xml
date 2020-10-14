@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:background="@color/color_white"
+    >
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="47dp"
+        android:background="@drawable/upper_tab">
+
+        <ImageButton
+            android:id="@+id/askto_backarrow"
+            android:layout_width="10dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="14dp"
+            android:layout_marginTop="17dp"
+            android:background="@drawable/back_arrow" />
+
+        <TextView
+            android:id="@+id/car_wash_review_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:lineSpacingExtra="18sp"
+            android:fontFamily="@font/ns_extrabold"
+            android:text="세차새차에 문의하기">
+        </TextView>
+    </FrameLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:background="@drawable/shadow_box"/>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/home_tap2_box"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp">
+
+        <TableLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:stretchColumns="*"
+            android:gravity="center"
+            android:layout_gravity="center">
+            <TableRow>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imageView1"
+                    android:src="@drawable/text"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="20dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ssg_ssack@gmail.com"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/ns_regular"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="25dp">
+                </TextView>
+            </TableRow>
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:background="#DDDDDD"
+                android:layout_marginRight="40dp"
+                android:layout_marginLeft="40dp"
+                android:layout_gravity="center"/>
+            <TableRow>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imageView2"
+                    android:src="@drawable/kakaotalk"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="25dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ssg_ssack"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/ns_regular"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="25dp" />
+            </TableRow>
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:background="#DDDDDD"
+                android:layout_marginRight="40dp"
+                android:layout_marginLeft="40dp"
+                android:layout_gravity="center"/>
+            <TableRow>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imageView3"
+                    android:src="@drawable/instagram"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="25dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="'@ssg_ssack"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/ns_regular"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="25dp" />
+            </TableRow>
+        </TableLayout>
+    </LinearLayout>
+
+
+
+
+</LinearLayout>

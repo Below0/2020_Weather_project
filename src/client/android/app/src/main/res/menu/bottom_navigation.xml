@@ -19,12 +19,6 @@
         android:title="주변 세차장"/>
 
     <item
-        android:id="@+id/tab4"
-        android:icon="@drawable/ic_tap4_gray"
-        android:enabled="true"
-        android:title="캐스트"/>
-
-    <item
         android:id="@+id/tab5"
         android:icon="@drawable/ic_tap5_gray"
         android:enabled="true"
